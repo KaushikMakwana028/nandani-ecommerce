@@ -52,3 +52,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+// Admin Auth & Standalone Pages
+$route['admin/login'] = 'admin/auth/login';
+$route['admin/logout'] = 'admin/auth/logout';
+$route['admin/forgot-password'] = 'admin/auth/forgot_password';
+
+// Admin Profile & Password Pages
+$route['admin/profile'] = 'admin/profile/index';
+$route['admin/profile/update'] = 'admin/profile/update';
+$route['admin/change-password'] = 'admin/profile/change_password';
+$route['admin/change-password/update'] = 'admin/profile/update_password';
+
+// Admin Panel Modules Routing
+$route['admin'] = 'admin/dashboard';
+$route['admin/dashboard'] = 'admin/dashboard';
+$route['admin/category'] = 'admin/category';
+$route['admin/category/(:any)'] = 'admin/category/$1';
+$route['admin/(:any)'] = 'admin/$1';
+$route['admin/(:any)/(:any)'] = 'admin/$1/$2';
+
