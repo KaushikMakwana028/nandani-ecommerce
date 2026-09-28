@@ -2,19 +2,12 @@
 <!-- Admin Sidebar -->
 <aside id="adminSidebar" class="admin-sidebar d-flex flex-column flex-shrink-0 text-white">
     <!-- Brand Header -->
-    <div class="sidebar-brand d-flex align-items-center justify-content-between p-3 border-bottom border-secondary border-opacity-25">
-        <a href="<?= base_url('admin/dashboard') ?>" class="d-flex align-items-center text-white text-decoration-none">
-            <span class="brand-icon-box me-2 d-flex align-items-center justify-content-center">
-                <i class="fa-solid fa-crown"></i>
-            </span>
-            <div class="brand-text-wrapper">
-                <span class="brand-title">Nandani</span>
-                <span class="brand-badge ms-1">Admin</span>
-                <div class="brand-tagline">Business Portal</div>
-            </div>
+    <div class="sidebar-brand d-flex align-items-center justify-content-between px-3 py-3 border-bottom border-secondary border-opacity-25">
+        <a href="<?= base_url('admin/dashboard') ?>" class="d-flex align-items-center justify-content-center flex-grow-1 text-decoration-none py-1" title="Nandani Admin Panel">
+            <img src="<?= base_url('assets/images/logo-white.png') ?>" alt="Nandani" class="sidebar-brand-img" style="height: 46px; max-width: 155px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));">
         </a>
         <!-- Close button on Mobile/Tablet -->
-        <button type="button" class="btn-close btn-close-white d-lg-none" id="sidebarCloseBtn" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white d-lg-none ms-2" id="sidebarCloseBtn" aria-label="Close"></button>
     </div>
 
     <!-- Navigation Modules -->
@@ -70,12 +63,41 @@
                 </a>
             </li>
 
-            <!-- Enquiries -->
+            <!-- Enquiries Dropdown -->
+            <?php 
+                $is_enquiry_active = in_array($active_menu, ['enquiries', 'contact_enquiries', 'distributor_enquiries'], TRUE);
+            ?>
             <li class="nav-item mb-1">
-                <a href="<?= base_url('admin/enquiries') ?>" class="nav-link <?= ($active_menu === 'enquiries') ? 'active' : '' ?>">
-                    <i class="fa-solid fa-envelope-open-text nav-icon"></i>
-                    <span>Enquiries</span>
+                <a href="#submenuEnquiries" 
+                   class="nav-link d-flex align-items-center justify-content-between <?= $is_enquiry_active ? 'active-parent' : 'collapsed' ?>" 
+                   data-bs-toggle="collapse" 
+                   role="button" 
+                   aria-expanded="<?= $is_enquiry_active ? 'true' : 'false' ?>" 
+                   aria-controls="submenuEnquiries">
+                    <span class="d-flex align-items-center">
+                        <i class="fa-solid fa-envelope-open-text nav-icon"></i>
+                        <span>Enquiries</span>
+                    </span>
+                    <i class="fa-solid fa-chevron-down submenu-arrow"></i>
                 </a>
+                <div class="collapse <?= $is_enquiry_active ? 'show' : '' ?>" id="submenuEnquiries">
+                    <div class="sidebar-submenu-box">
+                        <ul class="sidebar-submenu">
+                            <li class="mb-1">
+                                <a href="<?= base_url('admin/enquiries/contact') ?>" class="submenu-link <?= ($active_menu === 'contact_enquiries') ? 'active' : '' ?>">
+                                    <i class="fa-regular fa-envelope submenu-icon"></i>
+                                    <span>Contact Enquiry</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('admin/enquiries/distributor') ?>" class="submenu-link <?= ($active_menu === 'distributor_enquiries') ? 'active' : '' ?>">
+                                    <i class="fa-solid fa-briefcase submenu-icon"></i>
+                                    <span>Distributor</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </li>
 
             <!-- Settings -->

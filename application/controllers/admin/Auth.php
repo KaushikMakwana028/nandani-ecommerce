@@ -162,7 +162,7 @@ class Auth extends CI_Controller {
         if ($this->input->method() === 'post') {
             // Server-side validation
             $this->form_validation->set_rules('email', 'Email Address', 'trim|required|valid_email');
-            $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[8]');
+            $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[6]');
             $this->form_validation->set_rules('confirm_password', 'Confirm New Password', 'required|matches[new_password]', [
                 'matches' => 'The Confirm New Password does not match the New Password.'
             ]);

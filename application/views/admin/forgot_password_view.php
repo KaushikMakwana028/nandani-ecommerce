@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Password | Nandani Admin</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<?= base_url('assets/images/logo.png') ?>">
+    <link rel="apple-touch-icon" href="<?= base_url('assets/images/logo.png') ?>">
+
     <!-- Google Fonts: Poppins (UI) & Playfair Display (Headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -164,12 +168,12 @@
 <div class="reset-card">
     
     <!-- Brand & Heading -->
-    <div class="brand-header">
-        <div class="brand-icon-wrap">
-            <i class="fa-solid fa-key"></i>
-        </div>
-        <h1 class="brand-title">Reset Password</h1>
-        <p class="brand-subtitle">Enter your admin email and set a new password</p>
+    <div class="brand-header text-center mb-4">
+        <a href="<?= base_url() ?>" class="d-inline-block mb-3" title="Nandani">
+            <img src="<?= base_url('assets/images/logo.png') ?>" alt="Nandani Logo" class="reset-brand-logo" style="height: 70px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(200, 16, 46, 0.18));">
+        </a>
+        <h1 class="brand-title">Reset Admin Password</h1>
+        <p class="brand-subtitle">Enter your registered admin email to set a new password</p>
     </div>
 
     <!-- Error Alert -->
@@ -216,13 +220,13 @@
                        class="form-control <?= form_error('new_password') ? 'is-invalid' : '' ?>" 
                        id="new_password" 
                        name="new_password" 
-                       placeholder="At least 8 characters" 
+                       placeholder="At least 6 characters" 
                        required>
                 <button class="btn btn-outline-secondary" type="button" id="toggleNewPassBtn" title="Toggle visibility">
                     <i class="fa-regular fa-eye" id="toggleNewPassIcon"></i>
                 </button>
             </div>
-            <div class="invalid-feedback d-none" id="clientNewPassError">Password must be at least 8 characters.</div>
+            <div class="invalid-feedback d-none" id="clientNewPassError">Password must be at least 6 characters.</div>
         </div>
 
         <!-- Confirm New Password Field -->
@@ -285,7 +289,7 @@
                 const newPass = passInput.value;
                 const confirmPass = confirmInput.value;
 
-                if (newPass.length < 8) {
+                if (newPass.length < 6) {
                     passInput.classList.add('is-invalid');
                     if (newPassErr) newPassErr.classList.remove('d-none');
                     valid = false;

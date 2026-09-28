@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= html_escape($page_title ?? 'Admin') ?> | Nandani Admin Panel</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<?= base_url('assets/images/logo-white.png') ?>">
+    <link rel="apple-touch-icon" href="<?= base_url('assets/images/logo-white.png') ?>">
+
     <!-- Google Fonts: Poppins (Body/UI) & Playfair Display (Headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -144,6 +148,86 @@
 
         .admin-sidebar .nav-link.active .nav-icon {
             color: var(--white);
+        }
+
+        /* Submenu Dropdown in Sidebar */
+        .admin-sidebar .nav-link.active-parent {
+            background-color: rgba(255, 255, 255, 0.06);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .admin-sidebar .nav-link.active-parent .nav-icon {
+            color: var(--primary-red);
+        }
+
+        .submenu-arrow {
+            font-size: 0.7rem;
+            transition: transform 0.25s ease;
+            color: #9CA3AF;
+        }
+
+        .admin-sidebar .nav-link[aria-expanded="true"] .submenu-arrow {
+            transform: rotate(180deg);
+            color: var(--white);
+        }
+
+        /* Recessed Submenu Container */
+        .sidebar-submenu-box {
+            background-color: rgba(0, 0, 0, 0.22);
+            border-radius: 8px;
+            margin: 4px 0 6px 0;
+            padding: 4px;
+        }
+
+        .sidebar-submenu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-submenu .submenu-link {
+            font-size: 0.84rem;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: #9CA3AF;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none !important;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-submenu .submenu-link .submenu-icon {
+            font-size: 0.88rem;
+            width: 18px;
+            text-align: center;
+            color: #9CA3AF;
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-submenu .submenu-link:hover {
+            color: var(--white);
+            background-color: rgba(255, 255, 255, 0.06);
+            text-decoration: none !important;
+        }
+
+        .sidebar-submenu .submenu-link:hover .submenu-icon {
+            color: var(--white);
+        }
+
+        /* Active Submenu Link */
+        .sidebar-submenu .submenu-link.active {
+            background-color: var(--primary-red) !important;
+            color: var(--white) !important;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(200, 16, 46, 0.3);
+            text-decoration: none !important;
+        }
+
+        .sidebar-submenu .submenu-link.active .submenu-icon {
+            color: var(--white) !important;
         }
 
         .nav-badge {
@@ -450,25 +534,6 @@
                 </ul>
             </div>
         </header>
-
-        <!-- Flash Session Alerts (Global) -->
-        <div class="px-3 px-lg-4 pt-3">
-            <?php if ($this->session->flashdata('success')): ?>
-                <div class="alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
-                    <i class="fa-solid fa-circle-check me-2 fs-5"></i>
-                    <div><?= $this->session->flashdata('success'); ?></div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($this->session->flashdata('error')): ?>
-                <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
-                    <i class="fa-solid fa-circle-exclamation me-2 fs-5"></i>
-                    <div><?= $this->session->flashdata('error'); ?></div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            <?php endif; ?>
-        </div>
 
         <!-- Page Specific Content Container -->
         <main class="flex-grow-1 px-3 px-lg-4 py-3">

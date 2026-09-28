@@ -82,6 +82,50 @@ $route['admin/hero-slider/reorder'] = 'admin/hero_slider/reorder';
 $route['admin/hero-slider/get-slide/(:num)'] = 'admin/hero_slider/get_slide/$1';
 $route['admin/slider'] = 'admin/hero_slider/index';
 
+// Brands Module Routing
+$route['admin/brands'] = 'admin/brand/index';
+$route['admin/brands/add'] = 'admin/brand/add';
+$route['admin/brands/edit/(:num)'] = 'admin/brand/edit/$1';
+$route['admin/brands/delete/(:num)'] = 'admin/brand/delete/$1';
+$route['admin/brands/toggle-status/(:num)'] = 'admin/brand/toggle_status/$1';
+$route['admin/brand'] = 'admin/brand/index';
+
+// Products Module Routing
+$route['admin/products'] = 'admin/product/index';
+$route['admin/products/add'] = 'admin/product/add';
+$route['admin/products/edit/(:num)'] = 'admin/product/edit/$1';
+$route['admin/products/delete/(:num)'] = 'admin/product/delete/$1';
+$route['admin/products/toggle-status/(:num)'] = 'admin/product/toggle_status/$1';
+$route['admin/product'] = 'admin/product/index';
+
+// Gallery Module Routing
+$route['admin/gallery'] = 'admin/gallery/index';
+$route['admin/gallery/add'] = 'admin/gallery/add';
+$route['admin/gallery/edit/(:num)'] = 'admin/gallery/edit/$1';
+$route['admin/gallery/delete/(:num)'] = 'admin/gallery/delete/$1';
+$route['admin/gallery/toggle-status/(:num)'] = 'admin/gallery/toggle_status/$1';
+
+// Enquiries Module Routing
+$route['admin/enquiries'] = 'admin/enquiry/contact';
+$route['admin/enquiries/contact'] = 'admin/enquiry/contact';
+$route['admin/enquiries/distributor'] = 'admin/enquiry/distributor';
+$route['admin/contact-enquiries'] = 'admin/enquiry/contact';
+$route['admin/distributor-enquiries'] = 'admin/enquiry/distributor';
+$route['admin/enquiries/update-status'] = 'admin/enquiry/update_status';
+$route['admin/enquiries/delete/(:any)/(:num)'] = 'admin/enquiry/delete/$1/$2';
+$route['admin/enquiries/export'] = 'admin/enquiry/export';
+$route['admin/enquiries/export/(:any)'] = 'admin/enquiry/export/$1';
+$route['admin/enquiry'] = 'admin/enquiry/contact';
+$route['admin/enquiry/contact'] = 'admin/enquiry/contact';
+$route['admin/enquiry/distributor'] = 'admin/enquiry/distributor';
+$route['admin/enquiry/update-status'] = 'admin/enquiry/update_status';
+$route['admin/enquiry/delete/(:any)/(:num)'] = 'admin/enquiry/delete/$1/$2';
+$route['admin/enquiry/export'] = 'admin/enquiry/export';
+// Settings Module Routing
+$route['admin/settings'] = 'admin/settings/index';
+$route['admin/settings/save'] = 'admin/settings/save';
+$route['admin/setting'] = 'admin/settings/index';
+
 $route['admin/(:any)'] = 'admin/$1';
 $route['admin/(:any)/(:any)'] = 'admin/$1/$2';
 

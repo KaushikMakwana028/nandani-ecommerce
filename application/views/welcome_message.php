@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nandani — Premium Kitchen & Home Appliances</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<?= base_url('assets/images/logo.png') ?>">
+    <link rel="apple-touch-icon" href="<?= base_url('assets/images/logo.png') ?>">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -150,17 +154,22 @@
 
     <!-- Header Navigation -->
     <nav class="landing-navbar d-flex align-items-center justify-content-between">
-        <div class="brand-logo-text">
-            Nandani<span>.</span>
-        </div>
-        <a href="<?= base_url('admin') ?>" class="btn btn-sm btn-outline-dark px-3 py-1 fw-semibold">
-            <i class="fa-solid fa-lock me-1"></i> Admin Login
+        <a href="<?= base_url() ?>" class="d-inline-flex align-items-center text-decoration-none">
+            <img src="<?= base_url('assets/images/logo.png') ?>" alt="Nandani Logo" style="height: 46px; width: auto; object-fit: contain;">
+        </a>
+        <a href="<?= base_url('admin') ?>" class="btn btn-sm btn-outline-dark px-3 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+            <i class="fa-solid fa-lock"></i>
+            <span>Admin Portal</span>
         </a>
     </nav>
 
     <!-- Main Hero Landing -->
     <main class="hero-section">
         <div class="hero-card">
+            <div class="mb-3 text-center">
+                <img src="<?= base_url('assets/images/logo.png') ?>" alt="Nandani" style="height: 75px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 14px rgba(200, 16, 46, 0.22));">
+            </div>
+
             <div class="badge-status">
                 <i class="fa-solid fa-screwdriver-wrench"></i>
                 <span>Public Website Under Active Development</span>

@@ -190,7 +190,7 @@
                                        class="form-control pass-input <?= form_error('new_password') ? 'is-invalid' : '' ?>" 
                                        id="new_password" 
                                        name="new_password" 
-                                       placeholder="Minimum 8 characters" 
+                                       placeholder="Minimum 6 characters" 
                                        required>
                                 <button class="btn btn-toggle-eye toggle-pass-btn" type="button" data-target="new_password" title="Toggle visibility">
                                     <i class="fa-regular fa-eye"></i>
@@ -239,7 +239,7 @@
 
                 <div class="sec-rule-item">
                     <i class="fa-solid fa-circle-check"></i>
-                    <span>Minimum of 8 characters in length</span>
+                    <span>Minimum of 6 characters in length</span>
                 </div>
                 <div class="sec-rule-item">
                     <i class="fa-solid fa-circle-check"></i>
@@ -296,7 +296,7 @@
                     document.getElementById('current_password').classList.remove('is-invalid');
                 }
 
-                if (newPass.length < 8) {
+                if (newPass.length < 6) {
                     document.getElementById('new_password').classList.add('is-invalid');
                     valid = false;
                 } else {

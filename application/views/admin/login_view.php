@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login | Nandani</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<?= base_url('assets/images/logo.png') ?>">
+    <link rel="apple-touch-icon" href="<?= base_url('assets/images/logo.png') ?>">
+
     <!-- Google Fonts: Poppins (UI) & Playfair Display (Headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -175,12 +179,12 @@
 <div class="login-card">
     
     <!-- Brand & Heading -->
-    <div class="brand-header">
-        <div class="brand-icon-wrap">
-            <i class="fa-solid fa-shield-halved"></i>
-        </div>
-        <h1 class="brand-title">Admin Login</h1>
-        <p class="brand-subtitle">Enter your credentials to access Nandani Admin Portal</p>
+    <div class="brand-header text-center mb-4">
+        <a href="<?= base_url() ?>" class="d-inline-block mb-3" title="Nandani">
+            <img src="<?= base_url('assets/images/logo.png') ?>" alt="Nandani Logo" class="login-brand-logo" style="height: 72px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(200, 16, 46, 0.18));">
+        </a>
+        <h1 class="brand-title">Admin Portal Login</h1>
+        <p class="brand-subtitle">Enter your credentials to access the management dashboard</p>
     </div>
 
     <!-- Generic Error Notification -->

@@ -505,22 +505,6 @@
         </div>
     </div>
 
-    <!-- Alert Messages -->
-    <?php if ($this->session->flashdata('success')): ?>
-        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-3 shadow-sm border-0" role="alert" style="background-color: #ECFDF5; color: #065F46; border-left: 4px solid #10B981 !important;">
-            <i class="fa-solid fa-circle-check me-2 fs-5"></i>
-            <div><?= $this->session->flashdata('success') ?></div>
-            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
-
-    <?php if ($this->session->flashdata('error')): ?>
-        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-3 shadow-sm border-0" role="alert" style="background-color: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444 !important;">
-            <i class="fa-solid fa-circle-exclamation me-2 fs-5"></i>
-            <div><?= $this->session->flashdata('error') ?></div>
-            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
 
     <!-- Limit Indicator Banner -->
     <div class="limit-card mb-4">
