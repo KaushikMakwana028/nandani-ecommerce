@@ -10,7 +10,7 @@ class Auth extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library(['session', 'form_validation']);
-        $this->load->helper(['url', 'form', 'html']);
+        $this->load->helper(['url', 'form', 'html', 'cookie']);
         $this->load->model('General_model');
     }
 
@@ -18,10 +18,34 @@ class Auth extends CI_Controller {
      * Admin Login Page & Authentication Handler
      */
     public function login() {
-        // If already logged in, redirect to dashboard
+        // If already logged in via session, redirect to dashboard
         if ($this->session->userdata('admin_logged_in') && $this->session->userdata('admin_id')) {
             redirect('admin/dashboard');
             return;
+        }
+
+        // Check for permanent login cookie auto-restore
+        $perm_cookie = $this->input->cookie('nandani_admin_perm', TRUE);
+        if (!empty($perm_cookie) && strpos($perm_cookie, ':') !== FALSE) {
+            list($cookie_uid, $cookie_hash) = explode(':', $perm_cookie, 2);
+            $cookie_user = $this->db->get_where('users', ['id' => (int)$cookie_uid])->row();
+
+            if ($cookie_user && (int)$cookie_user->status === 1 && (int)$cookie_user->role === 1) {
+                $expected_hash = hash_hmac('sha256', $cookie_user->id . $cookie_user->email . $cookie_user->password, $this->config->item('encryption_key'));
+                if (hash_equals($expected_hash, $cookie_hash)) {
+                    // Auto-restore permanent session
+                    $session_data = [
+                        'admin_id'        => $cookie_user->id,
+                        'admin_name'      => $cookie_user->name,
+                        'admin_email'     => $cookie_user->email,
+                        'admin_role'      => 'Admin',
+                        'admin_logged_in' => TRUE
+                    ];
+                    $this->session->set_userdata($session_data);
+                    redirect('admin/dashboard');
+                    return;
+                }
+            }
         }
 
         $data = [
@@ -84,6 +108,18 @@ class Auth extends CI_Controller {
                 ];
                 $this->session->set_userdata($session_data);
 
+                // Create permanent persistent login cookie (10 years lifetime)
+                // Ensures user NEVER has to login again even across browser closures, restarts, or session expiry
+                $token_hash = hash_hmac('sha256', $user->id . $user->email . $user->password, $this->config->item('encryption_key'));
+                $this->input->set_cookie([
+                    'name'     => 'nandani_admin_perm',
+                    'value'    => $user->id . ':' . $token_hash,
+                    'expire'   => 315360000, // 10 years
+                    'path'     => '/',
+                    'secure'   => FALSE,
+                    'httponly' => TRUE
+                ]);
+
                 redirect('admin/dashboard');
                 return;
             }
@@ -97,6 +133,16 @@ class Auth extends CI_Controller {
      * Admin Logout Handler
      */
     public function logout() {
+        // Clear permanent cookie
+        $this->input->set_cookie([
+            'name'     => 'nandani_admin_perm',
+            'value'    => '',
+            'expire'   => -86400,
+            'path'     => '/'
+        ]);
+        delete_cookie('nandani_admin_perm');
+
+        // Destroy session
         $this->session->sess_destroy();
         redirect('admin/login');
     }

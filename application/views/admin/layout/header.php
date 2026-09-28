@@ -214,6 +214,10 @@
             border-color: var(--border-color);
         }
 
+        .profile-toggle-btn::after {
+            display: none !important;
+        }
+
         .header-avatar {
             width: 36px;
             height: 36px;
@@ -387,7 +391,7 @@
 
             <!-- Right: Admin Profile Block with Dropdown -->
             <div class="dropdown">
-                <button class="profile-toggle-btn d-flex align-items-center text-decoration-none dropdown-toggle border-0" 
+                <button class="profile-toggle-btn d-flex align-items-center text-decoration-none border-0" 
                         type="button" 
                         id="adminProfileDropdown" 
                         data-bs-toggle="dropdown" 

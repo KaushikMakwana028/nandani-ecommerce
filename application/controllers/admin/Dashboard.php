@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Admin Dashboard Controller
+ * Displays welcome banner and live count statistics using the shared admin layout
  */
 class Dashboard extends Admin_Controller {
 
@@ -10,27 +11,43 @@ class Dashboard extends Admin_Controller {
         parent::__construct();
     }
 
+    /**
+     * Dashboard landing page
+     * Pulls live counts from modules, gracefully handling missing/empty tables
+     */
     public function index() {
-        // Retrieve statistics for overview cards
-        $categories_total = $this->db->count_all('categories');
-        $categories_product = $this->db->where('type', 'product')->count_all_results('categories');
-        $categories_gallery = $this->db->where('type', 'gallery')->count_all_results('categories');
-        $categories_brand = $this->db->where('type', 'brand')->count_all_results('categories');
+        // Safe live count queries - return 0 if table does not exist or is empty
+        $total_products = $this->db->table_exists('products') 
+            ? (int)$this->db->count_all('products') 
+            : 0;
 
-        // Recent categories
-        $recent_categories = $this->db->order_by('id', 'DESC')->limit(5)->get('categories')->result();
+        $total_brands = $this->db->table_exists('brands') 
+            ? (int)$this->db->count_all('brands') 
+            : 0;
+
+        $total_gallery = $this->db->table_exists('gallery') 
+            ? (int)$this->db->count_all('gallery') 
+            : 0;
+
+        $contact_count = $this->db->table_exists('contact_enquiries') 
+            ? (int)$this->db->count_all('contact_enquiries') 
+            : 0;
+
+        $distributor_count = $this->db->table_exists('distributor_enquiries') 
+            ? (int)$this->db->count_all('distributor_enquiries') 
+            : 0;
+
+        $total_enquiries = $contact_count + $distributor_count;
 
         $data = [
-            'page_title'        => 'Admin Dashboard',
-            'breadcrumb'        => 'Dashboard',
-            'active_menu'       => 'dashboard',
-            'stats'             => [
-                'total_categories'   => $categories_total,
-                'product_categories' => $categories_product,
-                'gallery_categories' => $categories_gallery,
-                'brand_categories'   => $categories_brand
-            ],
-            'recent_categories' => $recent_categories
+            'page_title'      => 'Dashboard',
+            'breadcrumb'      => 'Dashboard',
+            'active_menu'     => 'dashboard',
+            'today_date'      => date('l, F j, Y'),
+            'total_products'  => $total_products,
+            'total_brands'    => $total_brands,
+            'total_gallery'   => $total_gallery,
+            'total_enquiries' => $total_enquiries
         ];
 
         $this->render('dashboard_view', $data);

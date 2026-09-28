@@ -69,6 +69,19 @@ $route['admin'] = 'admin/dashboard';
 $route['admin/dashboard'] = 'admin/dashboard';
 $route['admin/category'] = 'admin/category';
 $route['admin/category/(:any)'] = 'admin/category/$1';
+$route['admin/category/(:any)/(:any)'] = 'admin/category/$1/$2';
+
+// Hero Slider Module Routing
+$route['admin/hero-slider'] = 'admin/hero_slider/index';
+$route['admin/hero-slider/add'] = 'admin/hero_slider/add';
+$route['admin/hero-slider/edit/(:num)'] = 'admin/hero_slider/edit/$1';
+$route['admin/hero-slider/delete/(:num)'] = 'admin/hero_slider/delete/$1';
+$route['admin/hero-slider/toggle-status/(:num)'] = 'admin/hero_slider/toggle_status/$1';
+$route['admin/hero-slider/move/(:num)/(:any)'] = 'admin/hero_slider/move/$1/$2';
+$route['admin/hero-slider/reorder'] = 'admin/hero_slider/reorder';
+$route['admin/hero-slider/get-slide/(:num)'] = 'admin/hero_slider/get_slide/$1';
+$route['admin/slider'] = 'admin/hero_slider/index';
+
 $route['admin/(:any)'] = 'admin/$1';
 $route['admin/(:any)/(:any)'] = 'admin/$1/$2';
 

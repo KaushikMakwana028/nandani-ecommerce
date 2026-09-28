@@ -21,14 +21,41 @@ class Admin_Controller extends MY_Controller {
     public function __construct() {
         parent::__construct();
 
-        // Ensure database and session are ready
+        // Ensure database, session, and cookies are ready
         $this->load->library(['session']);
-        $this->load->helper(['url', 'form', 'html']);
+        $this->load->helper(['url', 'form', 'html', 'cookie']);
         $this->load->model('General_model');
 
-        // Route Protection: Check if admin is logged in
+        // Route Protection: Check if admin is logged in via session
         $admin_id = $this->session->userdata('admin_id');
         $is_logged_in = $this->session->userdata('admin_logged_in');
+
+        // Permanent Session Auto-Restore:
+        // If session was cleared (e.g. browser restart or PHP GC), check persistent remember token
+        if (empty($admin_id) || empty($is_logged_in)) {
+            $perm_cookie = $this->input->cookie('nandani_admin_perm', TRUE);
+            if (!empty($perm_cookie) && strpos($perm_cookie, ':') !== FALSE) {
+                list($cookie_uid, $cookie_hash) = explode(':', $perm_cookie, 2);
+                $cookie_user = $this->db->get_where('users', ['id' => (int)$cookie_uid])->row();
+
+                if ($cookie_user && (int)$cookie_user->status === 1 && (int)$cookie_user->role === 1) {
+                    $expected_hash = hash_hmac('sha256', $cookie_user->id . $cookie_user->email . $cookie_user->password, $this->config->item('encryption_key'));
+                    if (hash_equals($expected_hash, $cookie_hash)) {
+                        // Auto-restore permanent session
+                        $session_data = [
+                            'admin_id'        => $cookie_user->id,
+                            'admin_name'      => $cookie_user->name,
+                            'admin_email'     => $cookie_user->email,
+                            'admin_role'      => 'Admin',
+                            'admin_logged_in' => TRUE
+                        ];
+                        $this->session->set_userdata($session_data);
+                        $admin_id = $cookie_user->id;
+                        $is_logged_in = TRUE;
+                    }
+                }
+            }
+        }
 
         if (empty($admin_id) || empty($is_logged_in)) {
             $this->session->set_flashdata('error', 'Please log in to access the admin panel.');
