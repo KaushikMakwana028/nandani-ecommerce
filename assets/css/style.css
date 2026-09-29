@@ -1,0 +1,119 @@
+/* ============================
+   GLOBAL VARIABLES & RESET
+============================ */
+:root{
+  --primary-red: #C8102E;
+  --dark-red: #8B0000;
+  --gold: #FFC72C;
+  --dark: #1A1A1A;
+  --light-grey: #F8F9FA;
+  --white: #FFFFFF;
+
+  --font-primary: 'Poppins', sans-serif;
+  --font-heading: 'Playfair Display', serif;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+}
+
+body{
+  font-family: var(--font-primary);
+  color: var(--dark);
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4{
+  font-family: var(--font-heading);
+  font-weight:700;
+}
+
+a{
+  text-decoration:none;
+}
+
+img{
+  max-width:100%;
+  height:auto;
+}
+
+/* Reusable Section Title Style (used across all sections) */
+.section-title{
+  text-align:center;
+  margin-bottom:50px;
+}
+.section-title span.tag{
+  display:inline-block;
+  background: rgba(200,16,46,0.1);
+  color: var(--primary-red);
+  padding:6px 20px;
+  border-radius:50px;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:15px;
+}
+.section-title h2{
+  font-size:42px;
+  color: var(--dark);
+  position:relative;
+}
+.section-title h2 span{
+  color: var(--primary-red);
+}
+.section-title p{
+  color:#666;
+  max-width:600px;
+  margin:15px auto 0;
+  font-size:16px;
+}
+
+/* Reusable Buttons */
+.btn-primary-custom{
+  background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+  color:#fff;
+  font-weight:600;
+  padding:12px 32px;
+  border-radius:50px;
+  border:2px solid transparent;
+  transition: all 0.4s ease;
+  display:inline-block;
+}
+.btn-primary-custom:hover{
+  background: var(--gold);
+  color: var(--dark);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255,199,44,0.4);
+}
+
+.btn-outline-custom{
+  background:transparent;
+  color: var(--primary-red);
+  font-weight:600;
+  padding:12px 32px;
+  border-radius:50px;
+  border:2px solid var(--primary-red);
+  transition: all 0.4s ease;
+  display:inline-block;
+}
+.btn-outline-custom:hover{
+  background: var(--primary-red);
+  color:#fff;
+  transform: translateY(-3px);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar{
+  width:10px;
+}
+::-webkit-scrollbar-track{
+  background: var(--light-grey);
+}
+::-webkit-scrollbar-thumb{
+  background: var(--primary-red);
+  border-radius:10px;
+}

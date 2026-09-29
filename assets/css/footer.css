@@ -1,0 +1,105 @@
+.footer-section{
+  background: var(--dark);
+  color:#ccc;
+  position:relative;
+  overflow:hidden;
+  padding-top:30px;
+}
+.footer-pattern{
+  position:absolute;
+  top:0; left:0; right:0;
+  height:5px;
+  background:linear-gradient(90deg, var(--primary-red), var(--gold), var(--primary-red));
+}
+
+.footer-logo{ height:60px; }
+
+.footer-social{ display:flex; gap:12px; margin-top:20px; }
+.footer-social a{
+  width:38px; height:38px;
+  background:rgba(255,255,255,0.08);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff;
+  transition:0.3s;
+}
+.footer-social a:hover{ background:var(--gold); color:var(--dark); transform:translateY(-4px); }
+
+.footer-title{
+  color:#fff;
+  font-family:var(--font-primary);
+  font-weight:600;
+  margin-bottom:22px;
+  position:relative;
+  padding-bottom:12px;
+}
+.footer-title::after{
+  content:'';
+  position:absolute;
+  left:0; bottom:0;
+  width:35px; height:3px;
+  background:var(--gold);
+}
+
+.footer-links{ list-style:none; padding:0; margin:0; }
+.footer-links li{ margin-bottom:12px; }
+.footer-links a{
+  color:#bbb;
+  transition:0.3s;
+  font-size:14.5px;
+}
+.footer-links a:hover{ color:var(--gold); padding-left:5px; }
+
+.footer-newsletter{ display:flex; margin-top:15px; }
+.footer-newsletter input{
+  flex:1;
+  padding:12px 16px;
+  border:none;
+  border-radius:50px 0 0 50px;
+  outline:none;
+  font-size:14px;
+}
+.footer-newsletter button{
+  background:var(--primary-red);
+  color:#fff;
+  border:none;
+  padding:0 20px;
+  border-radius:0 50px 50px 0;
+  transition:0.3s;
+}
+.footer-newsletter button:hover{ background:var(--gold); color:var(--dark); }
+
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,0.1);
+  padding:20px 0;
+  font-size:14px;
+  color:#999;
+}
+
+/* WhatsApp Floating Button */
+.whatsapp-float{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  background:#25D366;
+  color:#fff;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+  z-index:999;
+  animation:pulseWA 2s infinite;
+}
+@keyframes pulseWA{
+  0%{ box-shadow:0 0 0 0 rgba(37,211,102,0.6); }
+  70%{ box-shadow:0 0 0 15px rgba(37,211,102,0); }
+  100%{ box-shadow:0 0 0 0 rgba(37,211,102,0); }
+}
+
+@media(max-width:767px){
+  .whatsapp-float{ width:50px; height:50px; font-size:26px; bottom:15px; right:15px; }
+}

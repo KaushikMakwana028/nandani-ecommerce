@@ -133,13 +133,19 @@
     .cat-icon-badge {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        background-color: #F3F4F6;
-        color: var(--dark-text);
-        padding: 4px 10px;
-        border-radius: 6px;
-        font-size: 0.8rem;
+        gap: 8px;
+        background-color: #F8F9FA;
+        color: #1F2937;
+        padding: 5px 12px;
+        border-radius: 8px;
+        font-size: 0.82rem;
         font-weight: 500;
+        border: 1px solid var(--border-color);
+    }
+
+    .cat-icon-badge i {
+        color: var(--primary-red);
+        font-size: 0.95rem;
     }
 
     /* Status Pill: Active = Green, Inactive = Grey */
@@ -230,6 +236,130 @@
         box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.15);
     }
 
+    /* Icon Picker Widget Styles */
+    .icon-picker-widget {
+        position: relative;
+    }
+
+    .icon-preview-box {
+        width: 46px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        color: var(--primary-red);
+        background-color: #F9FAFB;
+        border-color: #D1D5DB;
+        transition: all 0.2s ease;
+    }
+
+    .icon-preview-box.is-valid-icon {
+        border-color: #10B981 !important;
+        background-color: #ECFDF5 !important;
+        color: var(--primary-red) !important;
+    }
+
+    .icon-preview-box.is-invalid-icon {
+        border-color: #F59E0B !important;
+        background-color: #FFFBEB !important;
+        color: #D97706 !important;
+    }
+
+    .icon-suggestions-panel {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        background: #FFFFFF;
+        border: 1px solid #D1D5DB;
+        border-radius: 12px;
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.14);
+        z-index: 1065;
+        max-height: 340px;
+        overflow-y: auto;
+    }
+
+    .icon-suggestion-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 9px 14px;
+        cursor: pointer;
+        border-bottom: 1px solid #F3F4F6;
+        transition: background-color 0.15s ease;
+    }
+
+    .icon-suggestion-item:last-child {
+        border-bottom: none;
+    }
+
+    .icon-suggestion-item:hover {
+        background-color: rgba(200, 16, 46, 0.05);
+    }
+
+    .icon-suggestion-item.top-pick {
+        background-color: #FFF1F2;
+    }
+
+    .item-icon-box {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        background-color: #F3F4F6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.15rem;
+        color: var(--primary-red);
+        flex-shrink: 0;
+    }
+
+    .icon-suggestion-item:hover .item-icon-box {
+        background-color: var(--primary-red);
+        color: #FFFFFF;
+    }
+
+    .item-name {
+        font-size: 0.85rem;
+        font-family: monospace;
+        color: var(--dark-text);
+    }
+
+    .icon-quick-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+    }
+
+    .btn-quick-icon {
+        border: 1px solid #E5E7EB;
+        background-color: #FFFFFF;
+        border-radius: 20px;
+        padding: 3px 10px;
+        font-size: 0.77rem;
+        font-weight: 500;
+        color: #374151;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+        transition: all 0.18s ease;
+    }
+
+    .btn-quick-icon:hover {
+        border-color: var(--primary-red);
+        background-color: rgba(200, 16, 46, 0.06);
+        color: var(--primary-red);
+        transform: translateY(-1px);
+    }
+
+    .btn-browse-icons {
+        font-size: 0.82rem;
+        font-weight: 500;
+    }
+
     /* Modal Live Icon Preview */
     .modal-icon-preview {
         width: 42px;
@@ -251,6 +381,54 @@
         border-radius: 8px;
         object-fit: cover;
         border: 1px solid var(--border-color);
+    }
+
+    /* Icon Browser Modal Grid */
+    .icon-grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 10px;
+        max-height: 420px;
+        overflow-y: auto;
+        padding: 4px;
+    }
+
+    .icon-browser-card {
+        border: 1px solid #E5E7EB;
+        border-radius: 10px;
+        padding: 14px 8px;
+        text-align: center;
+        cursor: pointer;
+        background-color: #FFFFFF;
+        transition: all 0.18s ease;
+    }
+
+    .icon-browser-card:hover {
+        border-color: var(--primary-red);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(200, 16, 46, 0.12);
+    }
+
+    .icon-browser-card .card-icon {
+        font-size: 1.6rem;
+        color: #4B5563;
+        margin-bottom: 6px;
+    }
+
+    .icon-browser-card:hover .card-icon {
+        color: var(--primary-red);
+    }
+
+    .icon-browser-card .card-title {
+        font-size: 0.74rem;
+        font-weight: 600;
+        color: #1F2937;
+    }
+
+    .icon-browser-card .card-code {
+        font-size: 0.67rem;
+        color: #6B7280;
+        font-family: monospace;
     }
 </style>
 
@@ -365,14 +543,7 @@
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <?php if (!empty($cat->icon)): ?>
-                                            <div class="cat-icon-badge">
-                                                <i class="fa-solid <?= html_escape($cat->icon) ?>"></i>
-                                                <span><?= html_escape($cat->icon) ?></span>
-                                            </div>
-                                        <?php else: ?>
-                                            <span class="text-muted small fst-italic">—</span>
-                                        <?php endif; ?>
+                                        <?= render_category_icon_badge($cat->icon) ?>
                                     </td>
                                     <td>
                                         <?php if ($cat->status === 'active'): ?>
@@ -397,7 +568,7 @@
                                                     data-id="<?= $cat->id ?>"
                                                     data-name="<?= html_escape($cat->name) ?>"
                                                     data-type="<?= html_escape($cat->type) ?>"
-                                                    data-icon="<?= html_escape($cat->icon) ?>"
+                                                    data-icon="<?= html_escape(normalize_fa_icon($cat->icon, '')) ?>"
                                                     data-image="<?= !empty($cat->image) && file_exists(FCPATH . $cat->image) ? base_url($cat->image) : '' ?>"
                                                     data-short_description="<?= html_escape($cat->short_description) ?>"
                                                     data-status="<?= html_escape($cat->status) ?>"
@@ -565,14 +736,7 @@
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <?php if (!empty($cat->icon)): ?>
-                                            <div class="cat-icon-badge">
-                                                <i class="fa-solid <?= html_escape($cat->icon) ?>"></i>
-                                                <span><?= html_escape($cat->icon) ?></span>
-                                            </div>
-                                        <?php else: ?>
-                                            <span class="text-muted small fst-italic">—</span>
-                                        <?php endif; ?>
+                                        <?= render_category_icon_badge($cat->icon) ?>
                                     </td>
                                     <td>
                                         <?php if ($cat->status === 'active'): ?>
@@ -597,7 +761,7 @@
                                                     data-id="<?= $cat->id ?>"
                                                     data-name="<?= html_escape($cat->name) ?>"
                                                     data-type="<?= html_escape($cat->type) ?>"
-                                                    data-icon="<?= html_escape($cat->icon) ?>"
+                                                    data-icon="<?= html_escape(normalize_fa_icon($cat->icon, '')) ?>"
                                                     data-image="<?= !empty($cat->image) && file_exists(FCPATH . $cat->image) ? base_url($cat->image) : '' ?>"
                                                     data-short_description="<?= html_escape($cat->short_description) ?>"
                                                     data-status="<?= html_escape($cat->status) ?>"
@@ -650,12 +814,39 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="prod_icon" class="form-label">Icon Class (FontAwesome)</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fa-solid fa-icons"></i></span>
-                            <input type="text" class="form-control" id="prod_icon" name="icon" placeholder="e.g. fa-fire-burner">
+                        <label for="prod_icon" class="form-label d-flex align-items-center justify-content-between">
+                            <span>Icon Class (FontAwesome)</span>
+                            <span class="badge bg-light text-muted border font-monospace" style="font-size: 0.72rem;">Optional</span>
+                        </label>
+                        <div class="icon-picker-widget" data-widget="prod_icon">
+                            <div class="input-group">
+                                <span class="input-group-text icon-preview-box" id="prod_icon_preview_box" title="Live Icon Preview">
+                                    <i class="fa-solid fa-icons" id="prod_icon_preview"></i>
+                                </span>
+                                <input type="text" class="form-control font-monospace icon-picker-input" id="prod_icon" name="icon" placeholder="Type keyword (e.g. mixer, stove, fan) or icon class..." autocomplete="off">
+                                <button type="button" class="btn btn-outline-secondary btn-clear-icon d-none" title="Clear icon">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-browse-icons" title="Browse full icon library">
+                                    <i class="fa-solid fa-compass me-1"></i> Browse
+                                </button>
+                            </div>
+
+                            <!-- Real-time Autocomplete & Smart Suggestions Dropdown -->
+                            <div class="icon-suggestions-panel d-none" id="prod_icon_suggestions"></div>
+
+                            <!-- Quick Pick Chips for Product Categories -->
+                            <div class="icon-quick-chips mt-2">
+                                <span class="text-muted small me-1">Quick pick:</span>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-fire" title="Gas Stove"><i class="fa-solid fa-fire text-danger"></i> Gas Stove</button>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-fire-burner" title="Burner / Cooktop"><i class="fa-solid fa-fire-burner text-danger"></i> Burner</button>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-blender" title="Mixer / Blender"><i class="fa-solid fa-blender text-danger"></i> Mixer</button>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-kitchen-set" title="Kitchen Appliances"><i class="fa-solid fa-kitchen-set text-danger"></i> Kitchen</button>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-utensils" title="Utensils"><i class="fa-solid fa-utensils text-danger"></i> Utensils</button>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-plug" title="Electrical Appliance"><i class="fa-solid fa-plug text-danger"></i> Appliance</button>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-fan" title="Cooling Fan"><i class="fa-solid fa-fan text-danger"></i> Fan</button>
+                            </div>
                         </div>
-                        <div class="form-text text-muted small">Example: <code>fa-fire-burner</code>, <code>fa-kitchen-set</code>, <code>fa-blender</code></div>
                     </div>
 
                     <div class="mb-3">
@@ -752,12 +943,40 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="brand_icon" class="form-label">Icon Class (FontAwesome)</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fa-solid fa-icons"></i></span>
-                            <input type="text" class="form-control" id="brand_icon" name="icon" placeholder="e.g. fa-tags">
+                        <label for="brand_icon" class="form-label d-flex align-items-center justify-content-between">
+                            <span>Icon Class (FontAwesome)</span>
+                            <span class="badge bg-light text-muted border font-monospace" style="font-size: 0.72rem;">Optional</span>
+                        </label>
+                        <div class="icon-picker-widget" data-widget="brand_icon">
+                            <div class="input-group">
+                                <span class="input-group-text icon-preview-box" id="brand_icon_preview_box" title="Live Icon Preview">
+                                    <i class="fa-solid fa-icons" id="brand_icon_preview"></i>
+                                </span>
+                                <input type="text" class="form-control font-monospace icon-picker-input" id="brand_icon" name="icon" placeholder="Type keyword (e.g. brand, award, tag) or icon class..." autocomplete="off">
+                                <button type="button" class="btn btn-outline-secondary btn-clear-icon d-none" title="Clear icon">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-browse-icons" title="Browse full icon library">
+                                    <i class="fa-solid fa-compass me-1"></i> Browse
+                                </button>
+                            </div>
+
+                            <!-- Real-time Autocomplete & Smart Suggestions Dropdown -->
+                            <div class="icon-suggestions-panel d-none" id="brand_icon_suggestions"></div>
+
+                            <!-- Quick Pick Chips for Brand Categories -->
+                            <div class="icon-quick-chips mt-2">
+                                <span class="text-muted small me-1">Quick pick:</span>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-tag" title="Tag"><i class="fa-solid fa-tag text-danger"></i> Tag</button>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-tags" title="Tags"><i class="fa-solid fa-tags text-danger"></i> Tags</button>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-award" title="Award"><i class="fa-solid fa-award text-danger"></i> Award</button>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-crown" title="Crown"><i class="fa-solid fa-crown text-danger"></i> Crown</button>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-star" title="Star"><i class="fa-solid fa-star text-danger"></i> Star</button>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-certificate" title="Certified"><i class="fa-solid fa-certificate text-danger"></i> Certified</button>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-gem" title="Luxury"><i class="fa-solid fa-gem text-danger"></i> Luxury</button>
+                                <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-shield-halved" title="Warranty"><i class="fa-solid fa-shield-halved text-danger"></i> Warranty</button>
+                            </div>
                         </div>
-                        <div class="form-text text-muted small">Example: <code>fa-tags</code>, <code>fa-award</code>, <code>fa-crown</code></div>
                     </div>
 
                     <div class="mb-3">
@@ -821,13 +1040,38 @@
                     <div id="editProdBrandSection">
                         <!-- Icon Class with Live Preview -->
                         <div class="mb-3">
-                            <label for="edit_cat_icon" class="form-label">Icon Class (FontAwesome)</label>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="modal-icon-preview" id="editIconPreviewBox">
-                                    <i class="fa-solid fa-icons" id="editIconPreview"></i>
+                            <label for="edit_cat_icon" class="form-label d-flex align-items-center justify-content-between">
+                                <span>Icon Class (FontAwesome)</span>
+                                <span class="badge bg-light text-muted border font-monospace" style="font-size: 0.72rem;">Optional</span>
+                            </label>
+                            <div class="icon-picker-widget" data-widget="edit_cat_icon">
+                                <div class="input-group">
+                                    <span class="input-group-text icon-preview-box" id="edit_icon_preview_box" title="Live Icon Preview">
+                                        <i class="fa-solid fa-icons" id="editIconPreview"></i>
+                                    </span>
+                                    <input type="text" class="form-control font-monospace icon-picker-input" id="edit_cat_icon" name="icon" placeholder="Type keyword (e.g. mixer, stove, fan, tag) or icon class..." autocomplete="off">
+                                    <button type="button" class="btn btn-outline-secondary btn-clear-icon d-none" title="Clear icon">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-browse-icons" title="Browse full icon library">
+                                        <i class="fa-solid fa-compass me-1"></i> Browse
+                                    </button>
                                 </div>
-                                <div class="flex-grow-1">
-                                    <input type="text" class="form-control" id="edit_cat_icon" name="icon" placeholder="e.g. fa-fire-burner">
+
+                                <!-- Real-time Autocomplete & Smart Suggestions Dropdown -->
+                                <div class="icon-suggestions-panel d-none" id="edit_cat_icon_suggestions"></div>
+
+                                <!-- Quick Pick Chips for Edit Modal -->
+                                <div class="icon-quick-chips mt-2">
+                                    <span class="text-muted small me-1">Quick pick:</span>
+                                    <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-fire" title="Gas Stove"><i class="fa-solid fa-fire text-danger"></i> Gas Stove</button>
+                                    <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-fire-burner" title="Burner"><i class="fa-solid fa-fire-burner text-danger"></i> Burner</button>
+                                    <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-blender" title="Mixer / Blender"><i class="fa-solid fa-blender text-danger"></i> Mixer</button>
+                                    <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-kitchen-set" title="Kitchen"><i class="fa-solid fa-kitchen-set text-danger"></i> Kitchen</button>
+                                    <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-tag" title="Tag"><i class="fa-solid fa-tag text-danger"></i> Tag</button>
+                                    <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-tags" title="Tags"><i class="fa-solid fa-tags text-danger"></i> Tags</button>
+                                    <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-crown" title="Crown"><i class="fa-solid fa-crown text-danger"></i> Crown</button>
+                                    <button type="button" class="btn-quick-icon" data-icon="fa-solid fa-award" title="Award"><i class="fa-solid fa-award text-danger"></i> Award</button>
                                 </div>
                             </div>
                         </div>
@@ -915,14 +1159,6 @@
         const editCurrentThumb = document.getElementById('editCurrentThumb');
         const editFileInput = document.getElementById('edit_cat_image');
 
-        // Live icon preview inside edit modal
-        if (editIconInput && editIconPreview) {
-            editIconInput.addEventListener('input', function() {
-                const val = this.value.trim();
-                editIconPreview.className = 'fa-solid ' + (val ? val : 'fa-icons');
-            });
-        }
-
         // Attach click listeners to all edit buttons across all 3 tables
         document.querySelectorAll('.btn-edit-category').forEach(btn => {
             btn.addEventListener('click', function() {
@@ -957,7 +1193,8 @@
                 } else {
                     editProdBrandSection.style.display = 'block';
                     editIconInput.value = icon;
-                    editIconPreview.className = 'fa-solid ' + (icon ? icon : 'fa-icons');
+                    // Trigger input event to update icon preview box and validation
+                    editIconInput.dispatchEvent(new Event('input'));
                     editDescInput.value = desc;
 
                     // Image preview
@@ -988,3 +1225,6 @@
         }
     });
 </script>
+
+<!-- Font Awesome Icon Picker & Suggestions Script -->
+<script src="<?= base_url('assets/js/admin-icon-picker.js') ?>"></script>

@@ -1,0 +1,358 @@
+/* ============================
+   INTRO + WHY PARTNER SECTION
+============================ */
+.dist-intro-section{ background: #fff; }
+
+.dist-img-wrap{ position: relative; }
+.dist-img-wrap img{
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+}
+
+.dist-floating-card{
+  position: absolute;
+  bottom: -25px;
+  left: 30px;
+  background: #fff;
+  padding: 20px 28px;
+  border-radius: 16px;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.dist-floating-card i{
+  font-size: 32px;
+  color: var(--primary-red);
+}
+.dist-floating-card h4{
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0;
+  color: var(--dark);
+  line-height: 1.1;
+}
+.dist-floating-card p{
+  margin: 0;
+  font-size: 12px;
+  color: #777;
+  font-weight: 500;
+}
+
+.dist-benefit-list{ margin-top: 10px; }
+.dist-benefit-item{
+  display: flex;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+.dist-benefit-icon{
+  min-width: 55px;
+  height: 55px;
+  background: rgba(200,16,46,0.1);
+  color: var(--primary-red);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  transition: all 0.4s ease;
+}
+.dist-benefit-item:hover .dist-benefit-icon{
+  background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+  color: #fff;
+  transform: rotate(-8deg) scale(1.1);
+}
+.dist-benefit-item h6{
+  font-weight: 600;
+  font-size: 16.5px;
+  margin-bottom: 6px;
+  color: var(--dark);
+}
+.dist-benefit-item p{
+  color: #777;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ============================
+   ELIGIBILITY SECTION
+============================ */
+.eligibility-section{ background: var(--light-grey); }
+
+.eligibility-card{
+  background: #fff;
+  padding: 40px 25px 30px;
+  border-radius: 18px;
+  text-align: center;
+  height: 100%;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+.eligibility-card:hover{
+  transform: translateY(-10px);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.13);
+}
+
+.eligibility-number{
+  position: absolute;
+  top: -15px;
+  right: 10px;
+  font-size: 70px;
+  font-weight: 800;
+  color: rgba(200,16,46,0.06);
+  line-height: 1;
+}
+
+.eligibility-icon{
+  width: 65px;
+  height: 65px;
+  background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin: 0 auto 20px;
+  position: relative;
+  z-index: 2;
+  transition: all 0.4s ease;
+}
+.eligibility-card:hover .eligibility-icon{
+  background: linear-gradient(135deg, var(--gold), #e6a800);
+  color: var(--dark);
+  transform: rotateY(360deg);
+}
+
+.eligibility-card h5{
+  font-weight: 600;
+  font-size: 17px;
+  margin-bottom: 10px;
+  color: var(--dark);
+  position: relative;
+  z-index: 2;
+}
+.eligibility-card p{
+  color: #777;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================
+   PROCESS SECTION (Dark)
+============================ */
+.process-section{
+  background: linear-gradient(135deg, var(--dark) 0%, #2b1010 60%, var(--dark) 100%);
+  position: relative;
+}
+.process-section h2{ font-size: 38px; }
+.process-section h2 span{ color: var(--gold); }
+
+.process-step{
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,199,44,0.15);
+  backdrop-filter: blur(10px);
+  padding: 35px 25px;
+  border-radius: 18px;
+  text-align: center;
+  height: 100%;
+  transition: all 0.4s ease;
+  position: relative;
+}
+.process-step:hover{
+  background: rgba(255,255,255,0.08);
+  border-color: var(--gold);
+  transform: translateY(-8px);
+}
+
+.process-icon{
+  width: 70px;
+  height: 70px;
+  background: rgba(255,199,44,0.15);
+  color: var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin: 0 auto 18px;
+  transition: all 0.4s ease;
+}
+.process-step:hover .process-icon{
+  background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.process-num{
+  display: inline-block;
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.process-step h5{
+  color: #fff;
+  font-weight: 600;
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+.process-step p{
+  color: #c9c9c9;
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ============================
+   APPLICATION FORM SECTION
+============================ */
+.application-form-section{ background: #fff; }
+
+.apply-info-box{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: var(--light-grey);
+  padding: 20px 25px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  transition: 0.3s;
+}
+.apply-info-box:hover{ background: rgba(200,16,46,0.06); }
+.apply-info-box i{
+  font-size: 30px;
+  color: var(--primary-red);
+}
+.apply-info-box h6{
+  margin: 0 0 4px;
+  font-weight: 600;
+  color: var(--dark);
+  font-size: 14.5px;
+}
+.apply-info-box a{
+  color: var(--primary-red);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.dist-form-box{
+  background: var(--light-grey);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 45px rgba(0,0,0,0.06);
+}
+.dist-form-box .form-label{
+  font-weight: 500;
+  font-size: 13.5px;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+.dist-form-box .form-control,
+.dist-form-box .form-select{
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
+  background: #fff;
+  transition: 0.3s;
+}
+.dist-form-box .form-control:focus,
+.dist-form-box .form-select:focus{
+  border-color: var(--primary-red);
+  box-shadow: 0 0 0 3px rgba(200,16,46,0.1);
+}
+
+.form-success-msg{
+  text-align: center;
+  padding: 50px 20px;
+  animation: fadeInUp 0.6s ease;
+}
+.form-success-msg i{
+  font-size: 60px;
+  color: #28a745;
+  margin-bottom: 15px;
+}
+.form-success-msg p{
+  color: #555;
+  font-size: 15px;
+}
+@keyframes fadeInUp{
+  from{ opacity:0; transform: translateY(20px); }
+  to{ opacity:1; transform: translateY(0); }
+}
+
+/* ============================
+   FAQ SECTION
+============================ */
+.faq-section{ background: var(--light-grey); }
+
+.custom-accordion .accordion-item{
+  border: none;
+  margin-bottom: 16px;
+  border-radius: 14px !important;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+}
+
+.custom-accordion .accordion-button{
+  background: #fff;
+  font-weight: 600;
+  font-size: 15.5px;
+  color: var(--dark);
+  padding: 20px 25px;
+  box-shadow: none !important;
+}
+.custom-accordion .accordion-button:not(.collapsed){
+  background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+  color: #fff;
+}
+.custom-accordion .accordion-button::after{
+  background-size: 18px;
+  filter: brightness(0.5);
+}
+.custom-accordion .accordion-button:not(.collapsed)::after{
+  filter: brightness(0) invert(1);
+}
+
+.custom-accordion .accordion-body{
+  padding: 22px 25px;
+  color: #666;
+  font-size: 14.5px;
+  line-height: 1.8;
+  background: #fff;
+}
+
+/* ============================
+   NAVBAR ACTIVE STATE (This Page)
+============================ */
+.active-distributor{
+  box-shadow: 0 0 0 3px rgba(255,199,44,0.4) !important;
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+@media (max-width: 991px){
+  .dist-img-wrap img{ height: 380px; }
+}
+
+@media (max-width: 767px){
+  .dist-floating-card{ left: 15px; padding: 15px 20px; gap: 10px; }
+  .dist-floating-card h4{ font-size: 20px; }
+  .dist-form-box{ padding: 22px; }
+  .apply-info-box{ padding: 16px 18px; }
+  .process-section h2{ font-size: 28px; }
+  .custom-accordion .accordion-button{ font-size: 14px; padding: 16px 18px; }
+}

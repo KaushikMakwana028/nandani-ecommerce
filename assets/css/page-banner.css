@@ -1,0 +1,61 @@
+/* ============================
+   PAGE BANNER (Breadcrumb Hero)
+============================ */
+.page-banner{
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 160px 0 90px;
+  margin-top: 0;
+}
+.page-banner-overlay{
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(26,26,26,0.9), rgba(200,16,46,0.7));
+}
+
+.page-banner h1{
+  font-size: 48px;
+  color: #fff;
+  margin: 15px 0 20px;
+}
+
+.page-banner .tag-light{
+  background: rgba(255,199,44,0.15);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 6px 20px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.page-banner .breadcrumb{
+  background: transparent;
+  display: inline-flex;
+  padding: 0;
+}
+.page-banner .breadcrumb-item a{
+  color: #ddd;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+.page-banner .breadcrumb-item a:hover{
+  color: var(--gold);
+}
+.page-banner .breadcrumb-item.active{
+  color: var(--gold) !important;
+  font-weight: 600;
+}
+.page-banner .breadcrumb-item + .breadcrumb-item::before{
+  color: #ddd;
+  content: "/";
+}
+
+@media (max-width: 767px){
+  .page-banner{ padding: 130px 0 60px; }
+  .page-banner h1{ font-size: 32px; }
+}

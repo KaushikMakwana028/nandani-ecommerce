@@ -7,8 +7,8 @@
     <title><?= html_escape($page_title ?? 'Admin') ?> | Nandani Admin Panel</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="<?= base_url('assets/images/logo-white.png') ?>">
-    <link rel="apple-touch-icon" href="<?= base_url('assets/images/logo-white.png') ?>">
+    <link rel="icon" type="image/png" href="<?= base_url('assets/images/fav.png') ?>">
+    <link rel="apple-touch-icon" href="<?= base_url('assets/images/fav.png') ?>">
 
     <!-- Google Fonts: Poppins (Body/UI) & Playfair Display (Headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

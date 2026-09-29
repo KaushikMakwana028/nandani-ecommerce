@@ -105,8 +105,9 @@ class Category extends Admin_Controller {
 
                 // Handle Product & Brand fields (image, icon, description)
                 if ($type === 'product' || $type === 'brand') {
-                    $icon              = $this->input->post('icon', TRUE) ?: '';
-                    $short_description = $this->input->post('short_description', TRUE) ?: '';
+                    $raw_icon          = $this->input->post('icon', FALSE) ?: '';
+                    $icon              = !empty($raw_icon) ? normalize_fa_icon($raw_icon, '') : '';
+                    $short_description = strip_tags(trim($this->input->post('short_description', TRUE) ?: ''));
 
                     // Handle image upload if provided
                     if (!empty($_FILES['image']['name'])) {
@@ -225,8 +226,9 @@ class Category extends Admin_Controller {
                 ];
 
                 if ($type === 'product' || $type === 'brand') {
-                    $update_data['icon']              = $this->input->post('icon', TRUE) ?: '';
-                    $update_data['short_description'] = $this->input->post('short_description', TRUE) ?: '';
+                    $raw_icon                         = $this->input->post('icon', FALSE) ?: '';
+                    $update_data['icon']              = !empty($raw_icon) ? normalize_fa_icon($raw_icon, '') : '';
+                    $update_data['short_description'] = strip_tags(trim($this->input->post('short_description', TRUE) ?: ''));
 
                     // Check for new image upload
                     if (!empty($_FILES['image']['name'])) {

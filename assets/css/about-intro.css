@@ -1,0 +1,126 @@
+/* ============================
+   ABOUT INTRO SECTION
+============================ */
+.about-intro-section{ background: #fff; }
+
+.intro-img-wrap{
+  position: relative;
+  padding: 20px 30px 40px 0;
+}
+
+.intro-img-main{
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+}
+.intro-img-main img{
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.intro-img-wrap:hover .intro-img-main img{
+  transform: scale(1.05);
+}
+
+.intro-img-small{
+  position: absolute;
+  bottom: -10px;
+  left: -10px;
+  width: 220px;
+  border: 8px solid #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  z-index: 2;
+}
+.intro-img-small img{
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.intro-badge{
+  position: absolute;
+  top: 20px;
+  right: 0;
+  background: #fff;
+  padding: 15px 22px;
+  border-radius: 14px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 3;
+}
+.intro-badge i{
+  font-size: 26px;
+  color: var(--primary-red);
+}
+.intro-badge span{
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--dark);
+  display: block;
+  line-height: 1.2;
+}
+
+.intro-tick{
+  background: var(--light-grey);
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 14.5px;
+  color: var(--dark);
+  transition: 0.3s;
+}
+.intro-tick i{
+  color: var(--primary-red);
+  margin-right: 8px;
+}
+.intro-tick:hover{
+  background: rgba(200,16,46,0.08);
+  transform: translateX(5px);
+}
+
+@media (max-width: 767px){
+  .intro-img-main img{ height: 320px; }
+  .intro-img-small{ width: 150px; left: 10px; }
+  .intro-img-small img{ height: 110px; }
+  .intro-badge{ padding: 10px 15px; }
+  .intro-badge span{ font-size: 15px; }
+}
+
+/* ============================
+   OUR BUSINESS TODAY & INFRASTRUCTURE
+============================ */
+.business-today-section{ background: var(--light-grey); }
+.business-today-section p{ font-size: 15.5px; line-height: 1.9; }
+
+.infrastructure-section{ background: #fff; }
+
+.infra-stat-box{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: var(--light-grey);
+  padding: 22px 25px;
+  border-radius: 14px;
+  border-left: 4px solid var(--primary-red);
+}
+.infra-stat-box i{ font-size: 34px; color: var(--primary-red); }
+.infra-stat-box h4{ font-size: 22px; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
+.infra-stat-box p{ font-size: 13px; color: #777; margin: 0; }
+
+.infra-item{
+  background: var(--light-grey);
+  padding: 16px 20px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 14.5px;
+  color: var(--dark);
+  transition: 0.3s;
+}
+.infra-item i{ color: var(--primary-red); margin-right: 8px; }
+.infra-item:hover{ background: rgba(200,16,46,0.08); transform: translateX(5px); }
