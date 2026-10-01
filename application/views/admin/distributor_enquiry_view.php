@@ -506,50 +506,84 @@
     </div>
 
     <!-- Filter Bar Above Table -->
-    <div class="enquiry-toolbar-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-        <div class="d-flex align-items-center gap-2 flex-wrap">
-            <span class="fw-bold small text-muted text-uppercase letter-spacing-1 me-1">Status Filter:</span>
-            <div class="status-filter-pills">
-                <a href="<?= base_url('admin/enquiries/distributor?status=all') ?>" 
-                   class="filter-pill-btn <?= ($status_filter === 'all') ? 'active' : '' ?>">
-                    <span>All</span>
-                    <span class="filter-pill-count"><?= $counts['all'] ?></span>
-                </a>
-                <a href="<?= base_url('admin/enquiries/distributor?status=new') ?>" 
-                   class="filter-pill-btn <?= ($status_filter === 'new') ? 'active' : '' ?>">
-                    <span class="text-primary"><i class="fa-solid fa-circle" style="font-size: 0.55rem;"></i></span>
-                    <span>New</span>
-                    <span class="filter-pill-count"><?= $counts['new'] ?></span>
-                </a>
-                <a href="<?= base_url('admin/enquiries/distributor?status=contacted') ?>" 
-                   class="filter-pill-btn <?= ($status_filter === 'contacted') ? 'active' : '' ?>">
-                    <span class="text-warning"><i class="fa-solid fa-circle" style="font-size: 0.55rem;"></i></span>
-                    <span>Contacted</span>
-                    <span class="filter-pill-count"><?= $counts['contacted'] ?></span>
-                </a>
-                <a href="<?= base_url('admin/enquiries/distributor?status=closed') ?>" 
-                   class="filter-pill-btn <?= ($status_filter === 'closed') ? 'active' : '' ?>">
-                    <span class="text-secondary"><i class="fa-solid fa-circle" style="font-size: 0.55rem;"></i></span>
-                    <span>Closed</span>
-                    <span class="filter-pill-count"><?= $counts['closed'] ?></span>
-                </a>
+    <div class="admin-filter-card mb-4">
+        <form id="distributorFilterForm">
+            <!-- Top Tier: Status Filter Pills on Left, Show/Reset on Right -->
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 pb-3 mb-3 border-bottom">
+                <div class="status-filter-pills" id="distributorStatusPills">
+                    <button type="button" class="filter-pill-btn <?= ($status_filter === 'all') ? 'active' : '' ?>" data-status="all">
+                        <span>All</span>
+                        <span class="filter-pill-count" id="count-pill-all"><?= $counts['all'] ?></span>
+                    </button>
+                    <button type="button" class="filter-pill-btn <?= ($status_filter === 'new') ? 'active' : '' ?>" data-status="new">
+                        <span class="text-primary"><i class="fa-solid fa-circle" style="font-size: 0.55rem;"></i></span>
+                        <span>New</span>
+                        <span class="filter-pill-count" id="count-pill-new"><?= $counts['new'] ?></span>
+                    </button>
+                    <button type="button" class="filter-pill-btn <?= ($status_filter === 'contacted') ? 'active' : '' ?>" data-status="contacted">
+                        <span class="text-warning"><i class="fa-solid fa-circle" style="font-size: 0.55rem;"></i></span>
+                        <span>Contacted</span>
+                        <span class="filter-pill-count" id="count-pill-contacted"><?= $counts['contacted'] ?></span>
+                    </button>
+                    <button type="button" class="filter-pill-btn <?= ($status_filter === 'closed') ? 'active' : '' ?>" data-status="closed">
+                        <span class="text-secondary"><i class="fa-solid fa-circle" style="font-size: 0.55rem;"></i></span>
+                        <span>Closed</span>
+                        <span class="filter-pill-count" id="count-pill-closed"><?= $counts['closed'] ?></span>
+                    </button>
+                </div>
+
+                <div class="d-flex align-items-center gap-2 ms-auto">
+                    <span class="text-muted small d-none d-sm-inline">Show:</span>
+                    <select class="form-select form-select-sm filter-control" name="per_page" id="distributor_filter_per_page" title="Items per page" style="width: auto; min-width: 95px;">
+                        <option value="10" <?= ($per_page == 10) ? 'selected' : '' ?>>10 / page</option>
+                        <option value="25" <?= ($per_page == 25) ? 'selected' : '' ?>>25 / page</option>
+                        <option value="50" <?= ($per_page == 50) ? 'selected' : '' ?>>50 / page</option>
+                        <option value="100" <?= ($per_page == 100) ? 'selected' : '' ?>>100 / page</option>
+                    </select>
+                    <button type="button" class="btn-filter-reset" id="resetDistributorFiltersBtn" title="Reset all filters">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Reset</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lower Tier: Search Input + Product Line Dropdown -->
+            <div class="row g-2 align-items-center">
+                <div class="col-12 col-md-7 col-lg-8">
+                    <div class="filter-search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" class="form-control" name="q" id="distributor_filter_q" value="<?= htmlspecialchars($search_query ?? '') ?>" placeholder="Search applicant, firm, phone, city, notes, proposal...">
+                        <button type="button" class="btn-clear-search <?= empty($search_query) ? 'd-none' : '' ?>" id="clearDistributorSearchBtn" aria-label="Clear Search">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-5 col-lg-4">
+                    <select class="form-select filter-control" name="interest" id="distributor_filter_interest">
+                        <option value="">All Product Lines</option>
+                        <?php if (!empty($interest_list)): ?>
+                            <?php foreach ($interest_list as $item): ?>
+                                <option value="<?= htmlspecialchars($item->interest) ?>" <?= ($interest_filter === $item->interest) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($item->interest) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Distributor Applications Table Card with Loading Overlay -->
+    <div class="enquiry-table-card mb-4 position-relative">
+        <!-- Loading Overlay -->
+        <div id="distributorTableOverlay" class="position-absolute w-100 h-100 top-0 start-0 d-none justify-content-center align-items-center" style="background: rgba(255,255,255,0.7); z-index: 10; backdrop-filter: blur(1px); border-radius: 14px; min-height: 200px;">
+            <div class="spinner-border text-danger" role="status">
+                <span class="visually-hidden">Loading applications...</span>
             </div>
         </div>
 
-        <div class="d-flex align-items-center gap-3">
-            <span class="text-muted small">
-                Showing <strong><?= count($enquiries) ?></strong> application(s)
-            </span>
-            <?php if ($status_filter !== 'all'): ?>
-                <a href="<?= base_url('admin/enquiries/distributor?status=all') ?>" class="btn btn-outline-secondary btn-sm px-2 py-1">
-                    <i class="fa-solid fa-xmark me-1"></i> Clear Filter
-                </a>
-            <?php endif; ?>
-        </div>
-    </div>
-
-    <!-- Distributor Applications Table -->
-    <div class="enquiry-table-card mb-5">
         <div class="table-responsive">
             <table class="table table-enquiries" id="distributorEnquiriesTable">
                 <thead>
@@ -564,196 +598,26 @@
                         <th style="width: 75px;" class="text-center">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php if (!empty($enquiries)): ?>
-                        <?php foreach ($enquiries as $app): ?>
-                            <tr id="row-distributor-<?= $app->id ?>">
-                                <!-- Ref # -->
-                                <td>
-                                    <span class="badge-ref">#DA-<?= str_pad($app->id, 4, '0', STR_PAD_LEFT) ?></span>
-                                </td>
-
-                                <!-- Applicant & Firm -->
-                                <td>
-                                    <div class="fw-bold text-dark"><?= html_escape($app->name) ?></div>
-                                    <div class="d-inline-flex align-items-center gap-1 text-primary small fw-semibold mt-1">
-                                        <i class="fa-solid fa-store opacity-75"></i>
-                                        <span><?= html_escape($app->business_name) ?></span>
-                                    </div>
-                                </td>
-
-                                <!-- Contact & Location -->
-                                <td>
-                                    <div class="small">
-                                        <a href="tel:<?= html_escape($app->phone) ?>" class="text-muted text-decoration-none d-inline-flex align-items-center gap-1">
-                                             <i class="fa-solid fa-phone text-success opacity-75"></i>
-                                            <span><?= html_escape($app->phone) ?></span>
-                                        </a>
-                                    </div>
-                                    <div class="small mt-1">
-                                        <a href="mailto:<?= html_escape($app->email) ?>" class="text-muted text-decoration-none d-inline-flex align-items-center gap-1">
-                                            <i class="fa-regular fa-envelope text-primary opacity-75"></i>
-                                            <span><?= html_escape($app->email) ?></span>
-                                        </a>
-                                    </div>
-                                    <div class="small text-muted mt-1 d-inline-flex align-items-center gap-1">
-                                        <i class="fa-solid fa-location-dot text-danger opacity-75"></i>
-                                        <span>
-                                            <?= html_escape(trim(($app->city ?? '') . (!empty($app->state) ? ', ' . $app->state : ''), ', ')) ?: 'Location not specified' ?>
-                                        </span>
-                                    </div>
-                                </td>
-
-                                <!-- Dealership Profile -->
-                                <td>
-                                    <div class="mb-1">
-                                        <span class="badge-interest" title="Interested Product Line">
-                                            <i class="fa-solid fa-tag me-1"></i><?= html_escape($app->product_interest ?: 'General Range') ?>
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <span class="badge-storage" title="Storage / Warehouse Space">
-                                            <i class="fa-solid fa-warehouse me-1"></i><?= html_escape($app->storage_space ?: 'Not specified') ?>
-                                        </span>
-                                    </div>
-                                </td>
-
-                                <!-- Message (Truncated with "View Full" button) -->
-                                <td class="message-truncate-cell">
-                                    <div class="message-preview-text">
-                                        <?= !empty($app->message) ? html_escape($app->message) : '<span class="text-muted fst-italic">No additional notes provided</span>' ?>
-                                    </div>
-                                    <button type="button" 
-                                            class="btn-view-expand btn-open-modal"
-                                            data-ref="#DA-<?= str_pad($app->id, 4, '0', STR_PAD_LEFT) ?>"
-                                            data-name="<?= html_escape($app->name) ?>"
-                                            data-business="<?= html_escape($app->business_name) ?>"
-                                            data-email="<?= html_escape($app->email) ?>"
-                                            data-phone="<?= html_escape($app->phone) ?>"
-                                            data-city="<?= html_escape($app->city ?? 'Not Provided') ?>"
-                                            data-state="<?= html_escape($app->state ?? 'Not Provided') ?>"
-                                            data-interest="<?= html_escape($app->product_interest ?? 'General Range') ?>"
-                                            data-storage="<?= html_escape($app->storage_space ?? 'Not specified') ?>"
-                                            data-message="<?= html_escape($app->message ?? 'No notes provided.') ?>"
-                                            data-status="<?= $app->status ?>"
-                                            data-date="<?= date('M d, Y h:i A', strtotime($app->created_at)) ?>"
-                                            data-id="<?= $app->id ?>">
-                                        <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-                                        <span>View Full Proposal</span>
-                                    </button>
-                                </td>
-
-                                <!-- Status (Dropdown Badge per row) -->
-                                <td>
-                                    <div class="dropdown status-dropdown-wrapper">
-                                        <button type="button" 
-                                                class="status-pill-badge status-badge-<?= $app->status ?> dropdown-toggle" 
-                                                data-bs-toggle="dropdown" 
-                                                aria-expanded="false" 
-                                                id="statusDropdown-<?= $app->id ?>"
-                                                title="Change status for this application">
-                                            <span class="status-indicator-dot"></span>
-                                            <span class="status-badge-text"><?= ucfirst($app->status) ?></span>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm status-dropdown-menu" aria-labelledby="statusDropdown-<?= $app->id ?>">
-                                            <li class="dropdown-header">Change Status</li>
-                                            <li>
-                                                <a class="dropdown-item status-select-item <?= ($app->status === 'new') ? 'active' : '' ?>" 
-                                                   href="javascript:void(0)" 
-                                                   data-id="<?= $app->id ?>" 
-                                                   data-type="distributor" 
-                                                   data-status="new">
-                                                    <span class="status-indicator-dot dot-new"></span>
-                                                    <span>New</span>
-                                                    <i class="fa-solid fa-check ms-auto text-primary check-icon <?= ($app->status === 'new') ? '' : 'd-none' ?>"></i>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item status-select-item <?= ($app->status === 'contacted') ? 'active' : '' ?>" 
-                                                   href="javascript:void(0)" 
-                                                   data-id="<?= $app->id ?>" 
-                                                   data-type="distributor" 
-                                                   data-status="contacted">
-                                                    <span class="status-indicator-dot dot-contacted"></span>
-                                                    <span>Contacted</span>
-                                                    <i class="fa-solid fa-check ms-auto text-warning check-icon <?= ($app->status === 'contacted') ? '' : 'd-none' ?>"></i>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item status-select-item <?= ($app->status === 'closed') ? 'active' : '' ?>" 
-                                                   href="javascript:void(0)" 
-                                                   data-id="<?= $app->id ?>" 
-                                                   data-type="distributor" 
-                                                   data-status="closed">
-                                                    <span class="status-indicator-dot dot-closed"></span>
-                                                    <span>Closed</span>
-                                                    <i class="fa-solid fa-check ms-auto text-secondary check-icon <?= ($app->status === 'closed') ? '' : 'd-none' ?>"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-
-                                <!-- Submitted On -->
-                                <td>
-                                    <div class="fw-medium text-dark" style="font-size: 0.82rem;">
-                                        <?= date('M d, Y', strtotime($app->created_at)) ?>
-                                    </div>
-                                    <div class="text-muted" style="font-size: 0.74rem;">
-                                        <?= date('h:i A', strtotime($app->created_at)) ?>
-                                    </div>
-                                </td>
-
-                                <!-- Actions -->
-                                <td class="text-center">
-                                    <div class="d-inline-flex align-items-center gap-1">
-                                        <button type="button" 
-                                                class="action-btn btn-view btn-open-modal"
-                                                title="View Full Application"
-                                                data-ref="#DA-<?= str_pad($app->id, 4, '0', STR_PAD_LEFT) ?>"
-                                                data-name="<?= html_escape($app->name) ?>"
-                                                data-business="<?= html_escape($app->business_name) ?>"
-                                                data-email="<?= html_escape($app->email) ?>"
-                                                data-phone="<?= html_escape($app->phone) ?>"
-                                                data-city="<?= html_escape($app->city ?? 'Not Provided') ?>"
-                                                data-state="<?= html_escape($app->state ?? 'Not Provided') ?>"
-                                                data-interest="<?= html_escape($app->product_interest ?? 'General Range') ?>"
-                                                data-storage="<?= html_escape($app->storage_space ?? 'Not specified') ?>"
-                                                data-message="<?= html_escape($app->message ?? 'No notes provided.') ?>"
-                                                data-status="<?= $app->status ?>"
-                                                data-date="<?= date('M d, Y h:i A', strtotime($app->created_at)) ?>"
-                                                data-id="<?= $app->id ?>">
-                                            <i class="fa-regular fa-eye"></i>
-                                        </button>
-
-                                        <a href="<?= base_url('admin/enquiries/delete/distributor/' . $app->id) ?>" 
-                                           class="action-btn btn-delete text-danger" 
-                                           title="Delete Application"
-                                           data-confirm-delete="true"
-                                           data-item-name="dealership application from <?= html_escape($app->name) ?> (<?= html_escape($app->business_name) ?>)">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="8" class="text-center py-5">
-                                <div class="py-4">
-                                    <i class="fa-solid fa-briefcase fa-3x text-muted opacity-50 mb-3"></i>
-                                    <h5 class="fw-bold text-dark mb-1">No Dealership Applications Found</h5>
-                                    <p class="text-muted small mb-0">
-                                        <?= ($status_filter !== 'all') ? 'No applications match the "' . ucfirst($status_filter) . '" status filter.' : 'Distributor partnership requests will appear here.' ?>
-                                    </p>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
+                <tbody id="distributorTableBody">
+                    <?= $this->load->view('admin/partials/distributor_enquiry_table_rows', [
+                        'enquiries'    => $enquiries,
+                        'search_query' => $search_query ?? ''
+                    ], TRUE) ?>
                 </tbody>
             </table>
         </div>
+
+        <!-- Table Card Footer Pagination -->
+        <div class="pagination-footer-bar">
+            <div class="pagination-entries-text" id="distributorEntriesText">
+                Showing <strong><?= $from_entry ?></strong> to <strong><?= $to_entry ?></strong> of <strong><?= $total_filtered ?></strong> application(s)
+            </div>
+            <div id="distributorPaginationContainer">
+                <?= $pagination_html ?>
+            </div>
+        </div>
     </div>
+
 
 </div>
 
@@ -883,10 +747,11 @@
     </div>
 </div>
 
-<!-- JavaScript: Status Dropdown AJAX Update & Detail Modal -->
+<!-- JavaScript: AJAX Filtering, Pagination, Status Dropdown & Detail Modal -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const updateStatusUrl = '<?= base_url('admin/enquiries/update-status') ?>';
+    const baseUrl         = '<?= base_url() ?>';
+    const updateStatusUrl = baseUrl + 'admin/enquiries/update-status';
 
     const Toast = Swal.mixin({
         toast: true,
@@ -901,6 +766,171 @@ document.addEventListener('DOMContentLoaded', function() {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
+    // Filter Elements
+    const filterForm       = document.getElementById('distributorFilterForm');
+    const filterQ          = document.getElementById('distributor_filter_q');
+    const clearSearchBtn   = document.getElementById('clearDistributorSearchBtn');
+    const filterInterest   = document.getElementById('distributor_filter_interest');
+    const filterPerPage    = document.getElementById('distributor_filter_per_page');
+    const resetFiltersBtn  = document.getElementById('resetDistributorFiltersBtn');
+    const tableBody        = document.getElementById('distributorTableBody');
+    const tableOverlay     = document.getElementById('distributorTableOverlay');
+    const paginationBox    = document.getElementById('distributorPaginationContainer');
+    const entriesText      = document.getElementById('distributorEntriesText');
+    const statusPillsWrap  = document.getElementById('distributorStatusPills');
+
+    let currentStatus = '<?= $status_filter ?>';
+    let searchTimer   = null;
+
+    // AJAX Fetch Distributor Applications
+    function fetchDistributorEnquiries(page = 1) {
+        if (tableOverlay) {
+            tableOverlay.classList.remove('d-none');
+            tableOverlay.classList.add('d-flex');
+        }
+
+        const params = new URLSearchParams();
+        if (filterQ && filterQ.value.trim() !== '') {
+            params.set('q', filterQ.value.trim());
+        }
+        if (currentStatus && currentStatus !== 'all') {
+            params.set('status', currentStatus);
+        }
+        if (filterInterest && filterInterest.value !== '') {
+            params.set('interest', filterInterest.value);
+        }
+        if (filterPerPage && filterPerPage.value !== '') {
+            params.set('per_page', filterPerPage.value);
+        }
+        params.set('page', page);
+        params.set('ajax', '1');
+
+        const requestUrl = baseUrl + 'admin/enquiries/distributor?' + params.toString();
+
+        fetch(requestUrl, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network error');
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                if (tableBody) tableBody.innerHTML = data.html;
+                if (paginationBox) paginationBox.innerHTML = data.pagination;
+                if (entriesText) {
+                    entriesText.innerHTML = (data.total > 0)
+                        ? `Showing <strong>${data.from}</strong> to <strong>${data.to}</strong> of <strong>${data.total}</strong> application(s)`
+                        : 'No applications found';
+                }
+            }
+        })
+        .catch(err => {
+            console.error('Error fetching distributor applications:', err);
+        })
+        .finally(() => {
+            if (tableOverlay) {
+                tableOverlay.classList.add('d-none');
+                tableOverlay.classList.remove('d-flex');
+            }
+        });
+    }
+
+    // Status Pills Click Handler
+    if (statusPillsWrap) {
+        statusPillsWrap.addEventListener('click', function(e) {
+            const btn = e.target.closest('.filter-pill-btn');
+            if (!btn) return;
+            e.preventDefault();
+
+            statusPillsWrap.querySelectorAll('.filter-pill-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            currentStatus = btn.getAttribute('data-status') || 'all';
+            fetchDistributorEnquiries(1);
+        });
+    }
+
+    // Search input debounce
+    if (filterQ) {
+        filterQ.addEventListener('input', function() {
+            if (clearSearchBtn) {
+                clearSearchBtn.classList.toggle('d-none', !this.value.trim());
+            }
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => {
+                fetchDistributorEnquiries(1);
+            }, 300);
+        });
+    }
+
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', function() {
+            if (filterQ) {
+                filterQ.value = '';
+                filterQ.focus();
+            }
+            clearSearchBtn.classList.add('d-none');
+            fetchDistributorEnquiries(1);
+        });
+    }
+
+    // Select Changes
+    [filterInterest, filterPerPage].forEach(el => {
+        if (el) {
+            el.addEventListener('change', function() {
+                fetchDistributorEnquiries(1);
+            });
+        }
+    });
+
+    // Reset Filters
+    function resetAllFilters() {
+        if (filterQ) filterQ.value = '';
+        if (clearSearchBtn) clearSearchBtn.classList.add('d-none');
+        if (filterInterest) filterInterest.value = '';
+        if (filterPerPage) filterPerPage.value = '10';
+        currentStatus = 'all';
+        if (statusPillsWrap) {
+            statusPillsWrap.querySelectorAll('.filter-pill-btn').forEach(b => {
+                if (b.getAttribute('data-status') === 'all') {
+                    b.classList.add('active');
+                } else {
+                    b.classList.remove('active');
+                }
+            });
+        }
+        fetchDistributorEnquiries(1);
+    }
+
+    if (resetFiltersBtn) {
+        resetFiltersBtn.addEventListener('click', resetAllFilters);
+    }
+
+    if (filterForm) {
+        filterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetchDistributorEnquiries(1);
+        });
+    }
+
+    // Pagination Click Delegation
+    if (paginationBox) {
+        paginationBox.addEventListener('click', function(e) {
+            const link = e.target.closest('.page-link');
+            if (link && link.dataset.page) {
+                e.preventDefault();
+                const targetPage = parseInt(link.dataset.page, 10);
+                if (targetPage > 0) {
+                    fetchDistributorEnquiries(targetPage);
+                }
+            }
+        });
+    }
+
+    // Update Badge UI helper
     function updateBadgeUI(wrapperEl, newStatus) {
         if (!wrapperEl) return;
         const btn = wrapperEl.querySelector('.status-pill-badge');
@@ -985,6 +1015,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Status Dropdown Click Delegation
     document.addEventListener('click', function(e) {
         const item = e.target.closest('.status-select-item');
         if (!item) return;
@@ -1003,39 +1034,41 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Detail Modal Population (Event Delegation for AJAX rows)
     const detailModalEl = document.getElementById('distributorDetailModal');
     const detailModal = detailModalEl ? new bootstrap.Modal(detailModalEl) : null;
 
-    document.querySelectorAll('.btn-open-modal').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const dataset = this.dataset;
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-open-modal');
+        if (!btn) return;
 
-            document.getElementById('modalRefBadge').textContent = dataset.ref || '#REF';
-            document.getElementById('modalName').textContent = dataset.name || 'N/A';
-            document.getElementById('modalBusiness').textContent = dataset.business || 'N/A';
-            document.getElementById('modalPhone').textContent = dataset.phone || 'N/A';
-            document.getElementById('modalPhoneLink').href = dataset.phone ? 'tel:' + dataset.phone : '#';
-            document.getElementById('modalEmail').textContent = dataset.email || 'N/A';
-            document.getElementById('modalEmailLink').href = dataset.email ? 'mailto:' + dataset.email : '#';
-            
-            const locationText = [dataset.city, dataset.state].filter(Boolean).join(', ');
-            document.getElementById('modalLocation').textContent = locationText || 'Not Provided';
-            document.getElementById('modalInterest').textContent = dataset.interest || 'General Product Range';
-            document.getElementById('modalStorage').textContent = dataset.storage || 'Not specified';
-            document.getElementById('modalMessage').textContent = dataset.message || 'No notes provided.';
-            document.getElementById('modalDate').textContent = dataset.date || 'N/A';
+        e.preventDefault();
+        const dataset = btn.dataset;
 
-            const modalBtn = document.getElementById('modalStatusDropdownBtn');
-            if (modalBtn) {
-                modalBtn.setAttribute('data-id', dataset.id);
-                const currentStatus = dataset.status || 'new';
-                const modalWrapper = modalBtn.closest('.status-dropdown-wrapper');
-                updateBadgeUI(modalWrapper, currentStatus);
-            }
+        document.getElementById('modalRefBadge').textContent = dataset.ref || '#REF';
+        document.getElementById('modalName').textContent = dataset.name || 'N/A';
+        document.getElementById('modalBusiness').textContent = dataset.business || 'N/A';
+        document.getElementById('modalPhone').textContent = dataset.phone || 'N/A';
+        document.getElementById('modalPhoneLink').href = dataset.phone ? 'tel:' + dataset.phone : '#';
+        document.getElementById('modalEmail').textContent = dataset.email || 'N/A';
+        document.getElementById('modalEmailLink').href = dataset.email ? 'mailto:' + dataset.email : '#';
+        
+        const locationText = [dataset.city, dataset.state].filter(Boolean).join(', ');
+        document.getElementById('modalLocation').textContent = locationText || 'Not Provided';
+        document.getElementById('modalInterest').textContent = dataset.interest || 'General Product Range';
+        document.getElementById('modalStorage').textContent = dataset.storage || 'Not specified';
+        document.getElementById('modalMessage').textContent = dataset.message || 'No notes provided.';
+        document.getElementById('modalDate').textContent = dataset.date || 'N/A';
 
-            if (detailModal) detailModal.show();
-        });
+        const modalBtn = document.getElementById('modalStatusDropdownBtn');
+        if (modalBtn) {
+            modalBtn.setAttribute('data-id', dataset.id);
+            const currentStatus = dataset.status || 'new';
+            const modalWrapper = modalBtn.closest('.status-dropdown-wrapper');
+            updateBadgeUI(modalWrapper, currentStatus);
+        }
+
+        if (detailModal) detailModal.show();
     });
 });
 </script>

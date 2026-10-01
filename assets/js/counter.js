@@ -1,39 +1,59 @@
 // ============================
-// Animated Counter (triggers when in view)
+// Animated Counter (High-Performance IntersectionObserver)
 // ============================
-const counters = document.querySelectorAll('.counter');
-let counterStarted = false;
+(function() {
+  function initCounters() {
+    const counters = document.querySelectorAll('.counter');
+    if (!counters.length) return;
 
-function startCounting(){
-  counters.forEach(counter => {
-    const target = +counter.getAttribute('data-target');
-    let count = 0;
-    const increment = target / 80; // speed control
+    function countUp(counter) {
+      if (counter.dataset.counterStarted === 'true') return;
+      counter.dataset.counterStarted = 'true';
 
-    const updateCount = () => {
-      count += increment;
-      if(count < target){
-        counter.innerText = Math.ceil(count);
-        requestAnimationFrame(updateCount);
-      } else {
-        counter.innerText = target;
+      const target = parseInt(counter.getAttribute('data-target'), 10) || 0;
+      if (target <= 0) return;
+
+      const duration = 1600; // ms
+      const startTime = performance.now();
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // smooth easeOutExpo
+        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const current = Math.floor(ease * target);
+        counter.innerText = current;
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          counter.innerText = target;
+        }
       }
-    };
-    updateCount();
-  });
-}
 
-// Trigger counter when stats card or brands section scrolls into view
-const statsSection = document.querySelector('.hero-stats-card') || document.querySelector('.brands-intro-section') || document.querySelector('.brand-stat-box');
-if(statsSection){
-  const checkCounter = () => {
-    const rect = statsSection.getBoundingClientRect();
-    if(rect.top < window.innerHeight - 50 && !counterStarted){
-      startCounting();
-      counterStarted = true;
+      requestAnimationFrame(step);
     }
-  };
-  window.addEventListener('scroll', checkCounter);
-  // Check immediately if section is already in viewport
-  checkCounter();
-}
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            countUp(entry.target);
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      counters.forEach(counter => observer.observe(counter));
+    } else {
+      // Fallback for older browsers
+      counters.forEach(countUp);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCounters);
+  } else {
+    initCounters();
+  }
+})();

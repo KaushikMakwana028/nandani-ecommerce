@@ -14,18 +14,80 @@ class Brand extends Admin_Controller {
     }
 
     /**
-     * List all brands with joined product category and management controls
+     * List all brands with joined product category, server-side filtering, pagination, and AJAX support
      */
     public function index() {
-        // Fetch all brands with joined category details
+        $search      = trim((string)$this->input->get('q', TRUE));
+        $category_id = (int)$this->input->get('category_id', TRUE);
+        $status      = trim((string)$this->input->get('status', TRUE));
+        $per_page    = (int)$this->input->get('per_page', TRUE);
+        $page        = max(1, (int)$this->input->get('page', TRUE));
+
+        $allowed_per_page = [10, 25, 50, 100];
+        if (!in_array($per_page, $allowed_per_page)) {
+            $per_page = 10;
+        }
+
+        // Query filter builder
+        $apply_filters = function($db) use ($search, $category_id, $status) {
+            $db->from('brands');
+            $db->join('categories', 'categories.id = brands.category_id', 'left');
+
+            if (!empty($search)) {
+                $db->group_start();
+                $db->like('brands.name', $search);
+                $db->or_like('brands.short_description', $search);
+                $db->group_end();
+            }
+
+            if ($category_id > 0) {
+                $db->where('brands.category_id', $category_id);
+            }
+
+            if (in_array($status, ['active', 'inactive'], TRUE)) {
+                $db->where('brands.status', $status);
+            }
+        };
+
+        // 1. Total filtered count
+        $apply_filters($this->db);
+        $total_filtered = $this->db->count_all_results();
+
+        // 2. Fetch paginated records
         $this->db->select('brands.*, categories.name AS category_name, categories.type AS category_type, categories.status AS category_status');
-        $this->db->from('brands');
-        $this->db->join('categories', 'categories.id = brands.category_id', 'left');
+        $apply_filters($this->db);
+        $offset = ($page - 1) * $per_page;
         $this->db->order_by('brands.id', 'DESC');
+        $this->db->limit($per_page, $offset);
         $brands = $this->db->get()->result();
 
-        // Fetch active product categories for Add/Edit dropdown
-        // Strictly filters WHERE type = 'product' AND status = 'active'
+        // 3. Build pagination HTML
+        $pagination_html = $this->build_pagination($total_filtered, $per_page, $page);
+        $from_entry = $total_filtered > 0 ? ($offset + 1) : 0;
+        $to_entry   = min($offset + $per_page, $total_filtered);
+
+        // Check if AJAX request
+        if ($this->is_ajax()) {
+            $rows_html = $this->load->view('admin/partials/brand_table_rows', [
+                'brands'       => $brands,
+                'search_query' => $search
+            ], TRUE);
+
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output(json_encode([
+                     'status'     => 'success',
+                     'html'       => $rows_html,
+                     'pagination' => $pagination_html,
+                     'total'      => $total_filtered,
+                     'from'       => $from_entry,
+                     'to'         => $to_entry,
+                     'message'    => "Showing {$from_entry} to {$to_entry} of {$total_filtered} brands"
+                 ]));
+            return;
+        }
+
+        // Fetch active product categories for Add/Edit dropdown and filter dropdown
         $product_categories = $this->db->where('type', 'product')
                                        ->where('status', 'active')
                                        ->order_by('sort_order', 'ASC')
@@ -33,13 +95,9 @@ class Brand extends Admin_Controller {
                                        ->get('categories')
                                        ->result();
 
-        $total_brands = count($brands);
-        $active_brands = 0;
-        foreach ($brands as $b) {
-            if ($b->status === 'active') {
-                $active_brands++;
-            }
-        }
+        // Totals
+        $total_brands  = $this->db->count_all('brands');
+        $active_brands = $this->db->where('status', 'active')->count_all_results('brands');
 
         $data = [
             'page_title'         => 'Brand Management',
@@ -48,7 +106,16 @@ class Brand extends Admin_Controller {
             'brands'             => $brands,
             'product_categories' => $product_categories,
             'total_brands'       => $total_brands,
-            'active_brands'      => $active_brands
+            'active_brands'      => $active_brands,
+            'total_filtered'     => $total_filtered,
+            'search_query'       => $search,
+            'selected_category'  => $category_id,
+            'selected_status'    => $status,
+            'per_page'           => $per_page,
+            'current_page'       => $page,
+            'from_entry'         => $from_entry,
+            'to_entry'           => $to_entry,
+            'pagination_html'    => $pagination_html
         ];
 
         $this->render('brand_view', $data);

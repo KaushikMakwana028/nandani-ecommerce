@@ -14,25 +14,79 @@ class Gallery extends Admin_Controller {
     }
 
     /**
-     * List all gallery items in a responsive grid with category filter
+     * List all gallery items in a responsive grid with filtering, server-side pagination, and AJAX support
      */
     public function index() {
+        $search          = trim((string)$this->input->get('q', TRUE));
         $filter_category = (int)$this->input->get('category_id', TRUE);
+        $status          = trim((string)$this->input->get('status', TRUE));
+        $per_page        = (int)$this->input->get('per_page', TRUE);
+        $page            = max(1, (int)$this->input->get('page', TRUE));
 
-        // Fetch gallery items joined with categories
-        $this->db->select('gallery.*, categories.name AS category_name, categories.type AS category_type');
-        $this->db->from('gallery');
-        $this->db->join('categories', 'categories.id = gallery.category_id', 'left');
-
-        if ($filter_category > 0) {
-            $this->db->where('gallery.category_id', $filter_category);
+        $allowed_per_page = [12, 24, 48, 96];
+        if (!in_array($per_page, $allowed_per_page)) {
+            $per_page = 12;
         }
 
+        // Query filter builder
+        $apply_filters = function($db) use ($search, $filter_category, $status) {
+            $db->from('gallery');
+            $db->join('categories', 'categories.id = gallery.category_id', 'left');
+
+            if (!empty($search)) {
+                $db->like('gallery.title_caption', $search);
+            }
+
+            if ($filter_category > 0) {
+                $db->where('gallery.category_id', $filter_category);
+            }
+
+            if (in_array($status, ['active', 'inactive'], TRUE)) {
+                $db->where('gallery.status', $status);
+            }
+        };
+
+        // 1. Total filtered count
+        $apply_filters($this->db);
+        $total_filtered = $this->db->count_all_results();
+
+        // 2. Fetch paginated records
+        $this->db->select('gallery.*, categories.name AS category_name, categories.type AS category_type');
+        $apply_filters($this->db);
+        $offset = ($page - 1) * $per_page;
         $this->db->order_by('gallery.id', 'DESC');
+        $this->db->limit($per_page, $offset);
         $images = $this->db->get()->result();
 
+        // 3. Build pagination HTML
+        $pagination_html = $this->build_pagination($total_filtered, $per_page, $page);
+        $from_entry = $total_filtered > 0 ? ($offset + 1) : 0;
+        $to_entry   = min($offset + $per_page, $total_filtered);
+
+        // Check if AJAX request
+        if ($this->is_ajax()) {
+            $items_html = $this->load->view('admin/partials/gallery_grid_items', [
+                'images'            => $images,
+                'search_query'      => $search,
+                'selected_category' => $filter_category,
+                'selected_status'   => $status
+            ], TRUE);
+
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output(json_encode([
+                     'status'     => 'success',
+                     'html'       => $items_html,
+                     'pagination' => $pagination_html,
+                     'total'      => $total_filtered,
+                     'from'       => $from_entry,
+                     'to'         => $to_entry,
+                     'message'    => "Showing {$from_entry} to {$to_entry} of {$total_filtered} image(s)"
+                 ]));
+            return;
+        }
+
         // Active gallery categories for Add/Edit dropdown and filter dropdown
-        // Strictly filters WHERE type = 'gallery' AND status = 'active'
         $gallery_categories = $this->db->where('type', 'gallery')
                                        ->where('status', 'active')
                                        ->order_by('sort_order', 'ASC')
@@ -50,8 +104,16 @@ class Gallery extends Admin_Controller {
             'images'             => $images,
             'gallery_categories' => $gallery_categories,
             'selected_category'  => $filter_category,
+            'selected_status'    => $status,
+            'search_query'       => $search,
+            'per_page'           => $per_page,
+            'current_page'       => $page,
+            'from_entry'         => $from_entry,
+            'to_entry'           => $to_entry,
             'total_gallery'      => $total_gallery,
-            'active_count'       => $active_count
+            'total_filtered'     => $total_filtered,
+            'active_count'       => $active_count,
+            'pagination_html'    => $pagination_html
         ];
 
         $this->render('gallery_view', $data);

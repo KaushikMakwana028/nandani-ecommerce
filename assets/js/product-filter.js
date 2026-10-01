@@ -61,7 +61,20 @@ if(quickViewModal){
     document.getElementById('modalProductBrand').textContent = brand;
     document.getElementById('modalProductCategory').textContent = category;
     document.getElementById('modalProductDesc').textContent = desc;
+
+    const enquireBtn = document.getElementById('modalProductEnquireBtn');
+    if(enquireBtn && name){
+      const baseUrl = enquireBtn.getAttribute('data-base-url') || '';
+      enquireBtn.href = baseUrl + '?enquiry=' + encodeURIComponent('Product: ' + name);
+    }
   });
+}
+
+// Initial filter run on page load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', filterProducts);
+} else {
+  filterProducts();
 }
 
 // ============================

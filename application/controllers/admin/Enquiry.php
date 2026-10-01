@@ -25,11 +25,54 @@ class Enquiry extends Admin_Controller {
      * PAGE 1: Contact Enquiries Dedicated Page
      */
     public function contact() {
-        // Status filter: 'all', 'new', 'contacted', 'closed'
-        $status_filter = $this->input->get('status', TRUE);
+        $search        = trim((string)$this->input->get('q', TRUE));
+        $status_filter = trim((string)$this->input->get('status', TRUE));
+        $per_page      = (int)$this->input->get('per_page', TRUE);
+        $page          = max(1, (int)$this->input->get('page', TRUE));
+
         if (!in_array($status_filter, ['all', 'new', 'contacted', 'closed'], TRUE)) {
             $status_filter = 'all';
         }
+
+        $allowed_per_page = [10, 25, 50, 100];
+        if (!in_array($per_page, $allowed_per_page)) {
+            $per_page = 10;
+        }
+
+        // Apply filters
+        $apply_filters = function($db) use ($search, $status_filter) {
+            $db->from('contact_enquiries');
+            if ($status_filter !== 'all') {
+                $db->where('status', $status_filter);
+            }
+            if (!empty($search)) {
+                $db->group_start();
+                $db->like('name', $search);
+                $db->or_like('phone', $search);
+                $db->or_like('email', $search);
+                $db->or_like('city', $search);
+                $db->or_like('subject', $search);
+                $db->or_like('message', $search);
+                $db->group_end();
+            }
+        };
+
+        // Total filtered count
+        $apply_filters($this->db);
+        $total_filtered = $this->db->count_all_results();
+
+        // Paginated records
+        $this->db->select('*');
+        $apply_filters($this->db);
+        $offset = ($page - 1) * $per_page;
+        $this->db->order_by('created_at', 'DESC')->order_by('id', 'DESC');
+        $this->db->limit($per_page, $offset);
+        $enquiries = $this->db->get()->result();
+
+        // Pagination HTML
+        $pagination_html = $this->build_pagination($total_filtered, $per_page, $page);
+        $from_entry = $total_filtered > 0 ? ($offset + 1) : 0;
+        $to_entry   = min($offset + $per_page, $total_filtered);
 
         // Fetch Contact Enquiries Stats
         $contact_counts = [
@@ -39,20 +82,42 @@ class Enquiry extends Admin_Controller {
             'closed'    => (int)$this->db->where('status', 'closed')->count_all_results('contact_enquiries')
         ];
 
-        // Query Contact Enquiries (Latest first)
-        $this->db->from('contact_enquiries');
-        if ($status_filter !== 'all') {
-            $this->db->where('status', $status_filter);
+        // Check if AJAX
+        if ($this->is_ajax()) {
+            $rows_html = $this->load->view('admin/partials/contact_enquiry_table_rows', [
+                'enquiries'    => $enquiries,
+                'search_query' => $search
+            ], TRUE);
+
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output(json_encode([
+                     'status'     => 'success',
+                     'html'       => $rows_html,
+                     'pagination' => $pagination_html,
+                     'total'      => $total_filtered,
+                     'from'       => $from_entry,
+                     'to'         => $to_entry,
+                     'counts'     => $contact_counts,
+                     'message'    => "Showing {$from_entry} to {$to_entry} of {$total_filtered} contact record(s)"
+                 ]));
+            return;
         }
-        $enquiries = $this->db->order_by('created_at', 'DESC')->order_by('id', 'DESC')->get()->result();
 
         $data = [
-            'page_title'     => 'Contact Enquiries',
-            'breadcrumb'     => 'Contact Enquiries',
-            'active_menu'    => 'contact_enquiries',
-            'status_filter'  => $status_filter,
-            'counts'         => $contact_counts,
-            'enquiries'      => $enquiries
+            'page_title'      => 'Contact Enquiries',
+            'breadcrumb'      => 'Contact Enquiries',
+            'active_menu'     => 'contact_enquiries',
+            'status_filter'   => $status_filter,
+            'search_query'    => $search,
+            'per_page'        => $per_page,
+            'current_page'    => $page,
+            'total_filtered'  => $total_filtered,
+            'from_entry'      => $from_entry,
+            'to_entry'        => $to_entry,
+            'pagination_html' => $pagination_html,
+            'counts'          => $contact_counts,
+            'enquiries'       => $enquiries
         ];
 
         $this->render('contact_enquiry_view', $data);
@@ -62,11 +127,61 @@ class Enquiry extends Admin_Controller {
      * PAGE 2: Distributor Applications Dedicated Page
      */
     public function distributor() {
-        // Status filter: 'all', 'new', 'contacted', 'closed'
-        $status_filter = $this->input->get('status', TRUE);
+        $search          = trim((string)$this->input->get('q', TRUE));
+        $status_filter   = trim((string)$this->input->get('status', TRUE));
+        $interest_filter = trim((string)$this->input->get('interest', TRUE));
+        $per_page        = (int)$this->input->get('per_page', TRUE);
+        $page            = max(1, (int)$this->input->get('page', TRUE));
+
         if (!in_array($status_filter, ['all', 'new', 'contacted', 'closed'], TRUE)) {
             $status_filter = 'all';
         }
+
+        $allowed_per_page = [10, 25, 50, 100];
+        if (!in_array($per_page, $allowed_per_page)) {
+            $per_page = 10;
+        }
+
+        // Apply filters
+        $apply_filters = function($db) use ($search, $status_filter, $interest_filter) {
+            $db->from('distributor_enquiries');
+            if ($status_filter !== 'all') {
+                $db->where('status', $status_filter);
+            }
+            if (!empty($interest_filter)) {
+                $db->where('product_interest', $interest_filter);
+            }
+            if (!empty($search)) {
+                $db->group_start();
+                $db->like('name', $search);
+                $db->or_like('business_name', $search);
+                $db->or_like('phone', $search);
+                $db->or_like('email', $search);
+                $db->or_like('city', $search);
+                $db->or_like('state', $search);
+                $db->or_like('product_interest', $search);
+                $db->or_like('storage_space', $search);
+                $db->or_like('message', $search);
+                $db->group_end();
+            }
+        };
+
+        // Total filtered count
+        $apply_filters($this->db);
+        $total_filtered = $this->db->count_all_results();
+
+        // Paginated records
+        $this->db->select('*');
+        $apply_filters($this->db);
+        $offset = ($page - 1) * $per_page;
+        $this->db->order_by('created_at', 'DESC')->order_by('id', 'DESC');
+        $this->db->limit($per_page, $offset);
+        $enquiries = $this->db->get()->result();
+
+        // Pagination HTML
+        $pagination_html = $this->build_pagination($total_filtered, $per_page, $page);
+        $from_entry = $total_filtered > 0 ? ($offset + 1) : 0;
+        $to_entry   = min($offset + $per_page, $total_filtered);
 
         // Fetch Distributor Enquiries Stats
         $distributor_counts = [
@@ -76,20 +191,52 @@ class Enquiry extends Admin_Controller {
             'closed'    => (int)$this->db->where('status', 'closed')->count_all_results('distributor_enquiries')
         ];
 
-        // Query Distributor Enquiries (Latest first)
-        $this->db->from('distributor_enquiries');
-        if ($status_filter !== 'all') {
-            $this->db->where('status', $status_filter);
+        // Distinct product interests for filter dropdown
+        $interest_list = $this->db->select('DISTINCT(product_interest) as interest')
+                                  ->where('product_interest IS NOT NULL')
+                                  ->where('product_interest !=', '')
+                                  ->order_by('product_interest', 'ASC')
+                                  ->get('distributor_enquiries')
+                                  ->result();
+
+        // Check if AJAX
+        if ($this->is_ajax()) {
+            $rows_html = $this->load->view('admin/partials/distributor_enquiry_table_rows', [
+                'enquiries'    => $enquiries,
+                'search_query' => $search
+            ], TRUE);
+
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output(json_encode([
+                     'status'     => 'success',
+                     'html'       => $rows_html,
+                     'pagination' => $pagination_html,
+                     'total'      => $total_filtered,
+                     'from'       => $from_entry,
+                     'to'         => $to_entry,
+                     'counts'     => $distributor_counts,
+                     'message'    => "Showing {$from_entry} to {$to_entry} of {$total_filtered} application(s)"
+                 ]));
+            return;
         }
-        $enquiries = $this->db->order_by('created_at', 'DESC')->order_by('id', 'DESC')->get()->result();
 
         $data = [
-            'page_title'     => 'Distributor Applications',
-            'breadcrumb'     => 'Distributor Applications',
-            'active_menu'    => 'distributor_enquiries',
-            'status_filter'  => $status_filter,
-            'counts'         => $distributor_counts,
-            'enquiries'      => $enquiries
+            'page_title'      => 'Distributor Applications',
+            'breadcrumb'      => 'Distributor Applications',
+            'active_menu'     => 'distributor_enquiries',
+            'status_filter'   => $status_filter,
+            'interest_filter' => $interest_filter,
+            'interest_list'   => $interest_list,
+            'search_query'    => $search,
+            'per_page'        => $per_page,
+            'current_page'    => $page,
+            'total_filtered'  => $total_filtered,
+            'from_entry'      => $from_entry,
+            'to_entry'        => $to_entry,
+            'pagination_html' => $pagination_html,
+            'counts'          => $distributor_counts,
+            'enquiries'       => $enquiries
         ];
 
         $this->render('distributor_enquiry_view', $data);

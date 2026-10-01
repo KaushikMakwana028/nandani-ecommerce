@@ -14,31 +14,97 @@ class Product extends Admin_Controller {
     }
 
     /**
-     * List all products with joined brand and category, server-side search filter
+     * List products with multi-column filtering, server-side pagination and AJAX support
      */
     public function index() {
-        $search = trim($this->input->get('q', TRUE) ?? '');
+        $search      = trim((string)$this->input->get('q', TRUE));
+        $category_id = (int)$this->input->get('category_id', TRUE);
+        $brand_id    = (int)$this->input->get('brand_id', TRUE);
+        $status      = trim((string)$this->input->get('status', TRUE));
+        $badge       = trim((string)$this->input->get('badge', TRUE));
+        $per_page    = (int)$this->input->get('per_page', TRUE);
+        $page        = max(1, (int)$this->input->get('page', TRUE));
 
-        // Fetch products joined with brands and categories
-        $this->db->select('products.*, brands.name AS brand_name, brands.status AS brand_status, categories.name AS category_name, categories.type AS category_type');
-        $this->db->from('products');
-        $this->db->join('brands', 'brands.id = products.brand_id', 'left');
-        $this->db->join('categories', 'categories.id = products.category_id', 'left');
-
-        if (!empty($search)) {
-            $this->db->like('products.name', $search);
+        $allowed_per_page = [10, 25, 50, 100];
+        if (!in_array($per_page, $allowed_per_page)) {
+            $per_page = 10;
         }
 
+        // Base query conditions builder
+        $apply_filters = function($db) use ($search, $category_id, $brand_id, $status, $badge) {
+            $db->from('products');
+            $db->join('brands', 'brands.id = products.brand_id', 'left');
+            $db->join('categories', 'categories.id = products.category_id', 'left');
+
+            if (!empty($search)) {
+                $db->group_start();
+                $db->like('products.name', $search);
+                $db->or_like('products.short_description', $search);
+                $db->group_end();
+            }
+
+            if ($category_id > 0) {
+                $db->where('products.category_id', $category_id);
+            }
+
+            if ($brand_id > 0) {
+                $db->where('products.brand_id', $brand_id);
+            }
+
+            if (in_array($status, ['active', 'inactive'], TRUE)) {
+                $db->where('products.status', $status);
+            }
+
+            if (in_array($badge, ['none', 'new', 'bestseller'], TRUE)) {
+                $db->where('products.badge', $badge);
+            }
+        };
+
+        // 1. Get filtered total count
+        $apply_filters($this->db);
+        $total_filtered = $this->db->count_all_results();
+
+        // 2. Fetch paginated records with LIMIT & OFFSET
+        $this->db->select('products.*, brands.name AS brand_name, brands.status AS brand_status, categories.name AS category_name, categories.type AS category_type');
+        $apply_filters($this->db);
+        $offset = ($page - 1) * $per_page;
         $this->db->order_by('products.id', 'DESC');
+        $this->db->limit($per_page, $offset);
         $products = $this->db->get()->result();
 
-        // Active brands for Add/Edit dropdown
+        // 3. Build pagination HTML
+        $pagination_html = $this->build_pagination($total_filtered, $per_page, $page);
+        $from_entry = $total_filtered > 0 ? ($offset + 1) : 0;
+        $to_entry   = min($offset + $per_page, $total_filtered);
+
+        // Check if AJAX request
+        if ($this->is_ajax()) {
+            $rows_html = $this->load->view('admin/partials/product_table_rows', [
+                'products'     => $products,
+                'search_query' => $search
+            ], TRUE);
+
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output(json_encode([
+                     'status'     => 'success',
+                     'html'       => $rows_html,
+                     'pagination' => $pagination_html,
+                     'total'      => $total_filtered,
+                     'from'       => $from_entry,
+                     'to'         => $to_entry,
+                     'message'    => "Showing {$from_entry} to {$to_entry} of {$total_filtered} items"
+                 ]));
+            return;
+        }
+
+        // Active brands for Add/Edit dropdown and filter
         $brands = $this->db->where('status', 'active')
                            ->order_by('name', 'ASC')
                            ->get('brands')
                            ->result();
 
-        // Active product categories for Add/Edit dropdown (strictly type='product' AND status='active')
+        // Active product categories for Add/Edit dropdown and filter
         $product_categories = $this->db->where('type', 'product')
                                        ->where('status', 'active')
                                        ->order_by('sort_order', 'ASC')
@@ -46,7 +112,7 @@ class Product extends Admin_Controller {
                                        ->get('categories')
                                        ->result();
 
-        // Count totals
+        // Count overall totals
         $total_products = $this->db->count_all('products');
         $active_products = $this->db->where('status', 'active')->count_all_results('products');
 
@@ -59,7 +125,17 @@ class Product extends Admin_Controller {
             'product_categories' => $product_categories,
             'total_products'     => $total_products,
             'active_products'    => $active_products,
-            'search_query'       => $search
+            'total_filtered'     => $total_filtered,
+            'search_query'       => $search,
+            'selected_category'  => $category_id,
+            'selected_brand'     => $brand_id,
+            'selected_status'    => $status,
+            'selected_badge'     => $badge,
+            'per_page'           => $per_page,
+            'current_page'       => $page,
+            'from_entry'         => $from_entry,
+            'to_entry'           => $to_entry,
+            'pagination_html'    => $pagination_html
         ];
 
         $this->render('product_view', $data);

@@ -1,7 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$whatsapp_clean = !empty($settings['whatsapp_number']) ? preg_replace('/[^0-9]/', '', $settings['whatsapp_number']) : '911234567890';
+$whatsapp_clean = !empty($settings['whatsapp_number']) ? preg_replace('/[^0-9]/', '', $settings['whatsapp_number']) : '';
+if (empty($whatsapp_clean) && !empty($settings['phone_numbers'])) {
+  $phones_list = explode(',', $settings['phone_numbers']);
+  $whatsapp_clean = preg_replace('/[^0-9]/', '', trim($phones_list[0]));
+}
 ?>
 <!-- ===== FOOTER ===== -->
 <footer class="footer-section">
@@ -47,6 +51,7 @@ $whatsapp_clean = !empty($settings['whatsapp_number']) ? preg_replace('/[^0-9]/'
           <li><a href="<?= site_url('brands'); ?>">Our Brands</a></li>
           <li><a href="<?= site_url('products'); ?>">Products</a></li>
           <li><a href="<?= site_url('gallery'); ?>">Gallery</a></li>
+          <li><a href="<?= site_url('contact'); ?>">Contact Us</a></li>
           <li><a href="<?= site_url('distributor'); ?>">Become a Distributor</a></li>
         </ul>
       </div>
@@ -59,10 +64,7 @@ $whatsapp_clean = !empty($settings['whatsapp_number']) ? preg_replace('/[^0-9]/'
               <li><a href="<?= site_url('products?category=' . $cat_item->id); ?>"><?= htmlspecialchars($cat_item->name); ?></a></li>
             <?php endforeach; ?>
           <?php else: ?>
-            <li><a href="<?= site_url('products'); ?>">Gas Stoves & Hobs</a></li>
-            <li><a href="<?= site_url('products'); ?>">Mixer Grinders</a></li>
-            <li><a href="<?= site_url('products'); ?>">Cookware & Non-Stick</a></li>
-            <li><a href="<?= site_url('products'); ?>">Kitchen Chimneys</a></li>
+            <li><a href="<?= site_url('products'); ?>">View All Products</a></li>
           <?php endif; ?>
         </ul>
       </div>
@@ -91,10 +93,12 @@ $whatsapp_clean = !empty($settings['whatsapp_number']) ? preg_replace('/[^0-9]/'
   </div>
 </footer>
 
+<?php if (!empty($whatsapp_clean)): ?>
 <!-- WhatsApp Floating Button -->
-<a href="https://wa.me/<?= $whatsapp_clean; ?>" class="whatsapp-float" target="_blank" aria-label="Chat with Nandani on WhatsApp">
+<a href="https://wa.me/<?= $whatsapp_clean; ?>" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat with Nandani on WhatsApp">
   <i class="fab fa-whatsapp"></i>
 </a>
+<?php endif; ?>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -111,7 +115,7 @@ $whatsapp_clean = !empty($settings['whatsapp_number']) ? preg_replace('/[^0-9]/'
 
 <?php if (isset($extra_js) && is_array($extra_js)): ?>
   <?php foreach ($extra_js as $js_file): ?>
-    <script src="<?= base_url('assets/js/' . $js_file); ?>"></script>
+    <script src="<?= (strpos($js_file, 'http') === 0) ? $js_file : base_url('assets/js/' . $js_file); ?>"></script>
   <?php endforeach; ?>
 <?php endif; ?>
 

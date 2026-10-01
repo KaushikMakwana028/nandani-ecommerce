@@ -258,74 +258,48 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
     </div>
 
     <?php
-    // Default fallback brands matching image 1
-    $default_spotlights = [
-        [
-            'name'          => 'Marlex',
-            'category_name' => 'Gas Stoves & Hobs',
-            'since_year'    => '2015',
-            'logo_url'      => base_url('assets/images/brands/marlex-logo-120px.png')
-        ],
-        [
-            'name'          => 'Kanchan',
-            'category_name' => 'Cookware & Pressure Cookers',
-            'since_year'    => '2017',
-            'logo_url'      => base_url('assets/images/brands/kanchan-logo-120px.png')
-        ],
-        [
-            'name'          => 'Greenchef',
-            'category_name' => 'Non-Stick Cookware',
-            'since_year'    => '2019',
-            'logo_url'      => base_url('assets/images/brands/greenchef-logo-120px.png')
-        ],
-        [
-            'name'          => 'Brand Name',
-            'category_name' => 'Category Name',
-            'since_year'    => 'YEAR',
-            'logo_url'      => base_url('assets/images/logo.png')
-        ]
-    ];
-
-    // Build exactly 4 items, prioritizing active brands from DB
-    $spotlight_items = [];
     $db_brands = !empty($brands) ? array_values($brands) : [];
-
-    for ($i = 0; $i < 4; $i++) {
-        if (isset($db_brands[$i])) {
-            $b = $db_brands[$i];
-            $spotlight_items[] = [
-                'name'          => $b->name,
-                'category_name' => !empty($b->category_name) ? $b->category_name : 'Kitchen Appliances',
-                'since_year'    => !empty($b->since_year) ? $b->since_year : '2015',
-                'logo_url'      => !empty($b->logo_image) ? base_url('uploads/brands/' . $b->logo_image) : $default_spotlights[$i]['logo_url']
-            ];
-        } else {
-            $spotlight_items[] = $default_spotlights[$i];
-        }
-    }
     ?>
 
-    <!-- ===== BRAND SHOWCASE (4 Brands - Spotlight Cards) ===== -->
+    <!-- ===== BRAND SHOWCASE (Spotlight Cards strictly from DB) ===== -->
     <div class="brand-spotlight-grid" data-aos="fade-up" data-aos-delay="100">
       <div class="row justify-content-center g-4">
-        <?php foreach ($spotlight_items as $idx => $s_brand): ?>
-          <?php
-            $num = sprintf("%02d", $idx + 1);
-            $delay = ($idx + 1) * 50;
-          ?>
-          <div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-up" data-aos-delay="<?= $delay; ?>">
-            <div class="spotlight-card text-light">
-              <span class="spotlight-num"><?= $num; ?></span>
-              <div class="spotlight-logo-wrap">
-                <img src="<?= $s_brand['logo_url']; ?>" alt="<?= htmlspecialchars($s_brand['name']); ?>">
+        <?php if (!empty($db_brands)): ?>
+          <?php foreach ($db_brands as $idx => $b): ?>
+            <?php
+              $num = sprintf("%02d", $idx + 1);
+              $delay = ($idx + 1) * 50;
+              $cat_name = !empty($b->category_name) ? $b->category_name : 'Kitchen Appliances';
+              $since_yr = !empty($b->since_year) ? $b->since_year : '1995';
+              $logo_url = (!empty($b->logo_image) && file_exists(FCPATH . 'uploads/brands/' . $b->logo_image))
+                          ? base_url('uploads/brands/' . $b->logo_image)
+                          : base_url('assets/images/logo.png');
+            ?>
+            <div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-up" data-aos-delay="<?= $delay; ?>">
+              <div class="spotlight-card text-light">
+                <span class="spotlight-num"><?= $num; ?></span>
+                <div class="spotlight-logo-wrap">
+                  <img src="<?= $logo_url; ?>" alt="<?= htmlspecialchars($b->name); ?>" onerror="this.onerror=null; this.src='<?= base_url('assets/images/logo.png'); ?>';">
+                </div>
+                <h5 class="spotlight-name"><?= htmlspecialchars($b->name); ?></h5>
+                <span class="spotlight-category"><?= htmlspecialchars($cat_name); ?></span>
+                <span class="spotlight-since">EST. <?= htmlspecialchars($since_yr); ?></span>
+                <div class="spotlight-glow"></div>
               </div>
-              <h5 class="spotlight-name"><?= htmlspecialchars($s_brand['name']); ?></h5>
-              <span class="spotlight-category"><?= htmlspecialchars($s_brand['category_name']); ?></span>
-              <span class="spotlight-since">EST. <?= htmlspecialchars($s_brand['since_year']); ?></span>
-              <div class="spotlight-glow"></div>
+            </div>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <div class="col-lg-8 mx-auto text-center py-5">
+            <div class="empty-state-card p-5" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; backdrop-filter: blur(8px);">
+              <div class="empty-icon-wrap mb-3" style="width: 70px; height: 70px; margin: 0 auto; border-radius: 50%; background: rgba(212,175,55,0.15); display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-handshake" style="font-size: 28px; color: var(--gold);"></i>
+              </div>
+              <h4 class="text-white mb-2">Brand Portfolio Updating</h4>
+              <p class="text-light-grey mb-3">Our authorized brand partnerships are being updated. Connect with our team to explore our current distribution portfolio.</p>
+              <a href="<?= site_url('contact'); ?>" class="btn-primary-custom btn-sm">Contact Our Sales Team <i class="fas fa-arrow-right ms-2"></i></a>
             </div>
           </div>
-        <?php endforeach; ?>
+        <?php endif; ?>
       </div>
     </div>
 
@@ -410,51 +384,14 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
           </div>
         <?php endforeach; ?>
       <?php else: ?>
-        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-          <div class="cat-card">
-            <div class="cat-img"><img src="<?= base_url('assets/images/products/cat-gas-stove.jpg'); ?>" alt="Gas Stoves"></div>
-            <div class="cat-body">
-              <div class="cat-icon"><i class="fas fa-fire-burner"></i></div>
-              <h5>Gas Stoves & Hobs</h5>
-              <p>Premium range of durable and efficient cooking solutions.</p>
-              <a href="<?= site_url('products'); ?>" class="cat-link">Explore <i class="fas fa-arrow-right"></i></a>
+        <div class="col-lg-8 mx-auto text-center py-4">
+          <div class="empty-state-card p-5" style="background: #fff; border: 1px solid #eee; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            <div class="empty-icon-wrap mb-3" style="width: 70px; height: 70px; margin: 0 auto; border-radius: 50%; background: rgba(200,16,46,0.08); display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-layer-group" style="font-size: 28px; color: var(--primary-red);"></i>
             </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
-          <div class="cat-card">
-            <div class="cat-img"><img src="<?= base_url('assets/images/products/cat-mixer.jpg'); ?>" alt="Mixer Grinders"></div>
-            <div class="cat-body">
-              <div class="cat-icon"><i class="fas fa-blender"></i></div>
-              <h5>Mixer Grinders</h5>
-              <p>High-performance mixers built for daily kitchen demands.</p>
-              <a href="<?= site_url('products'); ?>" class="cat-link">Explore <i class="fas fa-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
-          <div class="cat-card">
-            <div class="cat-img"><img src="<?= base_url('assets/images/products/cat-cookware.jpg'); ?>" alt="Cookware"></div>
-            <div class="cat-body">
-              <div class="cat-icon"><i class="fas fa-utensils"></i></div>
-              <h5>Cookware & Non-Stick</h5>
-              <p>Long-lasting, safe and stylish cookware collections.</p>
-              <a href="<?= site_url('products'); ?>" class="cat-link">Explore <i class="fas fa-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
-          <div class="cat-card">
-            <div class="cat-img"><img src="<?= base_url('assets/images/products/cat-chimney.jpg'); ?>" alt="Kitchen Chimneys"></div>
-            <div class="cat-body">
-              <div class="cat-icon"><i class="fas fa-wind"></i></div>
-              <h5>Kitchen Chimneys</h5>
-              <p>Modern ventilation solutions for a cleaner kitchen.</p>
-              <a href="<?= site_url('products'); ?>" class="cat-link">Explore <i class="fas fa-arrow-right"></i></a>
-            </div>
+            <h4 class="mb-2">Categories Updating</h4>
+            <p class="text-muted mb-3">Our product categories are currently being organized. Explore our full product range or contact our team for distributor enquiries.</p>
+            <a href="<?= site_url('products'); ?>" class="btn-primary-custom btn-sm">Explore Products <i class="fas fa-arrow-right ms-2"></i></a>
           </div>
         </div>
       <?php endif; ?>
@@ -676,37 +613,56 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
       <p>Explore our warehouse, events, and product showcases.</p>
     </div>
 
-    <?php
-      // Map gallery images
-      $g1 = (!empty($gallery_items[0]->image)) ? base_url('uploads/gallery/' . $gallery_items[0]->image) : base_url('assets/images/gallery/gallery-1.jpg');
-      $g2 = (!empty($gallery_items[1]->image)) ? base_url('uploads/gallery/' . $gallery_items[1]->image) : base_url('assets/images/gallery/gallery-2.jpg');
-      $g3 = (!empty($gallery_items[2]->image)) ? base_url('uploads/gallery/' . $gallery_items[2]->image) : base_url('assets/images/gallery/gallery-3.jpg');
-      $g4 = (!empty($gallery_items[3]->image)) ? base_url('uploads/gallery/' . $gallery_items[3]->image) : base_url('assets/images/gallery/gallery-4.jpg');
-    ?>
-
-    <div class="row g-3">
-      <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="100">
-        <div class="gallery-item large">
-          <img src="<?= $g1; ?>" alt="Gallery" onerror="this.onerror=null; this.src='<?= base_url('assets/images/gallery/gallery-1.jpg'); ?>';">
-          <div class="gallery-overlay"><i class="fas fa-plus"></i></div>
+    <div class="row g-3 justify-content-center">
+      <?php if (!empty($gallery_items)): ?>
+        <?php
+          $g_count = count($gallery_items);
+        ?>
+        <?php foreach ($gallery_items as $g_idx => $g_item): ?>
+          <?php
+            $delay = ($g_idx + 1) * 100;
+            $g_img = (!empty($g_item->image) && file_exists(FCPATH . 'uploads/gallery/' . $g_item->image))
+                     ? base_url('uploads/gallery/' . $g_item->image)
+                     : ((!empty($g_item->image) && file_exists(FCPATH . 'assets/images/gallery/' . $g_item->image))
+                        ? base_url('assets/images/gallery/' . $g_item->image)
+                        : base_url('assets/images/gallery/gallery-1.jpg'));
+            $g_title = !empty($g_item->title_caption) ? $g_item->title_caption : 'Nandani Facility & Operations';
+            
+            // Dynamic column sizing based on actual available count
+            if ($g_count === 1) {
+                $col_class = 'col-lg-8 col-md-10';
+            } elseif ($g_count === 2) {
+                $col_class = 'col-md-6';
+            } elseif ($g_count === 3) {
+                $col_class = 'col-lg-4 col-md-6';
+            } else {
+                $col_class = 'col-lg-3 col-md-6';
+            }
+          ?>
+          <div class="<?= $col_class; ?>" data-aos="zoom-in" data-aos-delay="<?= $delay; ?>">
+            <div class="gallery-item large" style="height: 320px; border-radius: 16px; overflow: hidden; position: relative;">
+              <a href="<?= site_url('gallery'); ?>">
+                <img src="<?= $g_img; ?>" alt="<?= htmlspecialchars($g_title); ?>" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.src='<?= base_url('assets/images/gallery/gallery-1.jpg'); ?>';">
+                <div class="gallery-overlay" style="display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px; text-align:center; padding:15px;">
+                  <i class="fas fa-search-plus" style="font-size:24px; color:var(--gold);"></i>
+                  <span style="color:#fff; font-size:14px; font-weight:600;"><?= htmlspecialchars($g_title); ?></span>
+                </div>
+              </a>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <div class="col-lg-8 mx-auto text-center py-4">
+          <div class="empty-state-card p-5" style="background: #fff; border: 1px solid #eee; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            <div class="empty-icon-wrap mb-3" style="width: 70px; height: 70px; margin: 0 auto; border-radius: 50%; background: rgba(212,175,55,0.15); display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-camera-retro" style="font-size: 28px; color: var(--gold);"></i>
+            </div>
+            <h4 class="mb-2">Moments in the Making</h4>
+            <p class="text-muted mb-3">Our gallery showcase is being updated with our latest industrial facilities, events, and moments.</p>
+            <a href="<?= site_url('about'); ?>" class="btn-primary-custom btn-sm">About Our Journey <i class="fas fa-arrow-right ms-2"></i></a>
+          </div>
         </div>
-      </div>
-      <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
-        <div class="gallery-item">
-          <img src="<?= $g2; ?>" alt="Gallery" onerror="this.onerror=null; this.src='<?= base_url('assets/images/gallery/gallery-2.jpg'); ?>';">
-          <div class="gallery-overlay"><i class="fas fa-plus"></i></div>
-        </div>
-        <div class="gallery-item mt-3">
-          <img src="<?= $g3; ?>" alt="Gallery" onerror="this.onerror=null; this.src='<?= base_url('assets/images/gallery/gallery-3.jpg'); ?>';">
-          <div class="gallery-overlay"><i class="fas fa-plus"></i></div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
-        <div class="gallery-item large">
-          <img src="<?= $g4; ?>" alt="Gallery" onerror="this.onerror=null; this.src='<?= base_url('assets/images/gallery/gallery-4.jpg'); ?>';">
-          <div class="gallery-overlay"><i class="fas fa-plus"></i></div>
-        </div>
-      </div>
+      <?php endif; ?>
     </div>
 
     <div class="text-center mt-5" data-aos="fade-up">

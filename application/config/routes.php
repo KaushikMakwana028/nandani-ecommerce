@@ -59,11 +59,15 @@ $route['about'] = 'Home/about';
 $route['brands'] = 'Brand/index';
 $route['brand'] = 'Brand/index';
 $route['brand/(:any)'] = 'Brand/index/$1';
-$route['products'] = 'Home/products';
-$route['gallery'] = 'Home/gallery';
-$route['contact'] = 'Home/contact';
-$route['distributor'] = 'Home/distributor';
-$route['contact/submit'] = 'Home/contact_submit';
+$route['products'] = 'Product/index';
+$route['product'] = 'Product/index';
+$route['product/(:any)'] = 'Product/index/$1';
+$route['gallery'] = 'Gallery/index';
+$route['gallery/(:any)'] = 'Gallery/index/$1';
+$route['contact'] = 'Contact/index';
+$route['contact/submit'] = 'Contact/submit';
+$route['distributor'] = 'Distributor/index';
+$route['distributor/submit'] = 'Distributor/submit';
 
 // Admin Auth & Standalone Pages
 $route['admin/login'] = 'admin/auth/login';
@@ -82,6 +86,10 @@ $route['admin/dashboard'] = 'admin/dashboard';
 $route['admin/category'] = 'admin/category';
 $route['admin/category/(:any)'] = 'admin/category/$1';
 $route['admin/category/(:any)/(:any)'] = 'admin/category/$1/$2';
+$route['admin/categories'] = 'admin/category';
+$route['admin/categories/(:any)'] = 'admin/category/$1';
+$route['admin/categories/(:any)/(:any)'] = 'admin/category/$1/$2';
+
 
 // Hero Slider Module Routing
 $route['admin/hero-slider'] = 'admin/hero_slider/index';

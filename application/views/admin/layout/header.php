@@ -414,10 +414,367 @@
             background-color: var(--dark-red) !important;
             border-color: var(--dark-red) !important;
             color: var(--white) !important;
-            box-shadow: 0 4px 10px rgba(139, 0, 0, 0.3);
+        }
+
+        /* ==========================================================
+           Nandani Admin - Unified Premium Filters & Pagination Theme
+           ========================================================== */
+
+        /* Elevated Filter Card */
+        .admin-filter-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color, #E5E7EB);
+            border-radius: 14px;
+            padding: 1.15rem 1.35rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .admin-filter-card:hover {
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-field-label {
+            font-size: 0.74rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6B7280;
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-field-label i {
+            color: var(--primary-red, #C8102E);
+            opacity: 0.85;
+        }
+
+        /* Filter Form Controls */
+        .admin-filter-card .form-control,
+        .admin-filter-card .form-select,
+        .filter-control {
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 0.86rem;
+            color: #1F2937;
+            background-color: #FFFFFF;
+            padding: 0.5rem 0.85rem;
+            min-height: 38px;
+            transition: all 0.2s ease;
+        }
+
+        .admin-filter-card .form-control:focus,
+        .admin-filter-card .form-select:focus,
+        .filter-control:focus {
+            border-color: var(--primary-red, #C8102E) !important;
+            box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.14) !important;
+            outline: none;
+        }
+
+        /* Search Input Box with Icon */
+        .filter-search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .filter-search-box .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9CA3AF;
+            font-size: 0.88rem;
+            pointer-events: none;
+            z-index: 2;
+            transition: color 0.2s ease;
+        }
+
+        .filter-search-box:focus-within .search-icon {
+            color: var(--primary-red, #C8102E);
+        }
+
+        .filter-search-box .form-control {
+            padding-left: 40px !important;
+            padding-right: 36px !important;
+        }
+
+        .filter-search-box .btn-clear-search {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #9CA3AF;
+            padding: 0;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: color 0.15s ease;
+            z-index: 2;
+        }
+
+        .filter-search-box .btn-clear-search:hover {
+            color: var(--primary-red, #C8102E);
+        }
+
+        /* Status Filter Pills */
+        .status-filter-pills {
+            display: inline-flex;
+            align-items: center;
+            background-color: #F3F4F6;
+            padding: 4px;
+            border-radius: 10px;
+            gap: 4px;
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .filter-pill-btn {
+            border: none;
+            background: transparent;
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 8px;
+            color: #4B5563;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .filter-pill-btn:hover {
+            color: #111827;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .filter-pill-btn.active {
+            background-color: #FFFFFF;
+            color: var(--primary-red, #C8102E);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .filter-pill-count {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 1px 7px;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.06);
+            color: #4B5563;
+        }
+
+        .filter-pill-btn.active .filter-pill-count {
+            background-color: rgba(200, 16, 46, 0.12);
+            color: var(--primary-red, #C8102E);
+        }
+
+        /* Theme-Matched Reset Button */
+        .btn-filter-reset {
+            background-color: #FFFFFF;
+            border: 1px solid #D1D5DB;
+            color: #374151;
+            font-size: 0.84rem;
+            font-weight: 500;
+            padding: 0.45rem 1rem;
+            min-height: 38px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-filter-reset i {
+            color: var(--primary-red, #C8102E);
+            font-size: 0.82rem;
+            transition: transform 0.35s ease;
+        }
+
+        .btn-filter-reset:hover {
+            background-color: #FFF5F5;
+            color: var(--primary-red, #C8102E);
+            border-color: var(--primary-red, #C8102E);
+            box-shadow: 0 2px 8px rgba(200, 16, 46, 0.15);
+        }
+
+        .btn-filter-reset:hover i {
+            transform: rotate(-180deg);
+        }
+
+        .btn-filter-reset:active {
+            background-color: #FEE2E2;
+            transform: translateY(1px);
+        }
+
+        /* ==========================================================
+           Unified Nandani Pagination Theme
+           ========================================================== */
+        .pagination-container,
+        .pagination-footer-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: 0.85rem 1.25rem;
+            background-color: #FFFFFF;
+            border-top: 1px solid var(--border-color, #E5E7EB);
+        }
+
+        @media (min-width: 576px) {
+            .pagination-container,
+            .pagination-footer-bar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        .pagination-range-info,
+        .pagination-entries-text {
+            font-size: 0.84rem;
+            color: #6B7280;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .pagination-range-info strong,
+        .pagination-entries-text strong {
+            color: #111827;
+            font-weight: 600;
+        }
+
+        /* Override Bootstrap 5 Pagination Variables & Base Styles */
+        .pagination.nandani-pagination,
+        .admin-main .pagination {
+            --bs-pagination-color: #374151;
+            --bs-pagination-bg: #FFFFFF;
+            --bs-pagination-border-color: #E5E7EB;
+            --bs-pagination-hover-color: var(--primary-red, #C8102E);
+            --bs-pagination-hover-bg: #FFF5F5;
+            --bs-pagination-hover-border-color: #FCA5A5;
+            --bs-pagination-focus-color: var(--primary-red, #C8102E);
+            --bs-pagination-focus-bg: #FFF5F5;
+            --bs-pagination-focus-box-shadow: 0 0 0 0.2rem rgba(200, 16, 46, 0.15);
+            --bs-pagination-active-color: #FFFFFF;
+            --bs-pagination-active-bg: var(--primary-red, #C8102E);
+            --bs-pagination-active-border-color: var(--primary-red, #C8102E);
+            --bs-pagination-disabled-color: #9CA3AF;
+            --bs-pagination-disabled-bg: #F9FAFB;
+            --bs-pagination-disabled-border-color: #E5E7EB;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .pagination.nandani-pagination .page-item,
+        .admin-main .pagination .page-item {
+            margin: 0;
+        }
+
+        .pagination.nandani-pagination .page-link,
+        .admin-main .pagination .page-link {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.84rem;
+            font-weight: 500;
+            color: #374151;
+            background-color: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px !important;
+            text-decoration: none;
+            transition: all 0.18s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .pagination.nandani-pagination .page-link:hover,
+        .admin-main .pagination .page-link:hover {
+            background-color: #FFF5F5 !important;
+            color: var(--primary-red, #C8102E) !important;
+            border-color: #FCA5A5 !important;
+            box-shadow: 0 2px 4px rgba(200, 16, 46, 0.08);
+        }
+
+        .pagination.nandani-pagination .page-item.active .page-link,
+        .admin-main .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, var(--primary-red, #C8102E), var(--dark-red, #8B0000)) !important;
+            color: #FFFFFF !important;
+            border-color: var(--primary-red, #C8102E) !important;
+            font-weight: 600;
+            box-shadow: 0 3px 8px rgba(200, 16, 46, 0.28) !important;
+            cursor: default;
+        }
+
+        .pagination.nandani-pagination .page-item.disabled .page-link,
+        .admin-main .pagination .page-item.disabled .page-link {
+            background-color: #F9FAFB !important;
+            color: #9CA3AF !important;
+            border-color: #E5E7EB !important;
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: none !important;
+        }
+
+        /* Prev / Next Buttons */
+        .pagination.nandani-pagination .page-link-prev,
+        .pagination.nandani-pagination .page-link-next {
+            padding: 0 13px !important;
+            font-weight: 500;
+            gap: 5px;
+        }
+
+        .pagination.nandani-pagination .page-link-prev i,
+        .pagination.nandani-pagination .page-link-next i {
+            font-size: 0.72rem;
+            transition: transform 0.18s ease;
+        }
+
+        .pagination.nandani-pagination .page-link-prev:not(.disabled):hover i {
+            transform: translateX(-2px);
+        }
+
+        .pagination.nandani-pagination .page-link-next:not(.disabled):hover i {
+            transform: translateX(2px);
+        }
+
+        /* Ellipsis Dots Separator */
+        .pagination.nandani-pagination .page-link-dots {
+            background: transparent !important;
+            border-color: transparent !important;
+            color: #6B7280 !important;
+            cursor: default !important;
+            font-weight: 700;
+            letter-spacing: 2px;
+            min-width: 28px;
+            padding: 0 4px;
+        }
+
+        .pagination.nandani-pagination .page-link-dots:hover {
+            background: transparent !important;
+            border-color: transparent !important;
+            color: #6B7280 !important;
+            box-shadow: none !important;
         }
 
         /* Mobile / Tablet Off-canvas Sidebar Collapse */
+
         @media (max-width: 991.98px) {
             .admin-sidebar {
                 transform: translateX(-100%);

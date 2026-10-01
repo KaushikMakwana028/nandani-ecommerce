@@ -22,16 +22,31 @@ galleryFilterBtns.forEach(btn => {
       }
     });
 
-    noGalleryResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    if(noGalleryResults){
+      noGalleryResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    if(typeof lightbox !== 'undefined' && lightbox && typeof lightbox.reload === 'function'){
+      lightbox.reload();
+    }
   });
 });
 
 // ============================
 // GLightbox Init
 // ============================
-const lightbox = GLightbox({
-  selector: '.glightbox',
-  touchNavigation: true,
-  loop: true,
-  zoomable: true,
-});
+let lightbox;
+if (typeof GLightbox !== 'undefined') {
+  lightbox = GLightbox({
+    selector: '.glightbox',
+    touchNavigation: true,
+    loop: true,
+    zoomable: true,
+  });
+}
+
+// If an active filter button is already selected on page load (e.g. from query param)
+const initialActiveBtn = document.querySelector('.gallery-page-section .filter-btn.active');
+if (initialActiveBtn && initialActiveBtn.getAttribute('data-filter') !== 'all') {
+  initialActiveBtn.click();
+}

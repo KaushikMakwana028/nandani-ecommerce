@@ -24,19 +24,32 @@
         margin: 0;
     }
 
+    .avatar-wrapper {
+        position: relative;
+        display: inline-block;
+        margin: 0 auto;
+    }
+
     .avatar-upload-box {
         position: relative;
-        width: 120px;
-        height: 120px;
-        margin: 0 auto 1rem;
+        width: 130px;
+        height: 130px;
+        margin: 0 auto;
         border-radius: 50%;
-        border: 3px solid var(--gold-accent);
-        background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+        border: 4px solid var(--gold-accent, #FFC72C);
+        background: linear-gradient(135deg, var(--primary-red, #C8102E), var(--dark-red, #8B0000));
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .avatar-upload-box:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 20px rgba(200, 16, 46, 0.25);
     }
 
     .avatar-preview-img {
@@ -46,32 +59,41 @@
     }
 
     .avatar-initial {
-        font-size: 3rem;
+        font-size: 3.25rem;
         font-weight: 700;
-        color: var(--gold-accent);
-        font-family: var(--font-heading);
+        color: var(--gold-accent, #FFC72C);
+        font-family: var(--font-heading, 'Playfair Display', serif);
     }
 
-    .upload-badge-btn {
+    .avatar-camera-btn {
         position: absolute;
-        bottom: 2px;
-        right: 2px;
-        width: 32px;
-        height: 32px;
+        bottom: 4px;
+        right: 4px;
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
-        background-color: var(--dark-text);
-        color: var(--white);
+        background: linear-gradient(135deg, var(--primary-red, #C8102E), var(--dark-red, #8B0000));
+        color: #FFFFFF;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        border: 2px solid var(--white);
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        transition: background-color 0.2s;
+        border: 3px solid #FFFFFF;
+        box-shadow: 0 3px 10px rgba(200, 16, 46, 0.35);
+        transition: all 0.2s ease;
+        font-size: 0.95rem;
+        z-index: 5;
     }
 
-    .upload-badge-btn:hover {
-        background-color: var(--primary-red);
+    .avatar-camera-btn:hover {
+        background: linear-gradient(135deg, var(--dark-red, #8B0000), #5A0000);
+        transform: scale(1.1);
+        box-shadow: 0 5px 14px rgba(200, 16, 46, 0.5);
+        color: #FFFFFF;
+    }
+
+    .avatar-camera-btn:active {
+        transform: scale(0.95);
     }
 
     .badge-role-admin {
@@ -139,18 +161,37 @@
     </div>
 </div>
 
+<?= form_open_multipart('admin/profile/update', ['id' => 'profileForm', 'novalidate' => 'novalidate']) ?>
 <div class="row g-4">
     <!-- Left Column: Avatar & Read-Only Badges -->
     <div class="col-12 col-lg-4">
         <div class="profile-card text-center p-4">
             
-            <div class="avatar-upload-box" id="avatarBox">
-                <?php if (!empty($user->profile_image) && file_exists(FCPATH . $user->profile_image)): ?>
-                    <img src="<?= base_url($user->profile_image) ?>" alt="Avatar" class="avatar-preview-img" id="avatarPreview">
-                <?php else: ?>
-                    <span class="avatar-initial" id="avatarInitial"><?= strtoupper(substr($user->name ?? 'A', 0, 1)) ?></span>
-                    <img src="" alt="Avatar" class="avatar-preview-img d-none" id="avatarPreview">
-                <?php endif; ?>
+            <!-- Avatar Upload Area with Floating Camera Button -->
+            <div class="avatar-wrapper position-relative d-inline-block mx-auto mb-2">
+                <div class="avatar-upload-box" id="avatarBox" title="Click to upload profile photo">
+                    <?php if (!empty($user->profile_image) && file_exists(FCPATH . $user->profile_image)): ?>
+                        <img src="<?= base_url($user->profile_image) ?>" alt="Avatar" class="avatar-preview-img" id="avatarPreview">
+                    <?php else: ?>
+                        <span class="avatar-initial" id="avatarInitial"><?= strtoupper(substr($user->name ?? 'A', 0, 1)) ?></span>
+                        <img src="" alt="Avatar" class="avatar-preview-img d-none" id="avatarPreview">
+                    <?php endif; ?>
+                </div>
+
+                <!-- Camera Upload Button -->
+                <label for="profile_image" class="avatar-camera-btn" title="Upload profile photo" aria-label="Upload profile photo">
+                    <i class="fa-solid fa-camera"></i>
+                </label>
+                <input type="file" 
+                       class="d-none" 
+                       id="profile_image" 
+                       name="profile_image" 
+                       accept="image/png, image/jpeg, image/jpg, image/webp">
+            </div>
+
+            <div class="text-muted small mb-3" style="font-size: 0.76rem;">
+                <span class="text-secondary"><i class="fa-solid fa-camera me-1 opacity-75"></i>Click camera to change photo</span>
+                <div class="opacity-75" style="font-size: 0.72rem;">JPG, PNG, WEBP &bull; Max 2MB</div>
             </div>
 
             <h4 class="fw-bold text-dark mb-1"><?= html_escape($user->name) ?></h4>
@@ -194,90 +235,76 @@
                     </div>
                 <?php endif; ?>
 
-                <?= form_open_multipart('admin/profile/update', ['id' => 'profileForm', 'novalidate' => 'novalidate']) ?>
-                    
-                    <!-- Avatar Upload Input (with preview) -->
-                    <div class="mb-3">
-                        <label for="profile_image" class="form-label">Profile Avatar</label>
-                        <input type="file" 
+                <div class="row g-3 mb-3">
+                    <!-- Full Name -->
+                    <div class="col-12 col-md-6">
+                        <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                        <input type="text" 
+                               class="form-control <?= form_error('name') ? 'is-invalid' : '' ?>" 
+                               id="name" 
+                               name="name" 
+                               value="<?= set_value('name', $user->name) ?>" 
+                               required>
+                        <div class="invalid-feedback">Full name is required.</div>
+                    </div>
+
+                    <!-- Email Address -->
+                    <div class="col-12 col-md-6">
+                        <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                        <input type="email" 
+                               class="form-control <?= form_error('email') ? 'is-invalid' : '' ?>" 
+                               id="email" 
+                               name="email" 
+                               value="<?= set_value('email', $user->email) ?>" 
+                               required>
+                        <div class="invalid-feedback">A valid email address is required.</div>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <!-- Phone -->
+                    <div class="col-12 col-md-6">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="text" 
                                class="form-control" 
-                               id="profile_image" 
-                               name="profile_image" 
-                               accept="image/png, image/jpeg, image/jpg, image/webp">
-                        <div class="form-text text-muted small">Supported formats: JPG, PNG, WEBP. Maximum size: 2MB.</div>
+                               id="phone" 
+                               name="phone" 
+                               value="<?= set_value('phone', $user->phone) ?>" 
+                               placeholder="+91 9876543210">
                     </div>
 
-                    <div class="row g-3 mb-3">
-                        <!-- Full Name -->
-                        <div class="col-12 col-md-6">
-                            <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
-                            <input type="text" 
-                                   class="form-control <?= form_error('name') ? 'is-invalid' : '' ?>" 
-                                   id="name" 
-                                   name="name" 
-                                   value="<?= set_value('name', $user->name) ?>" 
-                                   required>
-                            <div class="invalid-feedback">Full name is required.</div>
-                        </div>
-
-                        <!-- Email Address -->
-                        <div class="col-12 col-md-6">
-                            <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
-                            <input type="email" 
-                                   class="form-control <?= form_error('email') ? 'is-invalid' : '' ?>" 
-                                   id="email" 
-                                   name="email" 
-                                   value="<?= set_value('email', $user->email) ?>" 
-                                   required>
-                            <div class="invalid-feedback">A valid email address is required.</div>
-                        </div>
+                    <!-- Account Role (Read-only) -->
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">System Role</label>
+                        <input type="text" 
+                               class="form-control form-control-readonly" 
+                               value="<?= ((int)$user->role === 1) ? '1 — Admin (Full System Access)' : '0 — User' ?>" 
+                               readonly>
                     </div>
+                </div>
 
-                    <div class="row g-3 mb-3">
-                        <!-- Phone -->
-                        <div class="col-12 col-md-6">
-                            <label for="phone" class="form-label">Phone Number</label>
-                            <input type="text" 
-                                   class="form-control" 
-                                   id="phone" 
-                                   name="phone" 
-                                   value="<?= set_value('phone', $user->phone) ?>" 
-                                   placeholder="+91 9876543210">
-                        </div>
+                <!-- Address -->
+                <div class="mb-4">
+                    <label for="address" class="form-label">Address</label>
+                    <textarea class="form-control" 
+                              id="address" 
+                              name="address" 
+                              rows="3" 
+                              placeholder="Office / street address"><?= set_value('address', $user->address) ?></textarea>
+                </div>
 
-                        <!-- Account Role (Read-only) -->
-                        <div class="col-12 col-md-6">
-                            <label class="form-label">System Role</label>
-                            <input type="text" 
-                                   class="form-control form-control-readonly" 
-                                   value="<?= ((int)$user->role === 1) ? '1 — Admin (Full System Access)' : '0 — User' ?>" 
-                                   readonly>
-                        </div>
-                    </div>
-
-                    <!-- Address -->
-                    <div class="mb-4">
-                        <label for="address" class="form-label">Address</label>
-                        <textarea class="form-control" 
-                                  id="address" 
-                                  name="address" 
-                                  rows="3" 
-                                  placeholder="Office / street address"><?= set_value('address', $user->address) ?></textarea>
-                    </div>
-
-                    <!-- Save Changes Button -->
-                    <div class="d-flex justify-content-end gap-2 pt-2 border-top">
-                        <button type="submit" class="btn btn-primary-red d-inline-flex align-items-center">
-                            <i class="fa-solid fa-floppy-disk me-2"></i>
-                            <span>Save Profile</span>
-                        </button>
-                    </div>
-
-                <?= form_close() ?>
+                <!-- Save Changes Button -->
+                <div class="d-flex justify-content-end gap-2 pt-2 border-top">
+                    <button type="submit" class="btn btn-primary-red d-inline-flex align-items-center">
+                        <i class="fa-solid fa-floppy-disk me-2"></i>
+                        <span>Save Profile</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+<?= form_close() ?>
 
 <!-- Image Preview Script & Client UX Validation -->
 <script>
@@ -285,6 +312,14 @@
         const fileInput = document.getElementById('profile_image');
         const imgPreview = document.getElementById('avatarPreview');
         const initialText = document.getElementById('avatarInitial');
+        const avatarBox = document.getElementById('avatarBox');
+
+        // Clicking on avatar box triggers file input
+        if (avatarBox && fileInput) {
+            avatarBox.addEventListener('click', function() {
+                fileInput.click();
+            });
+        }
 
         if (fileInput) {
             fileInput.addEventListener('change', function() {

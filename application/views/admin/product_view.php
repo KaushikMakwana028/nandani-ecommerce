@@ -340,41 +340,109 @@
     </div>
 
 
-    <!-- Server-Side Search Box -->
-    <div class="prod-search-card">
-        <form method="GET" action="<?= base_url('admin/products') ?>" class="row g-2 align-items-center">
-            <div class="col-md-9 col-lg-10">
-                <div class="search-input-group">
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" class="form-control" name="q" value="<?= htmlspecialchars($search_query) ?>" placeholder="Search products by name (server-side query)...">
+    <!-- Comprehensive Filter Toolbar -->
+    <div class="admin-filter-card mb-4">
+        <form id="productFilterForm" method="GET" action="<?= base_url('admin/products') ?>">
+            <!-- Top Tier: Search Bar on Left, Items per page & Reset on Right -->
+            <div class="row g-2 align-items-center mb-3">
+                <div class="col-12 col-lg-8">
+                    <div class="filter-search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" class="form-control" name="q" id="filter_q" value="<?= htmlspecialchars($search_query) ?>" placeholder="Search product name, code, or description...">
+                        <button type="button" class="btn-clear-search <?= empty($search_query) ? 'd-none' : '' ?>" id="clearSearchBtn" aria-label="Clear Search">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-4 d-flex align-items-center justify-content-lg-end gap-2">
+                    <div class="d-flex align-items-center gap-2 flex-grow-1 flex-lg-grow-0">
+                        <span class="text-muted small d-none d-sm-inline">Show:</span>
+                        <select class="form-select form-select-sm filter-control" name="per_page" id="filter_per_page" title="Items per page" style="min-width: 95px;">
+                            <option value="10" <?= ($per_page == 10) ? 'selected' : '' ?>>10 / page</option>
+                            <option value="25" <?= ($per_page == 25) ? 'selected' : '' ?>>25 / page</option>
+                            <option value="50" <?= ($per_page == 50) ? 'selected' : '' ?>>50 / page</option>
+                            <option value="100" <?= ($per_page == 100) ? 'selected' : '' ?>>100 / page</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn-filter-reset" id="resetFiltersBtn" title="Reset all filters">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Reset</span>
+                    </button>
                 </div>
             </div>
-            <div class="col-md-3 col-lg-2 d-flex gap-2">
-                <button type="submit" class="btn btn-dark w-100 py-2" style="font-weight: 600;">
-                    <i class="fa-solid fa-search me-1"></i> Search
-                </button>
-                <?php if (!empty($search_query)): ?>
-                    <a href="<?= base_url('admin/products') ?>" class="btn btn-outline-secondary py-2" title="Clear Search">
-                        <i class="fa-solid fa-xmark"></i>
-                    </a>
-                <?php endif; ?>
+
+            <!-- Bottom Tier: Filter Dropdowns Grid with clear labels -->
+            <div class="row g-2 pt-2 border-top">
+                <!-- Category Filter -->
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <label class="filter-field-label"><i class="fa-solid fa-layer-group me-1 opacity-75"></i> Category</label>
+                    <select class="form-select form-select-sm filter-control" name="category_id" id="filter_category_id">
+                        <option value="0">All Categories</option>
+                        <?php if (!empty($product_categories)): ?>
+                            <?php foreach ($product_categories as $c): ?>
+                                <option value="<?= $c->id ?>" <?= ($selected_category == $c->id) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($c->name) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+                </div>
+
+                <!-- Brand Filter -->
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <label class="filter-field-label"><i class="fa-solid fa-tags me-1 opacity-75"></i> Brand</label>
+                    <select class="form-select form-select-sm filter-control" name="brand_id" id="filter_brand_id">
+                        <option value="0">All Brands</option>
+                        <?php if (!empty($brands)): ?>
+                            <?php foreach ($brands as $b): ?>
+                                <option value="<?= $b->id ?>" <?= ($selected_brand == $b->id) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($b->name) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+                </div>
+
+                <!-- Status Filter -->
+                <div class="col-6 col-sm-6 col-xl-3">
+                    <label class="filter-field-label"><i class="fa-solid fa-toggle-on me-1 opacity-75"></i> Status</label>
+                    <select class="form-select form-select-sm filter-control" name="status" id="filter_status">
+                        <option value="">All Statuses</option>
+                        <option value="active" <?= ($selected_status === 'active') ? 'selected' : '' ?>>Active</option>
+                        <option value="inactive" <?= ($selected_status === 'inactive') ? 'selected' : '' ?>>Inactive</option>
+                    </select>
+                </div>
+
+                <!-- Badge Filter -->
+                <div class="col-6 col-sm-6 col-xl-3">
+                    <label class="filter-field-label"><i class="fa-solid fa-certificate me-1 opacity-75"></i> Badge</label>
+                    <select class="form-select form-select-sm filter-control" name="badge" id="filter_badge">
+                        <option value="">All Badges</option>
+                        <option value="none" <?= ($selected_badge === 'none') ? 'selected' : '' ?>>Standard</option>
+                        <option value="new" <?= ($selected_badge === 'new') ? 'selected' : '' ?>>New</option>
+                        <option value="bestseller" <?= ($selected_badge === 'bestseller') ? 'selected' : '' ?>>Bestseller</option>
+                    </select>
+                </div>
             </div>
         </form>
-        <?php if (!empty($search_query)): ?>
-            <div class="mt-2 text-muted small">
-                Showing results for <strong>"<?= htmlspecialchars($search_query) ?>"</strong> &bull; <?= count($products) ?> matching product(s) found.
-            </div>
-        <?php endif; ?>
     </div>
 
     <!-- Main Products Table Card -->
-    <div class="prod-card mb-4">
+    <div class="prod-card mb-4 position-relative">
+        <!-- Loading Overlay -->
+        <div id="productTableOverlay" class="position-absolute w-100 h-100 top-0 start-0 d-none justify-content-center align-items-center" style="background: rgba(255,255,255,0.7); z-index: 10; backdrop-filter: blur(1px);">
+            <div class="spinner-border text-danger" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
         <div class="prod-card-header d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-2">
                 <i class="fa-solid fa-box-open text-muted"></i>
                 <h5 class="mb-0 fw-bold text-dark fs-6">Products Directory</h5>
             </div>
-            <span class="text-muted small"><?= count($products) ?> items shown</span>
+            <span class="text-muted small" id="showingCountBadge"><?= $total_filtered ?> items found</span>
         </div>
 
         <div class="table-responsive">
@@ -390,131 +458,26 @@
                         <th style="width: 110px;" class="text-end">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php if (!empty($products)): ?>
-                        <?php foreach ($products as $p): ?>
-                            <?php $img_url = base_url('uploads/products/' . $p->image); ?>
-                            <tr class="product-row"
-                                data-id="<?= $p->id ?>"
-                                data-name="<?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?>"
-                                data-brand-id="<?= $p->brand_id ?>"
-                                data-category-id="<?= $p->category_id ?>"
-                                data-short-desc="<?= htmlspecialchars($p->short_description ?? '', ENT_QUOTES, 'UTF-8') ?>"
-                                data-badge="<?= $p->badge ?>"
-                                data-status="<?= $p->status ?>"
-                                data-image="<?= $img_url ?>">
-                                
-                                <!-- Image Thumbnail -->
-                                <td>
-                                    <div class="prod-thumb-wrapper" title="<?= htmlspecialchars($p->name) ?>">
-                                        <img src="<?= $img_url ?>" alt="<?= htmlspecialchars($p->name) ?>" class="prod-thumb-img" onerror="this.src='https://via.placeholder.com/70x70?text=Product';">
-                                    </div>
-                                </td>
-
-                                <!-- Product Details -->
-                                <td>
-                                    <div class="fw-bold text-dark fs-6 mb-1"><?= htmlspecialchars($p->name) ?></div>
-                                    <?php if (!empty($p->short_description)): ?>
-                                        <div class="text-muted small text-truncate" style="max-width: 320px;">
-                                            <?= htmlspecialchars($p->short_description) ?>
-                                        </div>
-                                    <?php else: ?>
-                                        <span class="text-muted fst-italic small">No description provided</span>
-                                    <?php endif; ?>
-                                </td>
-
-                                <!-- Brand Joined -->
-                                <td>
-                                    <?php if (!empty($p->brand_name)): ?>
-                                        <span class="brand-pill">
-                                            <i class="fa-solid fa-tag text-muted"></i>
-                                            <?= htmlspecialchars($p->brand_name) ?>
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="text-danger small fst-italic">Brand unlinked</span>
-                                    <?php endif; ?>
-                                </td>
-
-                                <!-- Category Joined -->
-                                <td>
-                                    <?php if (!empty($p->category_name)): ?>
-                                        <span class="cat-pill">
-                                            <i class="fa-solid fa-layer-group text-primary"></i>
-                                            <?= htmlspecialchars($p->category_name) ?>
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="text-danger small fst-italic">Category unlinked</span>
-                                    <?php endif; ?>
-                                </td>
-
-                                <!-- Badge Pill -->
-                                <td>
-                                    <?php if ($p->badge === 'bestseller'): ?>
-                                        <span class="badge-pill-custom bestseller">
-                                            <i class="fa-solid fa-fire text-warning"></i> Bestseller
-                                        </span>
-                                    <?php elseif ($p->badge === 'new'): ?>
-                                        <span class="badge-pill-custom new">
-                                            <i class="fa-solid fa-bolt text-danger"></i> New
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="text-muted small">&mdash;</span>
-                                    <?php endif; ?>
-                                </td>
-
-                                <!-- Status -->
-                                <td>
-                                    <a href="<?= base_url('admin/products/toggle-status/' . $p->id) ?>" 
-                                       class="status-pill <?= $p->status ?>" 
-                                       title="Click to toggle status">
-                                        <span class="status-pill-dot"></span>
-                                        <span><?= ucfirst($p->status) ?></span>
-                                    </a>
-                                </td>
-
-                                <!-- Actions -->
-                                <td class="text-end">
-                                    <div class="d-inline-flex gap-1">
-                                        <button type="button" class="action-btn btn-edit-product" title="Edit Product">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                        <a href="<?= base_url('admin/products/delete/' . $p->id) ?>" 
-                                           class="action-btn btn-delete" 
-                                           title="Delete Product"
-                                           data-confirm-delete="true"
-                                           data-item-name="<?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?>">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="7" class="text-center py-5">
-                                <div class="py-4">
-                                    <i class="fa-solid fa-box-open fa-3x text-muted opacity-50 mb-3"></i>
-                                    <h6 class="fw-bold text-dark mb-1">No Products Found</h6>
-                                    <p class="text-muted small mb-3">
-                                        <?= !empty($search_query) ? 'No products match your search query "' . htmlspecialchars($search_query) . '".' : 'Start by creating your first product item in the catalog.' ?>
-                                    </p>
-                                    <?php if (!empty($search_query)): ?>
-                                        <a href="<?= base_url('admin/products') ?>" class="btn btn-outline-secondary btn-sm px-3">
-                                            Clear Search Filter
-                                        </a>
-                                    <?php else: ?>
-                                        <button type="button" class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#addProductModal" style="background-color: var(--primary-red); border-color: var(--primary-red);">
-                                            <i class="fa-solid fa-plus me-1"></i> Add First Product
-                                        </button>
-                                    <?php endif; ?>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
+                <tbody id="productTableBody">
+                    <?php $this->load->view('admin/partials/product_table_rows', [
+                        'products'     => $products,
+                        'search_query' => $search_query
+                    ]); ?>
                 </tbody>
             </table>
         </div>
+
+        <!-- Table Pagination and Entry Counter Footer -->
+        <div class="pagination-footer-bar">
+            <div class="pagination-entries-text" id="showingEntriesText">
+                Showing <strong><?= $from_entry ?></strong> to <strong><?= $to_entry ?></strong> of <strong><?= $total_filtered ?></strong> items
+            </div>
+            <div id="paginationContainer">
+                <?= $pagination_html ?>
+            </div>
+        </div>
     </div>
+
 
 </div>
 
@@ -756,9 +719,176 @@
 <!-- ==========================================
      SCRIPTS: PRODUCT MODALS & PREVIEWS
 ========================================== -->
+<!-- ==========================================
+     SCRIPTS: PRODUCT MODALS, PREVIEWS & LIVE AJAX
+========================================== -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const baseUrl = '<?= base_url() ?>';
+    const productsEndpoint = baseUrl + 'admin/products';
+
+    // Elements
+    const filterForm       = document.getElementById('productFilterForm');
+    const filterQ          = document.getElementById('filter_q');
+    const filterCategory   = document.getElementById('filter_category_id');
+    const filterBrand      = document.getElementById('filter_brand_id');
+    const filterStatus     = document.getElementById('filter_status');
+    const filterBadge      = document.getElementById('filter_badge');
+    const filterPerPage    = document.getElementById('filter_per_page');
+    const resetFiltersBtn  = document.getElementById('resetFiltersBtn');
+    const clearSearchBtn   = document.getElementById('clearSearchBtn');
+    const tableBody        = document.getElementById('productTableBody');
+    const tableOverlay     = document.getElementById('productTableOverlay');
+    const paginationBox    = document.getElementById('paginationContainer');
+    const entriesText      = document.getElementById('showingEntriesText');
+    const countBadge       = document.getElementById('showingCountBadge');
+
+    let currentPage = <?= $current_page ?>;
+    let searchTimer = null;
+
+    // AJAX Fetch Function
+    function fetchProducts(page = 1) {
+        currentPage = page;
+
+        // Show overlay spinner
+        if (tableOverlay) {
+            tableOverlay.classList.remove('d-none');
+            tableOverlay.classList.add('d-flex');
+        }
+
+        const params = new URLSearchParams();
+        const qVal = filterQ ? filterQ.value.trim() : '';
+        if (qVal) params.append('q', qVal);
+
+        const catVal = filterCategory ? filterCategory.value : '0';
+        if (catVal && catVal !== '0') params.append('category_id', catVal);
+
+        const brandVal = filterBrand ? filterBrand.value : '0';
+        if (brandVal && brandVal !== '0') params.append('brand_id', brandVal);
+
+        const statusVal = filterStatus ? filterStatus.value : '';
+        if (statusVal) params.append('status', statusVal);
+
+        const badgeVal = filterBadge ? filterBadge.value : '';
+        if (badgeVal) params.append('badge', badgeVal);
+
+        const perPageVal = filterPerPage ? filterPerPage.value : '10';
+        params.append('per_page', perPageVal);
+        params.append('page', page);
+        params.append('ajax', '1');
+
+        // Update browser URL without reloading
+        const urlParams = new URLSearchParams(params);
+        urlParams.delete('ajax');
+        const newUrl = productsEndpoint + (urlParams.toString() ? '?' + urlParams.toString() : '');
+        window.history.replaceState({}, '', newUrl);
+
+        fetch(productsEndpoint + '?' + params.toString(), {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network error');
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                if (tableBody) tableBody.innerHTML = data.html;
+                if (paginationBox) paginationBox.innerHTML = data.pagination;
+                if (entriesText) {
+                    entriesText.innerHTML = (data.total > 0)
+                        ? `Showing <strong>${data.from}</strong> to <strong>${data.to}</strong> of <strong>${data.total}</strong> items`
+                        : 'No products found';
+                }
+                if (countBadge) countBadge.textContent = data.total + ' items found';
+            }
+        })
+        .catch(err => {
+            console.error('Error fetching products:', err);
+        })
+        .finally(() => {
+            if (tableOverlay) {
+                tableOverlay.classList.add('d-none');
+                tableOverlay.classList.remove('d-flex');
+            }
+        });
+    }
+
+    // Debounced Search Input
+    if (filterQ) {
+        filterQ.addEventListener('input', function() {
+            if (clearSearchBtn) {
+                clearSearchBtn.classList.toggle('d-none', !this.value.trim());
+            }
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => {
+                fetchProducts(1);
+            }, 300);
+        });
+    }
+
+    // Clear Search Button
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', function() {
+            if (filterQ) {
+                filterQ.value = '';
+                filterQ.focus();
+            }
+            clearSearchBtn.classList.add('d-none');
+            fetchProducts(1);
+        });
+    }
+
+    // Filter Selects Change Listeners
+    [filterCategory, filterBrand, filterStatus, filterBadge, filterPerPage].forEach(el => {
+        if (el) {
+            el.addEventListener('change', function() {
+                fetchProducts(1);
+            });
+        }
+    });
+
+    // Reset Filters Button
+    if (resetFiltersBtn) {
+        resetFiltersBtn.addEventListener('click', function() {
+            if (filterQ) filterQ.value = '';
+            if (clearSearchBtn) clearSearchBtn.classList.add('d-none');
+            if (filterCategory) filterCategory.value = '0';
+            if (filterBrand) filterBrand.value = '0';
+            if (filterStatus) filterStatus.value = '';
+            if (filterBadge) filterBadge.value = '';
+            if (filterPerPage) filterPerPage.value = '10';
+            fetchProducts(1);
+        });
+    }
+
+    // Reset Button inside Empty State Table
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'resetProductFiltersBtn') {
+            if (resetFiltersBtn) resetFiltersBtn.click();
+        }
+    });
+
+    // Prevent default form submit on Enter, trigger AJAX instead
+    if (filterForm) {
+        filterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetchProducts(1);
+        });
+    }
+
+    // Pagination Link Clicks via Event Delegation
+    if (paginationBox) {
+        paginationBox.addEventListener('click', function(e) {
+            const link = e.target.closest('.page-link');
+            if (link && link.dataset.page) {
+                e.preventDefault();
+                const targetPage = parseInt(link.dataset.page, 10);
+                if (targetPage > 0) {
+                    fetchProducts(targetPage);
+                }
+            }
+        });
+    }
 
     // 1. ADD IMAGE PREVIEW
     const addImgInput = document.getElementById('add_prod_image');
@@ -794,26 +924,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 3. EDIT PRODUCT MODAL POPULATION
+    // 3. EDIT PRODUCT MODAL POPULATION (Using Event Delegation so works across AJAX loads)
     const editModalEl = document.getElementById('editProductModal');
     const editModal = editModalEl ? new bootstrap.Modal(editModalEl) : null;
     const editForm = document.getElementById('editProductForm');
 
-    document.querySelectorAll('.btn-edit-product').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const tr = this.closest('.product-row');
-            if (!tr) return;
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-edit-product');
+        if (!btn) return;
 
-            const id = tr.dataset.id;
-            const name = tr.dataset.name || '';
-            const brandId = tr.dataset.brandId || '';
-            const categoryId = tr.dataset.categoryId || '';
-            const shortDesc = tr.dataset.shortDesc || '';
-            const badge = tr.dataset.badge || 'none';
-            const status = tr.dataset.status || 'active';
-            const image = tr.dataset.image || '';
+        const tr = btn.closest('.product-row');
+        if (!tr) return;
 
-            // Populate form
+        const id = tr.dataset.id;
+        const name = tr.dataset.name || '';
+        const brandId = tr.dataset.brandId || '';
+        const categoryId = tr.dataset.categoryId || '';
+        const shortDesc = tr.dataset.shortDesc || '';
+        const badge = tr.dataset.badge || 'none';
+        const status = tr.dataset.status || 'active';
+        const image = tr.dataset.image || '';
+
+        // Populate form
+        if (editForm) {
             editForm.action = baseUrl + 'admin/products/edit/' + id;
             document.getElementById('edit_prod_id').value = id;
             document.getElementById('edit_prod_name').value = name;
@@ -827,8 +960,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Reset file input
             if (editImgInput) editImgInput.value = '';
 
-            editModal.show();
-        });
+            if (editModal) editModal.show();
+        }
     });
 });
 </script>

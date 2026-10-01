@@ -161,22 +161,22 @@ class Home extends CI_Controller {
 
     public function products()
     {
-        $this->_stub_page('products', 'Products Catalogue - Nandani');
+        redirect('products');
     }
 
     public function gallery()
     {
-        $this->_stub_page('gallery', 'Gallery - Nandani');
+        redirect('gallery');
     }
 
     public function contact()
     {
-        $this->_stub_page('contact', 'Contact Us - Nandani');
+        redirect('contact');
     }
 
     public function distributor()
     {
-        $this->_stub_page('distributor', 'Become a Distributor - Nandani');
+        redirect('distributor');
     }
 
     private function _stub_page($page_name, $title)

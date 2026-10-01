@@ -76,7 +76,7 @@ class Brand extends CI_Controller {
             'brand_count'      => $brand_count,
             'product_count'    => $product_count,
             'category_filter'  => $category_slug,
-            'extra_css'        => ['page-banner.css', 'brands-page.css'],
+            'extra_css'        => ['page-banner.css', 'common.css', 'brands-page.css'],
             'extra_js'         => ['filter.js']
         ];
 

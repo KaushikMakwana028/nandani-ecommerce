@@ -281,14 +281,81 @@
     </div>
 
 
+    <!-- Brand Filters Toolbar -->
+    <div class="admin-filter-card mb-4">
+        <form id="brandFilterForm" method="GET" action="<?= base_url('admin/brands') ?>">
+            <!-- Top Tier: Search Input + Per Page & Reset -->
+            <div class="row g-2 align-items-center mb-3">
+                <div class="col-12 col-lg-8">
+                    <div class="filter-search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" class="form-control" name="q" id="brand_filter_q" value="<?= htmlspecialchars($search_query) ?>" placeholder="Search brand name or description...">
+                        <button type="button" class="btn-clear-search <?= empty($search_query) ? 'd-none' : '' ?>" id="clearBrandSearchBtn" aria-label="Clear Search">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-4 d-flex align-items-center justify-content-lg-end gap-2">
+                    <div class="d-flex align-items-center gap-2 flex-grow-1 flex-lg-grow-0">
+                        <span class="text-muted small d-none d-sm-inline">Show:</span>
+                        <select class="form-select form-select-sm filter-control" name="per_page" id="brand_filter_per_page" title="Items per page" style="min-width: 95px;">
+                            <option value="10" <?= ($per_page == 10) ? 'selected' : '' ?>>10 / page</option>
+                            <option value="25" <?= ($per_page == 25) ? 'selected' : '' ?>>25 / page</option>
+                            <option value="50" <?= ($per_page == 50) ? 'selected' : '' ?>>50 / page</option>
+                            <option value="100" <?= ($per_page == 100) ? 'selected' : '' ?>>100 / page</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn-filter-reset" id="resetBrandFiltersBtn" title="Reset all filters">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Reset</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Tier: Category & Status Dropdowns -->
+            <div class="row g-2 pt-2 border-top">
+                <div class="col-12 col-sm-6">
+                    <label class="filter-field-label"><i class="fa-solid fa-layer-group me-1 opacity-75"></i> Category</label>
+                    <select class="form-select form-select-sm filter-control" name="category_id" id="brand_filter_category_id">
+                        <option value="0">All Product Categories</option>
+                        <?php if (!empty($product_categories)): ?>
+                            <?php foreach ($product_categories as $c): ?>
+                                <option value="<?= $c->id ?>" <?= ($selected_category == $c->id) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($c->name) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <label class="filter-field-label"><i class="fa-solid fa-toggle-on me-1 opacity-75"></i> Status</label>
+                    <select class="form-select form-select-sm filter-control" name="status" id="brand_filter_status">
+                        <option value="">All Statuses</option>
+                        <option value="active" <?= ($selected_status === 'active') ? 'selected' : '' ?>>Active</option>
+                        <option value="inactive" <?= ($selected_status === 'inactive') ? 'selected' : '' ?>>Inactive</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <!-- Main Brands Table Card -->
-    <div class="brand-card mb-4">
+    <div class="brand-card mb-4 position-relative">
+        <!-- Loading Overlay -->
+        <div id="brandTableOverlay" class="position-absolute w-100 h-100 top-0 start-0 d-none justify-content-center align-items-center" style="background: rgba(255,255,255,0.7); z-index: 10; backdrop-filter: blur(1px);">
+            <div class="spinner-border text-danger" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
         <div class="brand-card-header d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-2">
                 <i class="fa-solid fa-tags text-muted"></i>
                 <h5 class="mb-0 fw-bold text-dark fs-6">Registered Brands</h5>
             </div>
-            <span class="text-muted small"><?= $total_brands ?> brand(s) total</span>
+            <span class="text-muted small" id="showingBrandCountBadge"><?= $total_filtered ?> brand(s) found</span>
         </div>
 
         <div class="table-responsive">
@@ -303,104 +370,26 @@
                         <th style="width: 110px;" class="text-end">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php if (!empty($brands)): ?>
-                        <?php foreach ($brands as $b): ?>
-                            <?php $logo_url = base_url('uploads/brands/' . $b->logo_image); ?>
-                            <tr class="brand-row"
-                                data-id="<?= $b->id ?>"
-                                data-name="<?= htmlspecialchars($b->name, ENT_QUOTES, 'UTF-8') ?>"
-                                data-category-id="<?= $b->category_id ?>"
-                                data-since-year="<?= $b->since_year ?? '' ?>"
-                                data-short-desc="<?= htmlspecialchars($b->short_description ?? '', ENT_QUOTES, 'UTF-8') ?>"
-                                data-status="<?= $b->status ?>"
-                                data-logo="<?= $logo_url ?>">
-                                
-                                <!-- Logo Thumbnail -->
-                                <td>
-                                    <div class="brand-logo-wrapper" title="<?= htmlspecialchars($b->name) ?>">
-                                        <img src="<?= $logo_url ?>" alt="<?= htmlspecialchars($b->name) ?>" class="brand-logo-img" onerror="this.src='https://via.placeholder.com/80x60?text=PNG';">
-                                    </div>
-                                </td>
-
-                                <!-- Brand Details -->
-                                <td>
-                                    <div class="fw-bold text-dark fs-6 mb-1"><?= htmlspecialchars($b->name) ?></div>
-                                    <?php if (!empty($b->short_description)): ?>
-                                        <div class="text-muted small text-truncate" style="max-width: 380px;">
-                                            <?= htmlspecialchars($b->short_description) ?>
-                                        </div>
-                                    <?php else: ?>
-                                        <span class="text-muted fst-italic small">No description provided</span>
-                                    <?php endif; ?>
-                                </td>
-
-                                <!-- Joined Product Category -->
-                                <td>
-                                    <?php if (!empty($b->category_name)): ?>
-                                        <span class="cat-badge" title="Type: <?= htmlspecialchars($b->category_type ?? 'product') ?>">
-                                            <i class="fa-solid fa-layer-group"></i>
-                                            <?= htmlspecialchars($b->category_name) ?>
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="text-danger small fst-italic">Category unlinked</span>
-                                    <?php endif; ?>
-                                </td>
-
-                                <!-- Since Year -->
-                                <td>
-                                    <?php if (!empty($b->since_year)): ?>
-                                        <span class="since-pill">Est. <?= $b->since_year ?></span>
-                                    <?php else: ?>
-                                        <span class="text-muted small">&mdash;</span>
-                                    <?php endif; ?>
-                                </td>
-
-                                <!-- Status -->
-                                <td>
-                                    <a href="<?= base_url('admin/brands/toggle-status/' . $b->id) ?>" 
-                                       class="status-pill <?= $b->status ?>" 
-                                       title="Click to toggle status">
-                                        <span class="status-pill-dot"></span>
-                                        <span><?= ucfirst($b->status) ?></span>
-                                    </a>
-                                </td>
-
-                                <!-- Actions -->
-                                <td class="text-end">
-                                    <div class="d-inline-flex gap-1">
-                                        <button type="button" class="action-btn btn-edit-brand" title="Edit Brand">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                        <a href="<?= base_url('admin/brands/delete/' . $b->id) ?>" 
-                                           class="action-btn btn-delete" 
-                                           title="Delete Brand"
-                                           data-confirm-delete="true"
-                                           data-item-name="<?= htmlspecialchars($b->name, ENT_QUOTES, 'UTF-8') ?>">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="6" class="text-center py-5">
-                                <div class="py-4">
-                                    <i class="fa-solid fa-tags fa-3x text-muted opacity-50 mb-3"></i>
-                                    <h6 class="fw-bold text-dark mb-1">No Brands Added Yet</h6>
-                                    <p class="text-muted small mb-3">Add brand profiles and attach them to product categories.</p>
-                                    <button type="button" class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#addBrandModal" style="background-color: var(--primary-red); border-color: var(--primary-red);">
-                                        <i class="fa-solid fa-plus me-1"></i> Add First Brand
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
+                <tbody id="brandTableBody">
+                    <?php $this->load->view('admin/partials/brand_table_rows', [
+                        'brands'       => $brands,
+                        'search_query' => $search_query
+                    ]); ?>
                 </tbody>
             </table>
         </div>
+
+        <!-- Table Pagination and Entry Counter Footer -->
+        <div class="pagination-footer-bar">
+            <div class="pagination-entries-text" id="showingBrandEntriesText">
+                Showing <strong><?= $from_entry ?></strong> to <strong><?= $to_entry ?></strong> of <strong><?= $total_filtered ?></strong> brands
+            </div>
+            <div id="brandPaginationContainer">
+                <?= $pagination_html ?>
+            </div>
+        </div>
     </div>
+
 
 </div>
 
@@ -605,11 +594,161 @@
 </div>
 
 <!-- ==========================================
-     SCRIPTS: BRAND MODALS & PNG PREVIEWS
+     SCRIPTS: BRAND MODALS, PNG PREVIEWS & LIVE AJAX
 ========================================== -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const baseUrl = '<?= base_url() ?>';
+    const brandsEndpoint = baseUrl + 'admin/brands';
+
+    // Filter controls
+    const filterForm       = document.getElementById('brandFilterForm');
+    const filterQ          = document.getElementById('brand_filter_q');
+    const filterCategory   = document.getElementById('brand_filter_category_id');
+    const filterStatus     = document.getElementById('brand_filter_status');
+    const filterPerPage    = document.getElementById('brand_filter_per_page');
+    const resetFiltersBtn  = document.getElementById('resetBrandFiltersBtn');
+    const clearSearchBtn   = document.getElementById('clearBrandSearchBtn');
+    const tableBody        = document.getElementById('brandTableBody');
+    const tableOverlay     = document.getElementById('brandTableOverlay');
+    const paginationBox    = document.getElementById('brandPaginationContainer');
+    const entriesText      = document.getElementById('showingBrandEntriesText');
+    const countBadge       = document.getElementById('showingBrandCountBadge');
+
+    let currentPage = <?= $current_page ?>;
+    let searchTimer = null;
+
+    // AJAX Fetch Function
+    function fetchBrands(page = 1) {
+        currentPage = page;
+
+        if (tableOverlay) {
+            tableOverlay.classList.remove('d-none');
+            tableOverlay.classList.add('d-flex');
+        }
+
+        const params = new URLSearchParams();
+        const qVal = filterQ ? filterQ.value.trim() : '';
+        if (qVal) params.append('q', qVal);
+
+        const catVal = filterCategory ? filterCategory.value : '0';
+        if (catVal && catVal !== '0') params.append('category_id', catVal);
+
+        const statusVal = filterStatus ? filterStatus.value : '';
+        if (statusVal) params.append('status', statusVal);
+
+        const perPageVal = filterPerPage ? filterPerPage.value : '10';
+        params.append('per_page', perPageVal);
+        params.append('page', page);
+        params.append('ajax', '1');
+
+        // Update URL
+        const urlParams = new URLSearchParams(params);
+        urlParams.delete('ajax');
+        const newUrl = brandsEndpoint + (urlParams.toString() ? '?' + urlParams.toString() : '');
+        window.history.replaceState({}, '', newUrl);
+
+        fetch(brandsEndpoint + '?' + params.toString(), {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network error');
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                if (tableBody) tableBody.innerHTML = data.html;
+                if (paginationBox) paginationBox.innerHTML = data.pagination;
+                if (entriesText) {
+                    entriesText.innerHTML = (data.total > 0)
+                        ? `Showing <strong>${data.from}</strong> to <strong>${data.to}</strong> of <strong>${data.total}</strong> brands`
+                        : 'No brands found';
+                }
+                if (countBadge) countBadge.textContent = data.total + ' brand(s) found';
+            }
+        })
+        .catch(err => {
+            console.error('Error fetching brands:', err);
+        })
+        .finally(() => {
+            if (tableOverlay) {
+                tableOverlay.classList.add('d-none');
+                tableOverlay.classList.remove('d-flex');
+            }
+        });
+    }
+
+    // Debounced search
+    if (filterQ) {
+        filterQ.addEventListener('input', function() {
+            if (clearSearchBtn) {
+                clearSearchBtn.classList.toggle('d-none', !this.value.trim());
+            }
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => {
+                fetchBrands(1);
+            }, 300);
+        });
+    }
+
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', function() {
+            if (filterQ) {
+                filterQ.value = '';
+                filterQ.focus();
+            }
+            clearSearchBtn.classList.add('d-none');
+            fetchBrands(1);
+        });
+    }
+
+    // Selects
+    [filterCategory, filterStatus, filterPerPage].forEach(el => {
+        if (el) {
+            el.addEventListener('change', function() {
+                fetchBrands(1);
+            });
+        }
+    });
+
+    // Reset filters
+    if (resetFiltersBtn) {
+        resetFiltersBtn.addEventListener('click', function() {
+            if (filterQ) filterQ.value = '';
+            if (clearSearchBtn) clearSearchBtn.classList.add('d-none');
+            if (filterCategory) filterCategory.value = '0';
+            if (filterStatus) filterStatus.value = '';
+            if (filterPerPage) filterPerPage.value = '10';
+            fetchBrands(1);
+        });
+    }
+
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'resetBrandFiltersBtn') {
+            if (resetFiltersBtn) resetFiltersBtn.click();
+        }
+    });
+
+    if (filterForm) {
+        filterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetchBrands(1);
+        });
+    }
+
+    // Pagination Click
+    if (paginationBox) {
+        paginationBox.addEventListener('click', function(e) {
+            const link = e.target.closest('.page-link');
+            if (link && link.dataset.page) {
+                e.preventDefault();
+                const targetPage = parseInt(link.dataset.page, 10);
+                if (targetPage > 0) {
+                    fetchBrands(targetPage);
+                }
+            }
+        });
+    }
 
     // 1. ADD LOGO PNG PREVIEW
     const addLogoInput = document.getElementById('add_brand_logo');
@@ -660,25 +799,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 3. EDIT BRAND MODAL POPULATION
+    // 3. EDIT BRAND MODAL POPULATION (Event Delegation)
     const editModalEl = document.getElementById('editBrandModal');
     const editModal = editModalEl ? new bootstrap.Modal(editModalEl) : null;
     const editForm = document.getElementById('editBrandForm');
 
-    document.querySelectorAll('.btn-edit-brand').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const tr = this.closest('.brand-row');
-            if (!tr) return;
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-edit-brand');
+        if (!btn) return;
 
-            const id = tr.dataset.id;
-            const name = tr.dataset.name || '';
-            const categoryId = tr.dataset.categoryId || '';
-            const sinceYear = tr.dataset.sinceYear || '';
-            const shortDesc = tr.dataset.shortDesc || '';
-            const status = tr.dataset.status || 'active';
-            const logo = tr.dataset.logo || '';
+        const tr = btn.closest('.brand-row');
+        if (!tr) return;
 
-            // Populate form fields
+        const id = tr.dataset.id;
+        const name = tr.dataset.name || '';
+        const categoryId = tr.dataset.categoryId || '';
+        const sinceYear = tr.dataset.sinceYear || '';
+        const shortDesc = tr.dataset.shortDesc || '';
+        const status = tr.dataset.status || 'active';
+        const logo = tr.dataset.logo || '';
+
+        // Populate form fields
+        if (editForm) {
             editForm.action = baseUrl + 'admin/brands/edit/' + id;
             document.getElementById('edit_brand_id').value = id;
             document.getElementById('edit_brand_name').value = name;
@@ -691,8 +833,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Reset file input
             if (editLogoInput) editLogoInput.value = '';
 
-            editModal.show();
-        });
+            if (editModal) editModal.show();
+        }
     });
 });
 </script>

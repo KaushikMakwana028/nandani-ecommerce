@@ -170,17 +170,36 @@ foreach ($display_brands as $item) {
           </div>
         <?php endforeach; ?>
       <?php else: ?>
-        <div class="col-12 text-center py-5">
-          <i class="fas fa-box-open" style="font-size:50px; color:#ccc;"></i>
-          <p class="mt-3 text-muted">No brands found at this time.</p>
+        <div class="col-lg-8 mx-auto text-center py-5">
+          <div class="empty-state-card p-5" style="background:#fff; border:1px solid #eee; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.06);">
+            <div class="empty-icon-wrap mb-3" style="width:76px; height:76px; margin:0 auto; border-radius:50%; background:linear-gradient(135deg, rgba(200,16,46,0.1), rgba(212,175,55,0.15)); display:flex; align-items:center; justify-content:center;">
+              <i class="fas fa-handshake" style="font-size:32px; color:var(--primary-red);"></i>
+            </div>
+            <h4 class="mb-2" style="font-family:'Playfair Display', serif; font-weight:700;">No Brands Currently Available</h4>
+            <p class="text-muted mb-4" style="max-width:480px; margin:0 auto;">Our brand partnership catalogue is currently being updated. Connect with our distribution desk for current brand availability and dealership queries.</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+              <a href="<?= site_url('contact'); ?>" class="btn-primary-custom">Contact Us <i class="fas fa-arrow-right ms-2"></i></a>
+              <a href="tel:<?= $phone_raw; ?>" class="btn-outline-custom"><i class="fas fa-phone-alt me-2"></i>Call Us</a>
+            </div>
+          </div>
         </div>
       <?php endif; ?>
     </div>
 
     <!-- No Results Message (hidden by default) -->
     <div id="noResults" class="text-center py-5" style="display:none;">
-      <i class="fas fa-box-open" style="font-size:50px; color:#ccc;"></i>
-      <p class="mt-3 text-muted">No brands found in this category.</p>
+      <div class="col-lg-8 mx-auto">
+        <div class="empty-state-card p-5" style="background:#fff; border:1px solid #eee; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.06);">
+          <div class="empty-icon-wrap mb-3" style="width:76px; height:76px; margin:0 auto; border-radius:50%; background:linear-gradient(135deg, rgba(200,16,46,0.1), rgba(212,175,55,0.15)); display:flex; align-items:center; justify-content:center;">
+            <i class="fas fa-building" style="font-size:30px; color:var(--gold);"></i>
+          </div>
+          <h4 class="mb-2" style="font-family:'Playfair Display', serif; font-weight:700;">No Brands in This Category</h4>
+          <p class="text-muted mb-4" style="max-width:480px; margin:0 auto;">We currently do not have brands listed under this specific category filter. Click below to view all brand partners.</p>
+          <button type="button" class="btn-primary-custom" onclick="document.querySelector('.brand-filter .filter-btn[data-filter=\'all\']').click();">
+            <i class="fas fa-undo me-2"></i>Show All Brands
+          </button>
+        </div>
+      </div>
     </div>
 
   </div>

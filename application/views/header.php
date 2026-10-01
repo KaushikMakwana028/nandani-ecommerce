@@ -67,7 +67,7 @@ $active_menu = isset($active_menu) ? $active_menu : 'home';
 
 <?php if (isset($extra_css) && is_array($extra_css)): ?>
   <?php foreach ($extra_css as $css_file): ?>
-    <link rel="stylesheet" href="<?= base_url('assets/css/' . $css_file); ?>">
+    <link rel="stylesheet" href="<?= (strpos($css_file, 'http') === 0) ? $css_file : base_url('assets/css/' . $css_file); ?>">
   <?php endforeach; ?>
 <?php endif; ?>
 </head>
@@ -130,7 +130,7 @@ $active_menu = isset($active_menu) ? $active_menu : 'home';
         <li class="nav-item"><a class="nav-link <?= $active_menu === 'gallery' ? 'active' : ''; ?>" href="<?= site_url('gallery'); ?>">Gallery</a></li>
         <li class="nav-item"><a class="nav-link <?= $active_menu === 'contact' ? 'active' : ''; ?>" href="<?= site_url('contact'); ?>">Contact</a></li>
         <li class="nav-item ms-lg-3">
-          <a href="<?= site_url('distributor'); ?>" class="btn-distributor">Become a Distributor</a>
+          <a href="<?= site_url('distributor'); ?>" class="btn-distributor <?= $active_menu === 'distributor' ? 'active-distributor' : ''; ?>">Become a Distributor</a>
         </li>
       </ul>
     </div>

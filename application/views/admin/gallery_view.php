@@ -303,15 +303,43 @@
     </div>
 
 
-    <!-- Category Filter Bar Above Grid -->
-    <div class="gal-filter-card">
-        <form method="GET" action="<?= base_url('admin/gallery') ?>" class="row g-2 align-items-center">
-            <div class="col-md-5 col-lg-4">
-                <div class="d-flex align-items-center gap-2">
-                    <label for="filter_cat" class="fw-bold small text-dark text-nowrap mb-0">
-                        <i class="fa-solid fa-filter text-muted me-1"></i> Filter by Category:
-                    </label>
-                    <select class="form-select form-select-sm" name="category_id" id="filter_cat" onchange="this.form.submit()">
+    <!-- Gallery Filters Toolbar -->
+    <div class="admin-filter-card mb-4">
+        <form id="galleryFilterForm" method="GET" action="<?= base_url('admin/gallery') ?>">
+            <!-- Top Tier: Search Caption + Per Page & Reset -->
+            <div class="row g-2 align-items-center mb-3">
+                <div class="col-12 col-lg-8">
+                    <div class="filter-search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" class="form-control" name="q" id="gallery_filter_q" value="<?= htmlspecialchars($search_query ?? '') ?>" placeholder="Search gallery captions or titles...">
+                        <button type="button" class="btn-clear-search <?= empty($search_query) ? 'd-none' : '' ?>" id="clearGallerySearchBtn" aria-label="Clear Search">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-4 d-flex align-items-center justify-content-lg-end gap-2">
+                    <div class="d-flex align-items-center gap-2 flex-grow-1 flex-lg-grow-0">
+                        <span class="text-muted small d-none d-sm-inline">Show:</span>
+                        <select class="form-select form-select-sm filter-control" name="per_page" id="gallery_filter_per_page" title="Images per page" style="min-width: 95px;">
+                            <option value="12" <?= ($per_page == 12) ? 'selected' : '' ?>>12 / page</option>
+                            <option value="24" <?= ($per_page == 24) ? 'selected' : '' ?>>24 / page</option>
+                            <option value="48" <?= ($per_page == 48) ? 'selected' : '' ?>>48 / page</option>
+                            <option value="96" <?= ($per_page == 96) ? 'selected' : '' ?>>96 / page</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn-filter-reset" id="resetGalleryFiltersBtn" title="Reset all filters">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Reset</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Tier: Category & Status Dropdowns -->
+            <div class="row g-2 pt-2 border-top">
+                <div class="col-12 col-sm-6">
+                    <label class="filter-field-label"><i class="fa-solid fa-layer-group me-1 opacity-75"></i> Category</label>
+                    <select class="form-select form-select-sm filter-control" name="category_id" id="gallery_filter_category_id">
                         <option value="0">All Gallery Categories</option>
                         <?php if (!empty($gallery_categories)): ?>
                             <?php foreach ($gallery_categories as $gc): ?>
@@ -322,108 +350,49 @@
                         <?php endif; ?>
                     </select>
                 </div>
-            </div>
-            <div class="col-md-7 col-lg-8 d-flex justify-content-md-end align-items-center gap-2">
-                <?php if ($selected_category > 0): ?>
-                    <span class="badge bg-light text-dark border px-2 py-1">
-                        Active Filter Applied
-                    </span>
-                    <a href="<?= base_url('admin/gallery') ?>" class="btn btn-outline-secondary btn-sm px-2 py-1">
-                        <i class="fa-solid fa-xmark me-1"></i> Reset Filter
-                    </a>
-                <?php else: ?>
-                    <span class="text-muted small">Showing all <?= count($images) ?> visual asset(s)</span>
-                <?php endif; ?>
+
+                <div class="col-12 col-sm-6">
+                    <label class="filter-field-label"><i class="fa-solid fa-toggle-on me-1 opacity-75"></i> Status</label>
+                    <select class="form-select form-select-sm filter-control" name="status" id="gallery_filter_status">
+                        <option value="">All Statuses</option>
+                        <option value="active" <?= ($selected_status === 'active') ? 'selected' : '' ?>>Active</option>
+                        <option value="inactive" <?= ($selected_status === 'inactive') ? 'selected' : '' ?>>Inactive</option>
+                    </select>
+                </div>
             </div>
         </form>
     </div>
 
-    <!-- Responsive Thumbnail Grid -->
-    <?php if (!empty($images)): ?>
-        <div class="gallery-grid mb-5">
-            <?php foreach ($images as $img): ?>
-                <?php $img_url = base_url('uploads/gallery/' . $img->image); ?>
-                <div class="gallery-card"
-                     data-id="<?= $img->id ?>"
-                     data-caption="<?= htmlspecialchars($img->title_caption ?? '', ENT_QUOTES, 'UTF-8') ?>"
-                     data-category-id="<?= $img->category_id ?>"
-                     data-status="<?= $img->status ?>"
-                     data-image="<?= $img_url ?>">
-                     
-                    <!-- Thumbnail Container with Hover Icons -->
-                    <div class="gallery-thumb-container">
-                        <img src="<?= $img_url ?>" alt="<?= htmlspecialchars($img->title_caption ?? 'Gallery Item') ?>" class="gallery-thumb-img" onerror="this.src='https://via.placeholder.com/300x200?text=Gallery+Image';">
-                        
-                        <!-- Hover Overlay with Edit & Delete Controls -->
-                        <div class="gallery-hover-overlay">
-                            <a href="<?= $img_url ?>" target="_blank" class="hover-btn btn-view" title="Open Full Image" data-lightbox="gallery">
-                                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-                            </a>
-                            <button type="button" class="hover-btn btn-edit-gallery" title="Edit Caption & Category">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-                            <a href="<?= base_url('admin/gallery/delete/' . $img->id) ?>" 
-                               class="hover-btn btn-delete text-danger" 
-                               title="Delete Image"
-                               data-confirm-delete="true"
-                               data-item-name="<?= !empty($img->title_caption) ? htmlspecialchars($img->title_caption, ENT_QUOTES, 'UTF-8') : 'this gallery image' ?>">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Card Body -->
-                    <div class="gallery-card-body">
-                        <div>
-                            <?php if (!empty($img->title_caption)): ?>
-                                <div class="gallery-caption" title="<?= htmlspecialchars($img->title_caption) ?>">
-                                    <?= htmlspecialchars($img->title_caption) ?>
-                                </div>
-                            <?php else: ?>
-                                <div class="gallery-caption text-muted fst-italic">
-                                    Untitled Image
-                                </div>
-                            <?php endif; ?>
-                        </div>
-
-                        <div class="gallery-meta">
-                            <span class="gallery-cat-tag" title="Category: <?= htmlspecialchars($img->category_name ?? 'Unassigned') ?>">
-                                <i class="fa-solid fa-tag text-muted"></i>
-                                <?= htmlspecialchars($img->category_name ?? 'Unassigned') ?>
-                            </span>
-
-                            <a href="<?= base_url('admin/gallery/toggle-status/' . $img->id) ?>" 
-                               class="status-pill <?= $img->status ?>" 
-                               title="Click to toggle status">
-                                <span class="status-pill-dot"></span>
-                                <span><?= ucfirst($img->status) ?></span>
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php else: ?>
-        <div class="card border-0 shadow-sm rounded-4 p-5 text-center my-4 bg-white">
-            <div class="py-4">
-                <i class="fa-solid fa-photo-film fa-3x text-muted opacity-50 mb-3"></i>
-                <h5 class="fw-bold text-dark mb-1">No Gallery Images Found</h5>
-                <p class="text-muted small mb-3">
-                    <?= ($selected_category > 0) ? 'No images match the selected category filter.' : 'Upload visual assets to showcase your events, factory, or corporate milestones.' ?>
-                </p>
-                <?php if ($selected_category > 0): ?>
-                    <a href="<?= base_url('admin/gallery') ?>" class="btn btn-outline-secondary btn-sm px-3">
-                        Clear Category Filter
-                    </a>
-                <?php else: ?>
-                    <button type="button" class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#addImageModal" style="background-color: var(--primary-red); border-color: var(--primary-red);">
-                        <i class="fa-solid fa-plus me-1"></i> Upload First Image
-                    </button>
-                <?php endif; ?>
+    <!-- Gallery Grid Box with Loading Overlay -->
+    <div class="position-relative mb-4">
+        <!-- Loading Overlay -->
+        <div id="galleryGridOverlay" class="position-absolute w-100 h-100 top-0 start-0 d-none justify-content-center align-items-center" style="background: rgba(255,255,255,0.7); z-index: 10; backdrop-filter: blur(1px); border-radius: 12px; min-height: 200px;">
+            <div class="spinner-border text-danger" role="status">
+                <span class="visually-hidden">Loading images...</span>
             </div>
         </div>
-    <?php endif; ?>
+
+        <!-- Dynamic Grid Content Container -->
+        <div id="galleryGridContainer">
+            <?= $this->load->view('admin/partials/gallery_grid_items', [
+                'images'            => $images,
+                'search_query'      => $search_query ?? '',
+                'selected_category' => $selected_category ?? 0,
+                'selected_status'   => $selected_status ?? ''
+            ], TRUE) ?>
+        </div>
+    </div>
+
+    <!-- Pagination & Entries Count Bar -->
+    <div class="pagination-footer-bar rounded-3 border mb-4">
+        <div class="pagination-entries-text" id="galleryEntriesText">
+            Showing <strong><?= $from_entry ?></strong> to <strong><?= $to_entry ?></strong> of <strong><?= $total_filtered ?></strong> image(s)
+        </div>
+        <div id="galleryPaginationContainer">
+            <?= $pagination_html ?>
+        </div>
+    </div>
+
 
 </div>
 
@@ -593,11 +562,159 @@
 </div>
 
 <!-- ==========================================
-     SCRIPTS: GALLERY MODALS & PREVIEWS
+     SCRIPTS: GALLERY AJAX, MODALS & PREVIEWS
 ========================================== -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const baseUrl = '<?= base_url() ?>';
+
+    // Elements for AJAX
+    const filterForm         = document.getElementById('galleryFilterForm');
+    const filterQ            = document.getElementById('gallery_filter_q');
+    const clearSearchBtn     = document.getElementById('clearGallerySearchBtn');
+    const filterCategory     = document.getElementById('gallery_filter_category_id');
+    const filterStatus       = document.getElementById('gallery_filter_status');
+    const filterPerPage      = document.getElementById('gallery_filter_per_page');
+    const resetFiltersBtn    = document.getElementById('resetGalleryFiltersBtn');
+    const gridContainer      = document.getElementById('galleryGridContainer');
+    const gridOverlay        = document.getElementById('galleryGridOverlay');
+    const paginationBox      = document.getElementById('galleryPaginationContainer');
+    const entriesText        = document.getElementById('galleryEntriesText');
+
+    let searchTimer = null;
+    let currentPage = <?= (int)($current_page ?? 1) ?>;
+
+    // AJAX Fetch Gallery
+    function fetchGallery(page = 1) {
+        currentPage = page;
+
+        if (gridOverlay) {
+            gridOverlay.classList.remove('d-none');
+            gridOverlay.classList.add('d-flex');
+        }
+
+        const params = new URLSearchParams();
+        if (filterQ && filterQ.value.trim() !== '') {
+            params.set('q', filterQ.value.trim());
+        }
+        if (filterCategory && filterCategory.value !== '0') {
+            params.set('category_id', filterCategory.value);
+        }
+        if (filterStatus && filterStatus.value !== '') {
+            params.set('status', filterStatus.value);
+        }
+        if (filterPerPage && filterPerPage.value !== '') {
+            params.set('per_page', filterPerPage.value);
+        }
+        params.set('page', page);
+        params.set('ajax', '1');
+
+        const requestUrl = baseUrl + 'admin/gallery?' + params.toString();
+
+        fetch(requestUrl, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network error');
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                if (gridContainer) gridContainer.innerHTML = data.html;
+                if (paginationBox) paginationBox.innerHTML = data.pagination;
+                if (entriesText) {
+                    entriesText.innerHTML = (data.total > 0)
+                        ? `Showing <strong>${data.from}</strong> to <strong>${data.to}</strong> of <strong>${data.total}</strong> image(s)`
+                        : 'No images found';
+                }
+            }
+        })
+        .catch(err => {
+            console.error('Error fetching gallery:', err);
+        })
+        .finally(() => {
+            if (gridOverlay) {
+                gridOverlay.classList.add('d-none');
+                gridOverlay.classList.remove('d-flex');
+            }
+        });
+    }
+
+    // Debounced search
+    if (filterQ) {
+        filterQ.addEventListener('input', function() {
+            if (clearSearchBtn) {
+                clearSearchBtn.classList.toggle('d-none', !this.value.trim());
+            }
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => {
+                fetchGallery(1);
+            }, 300);
+        });
+    }
+
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', function() {
+            if (filterQ) {
+                filterQ.value = '';
+                filterQ.focus();
+            }
+            clearSearchBtn.classList.add('d-none');
+            fetchGallery(1);
+        });
+    }
+
+    // Selects
+    [filterCategory, filterStatus, filterPerPage].forEach(el => {
+        if (el) {
+            el.addEventListener('change', function() {
+                fetchGallery(1);
+            });
+        }
+    });
+
+    // Reset filters
+    function resetAllFilters() {
+        if (filterQ) filterQ.value = '';
+        if (clearSearchBtn) clearSearchBtn.classList.add('d-none');
+        if (filterCategory) filterCategory.value = '0';
+        if (filterStatus) filterStatus.value = '';
+        if (filterPerPage) filterPerPage.value = '12';
+        fetchGallery(1);
+    }
+
+    if (resetFiltersBtn) {
+        resetFiltersBtn.addEventListener('click', resetAllFilters);
+    }
+
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'resetGalleryFiltersBtn') {
+            resetAllFilters();
+        }
+    });
+
+    if (filterForm) {
+        filterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetchGallery(1);
+        });
+    }
+
+    // Pagination Click Delegation
+    if (paginationBox) {
+        paginationBox.addEventListener('click', function(e) {
+            const link = e.target.closest('.page-link');
+            if (link && link.dataset.page) {
+                e.preventDefault();
+                const targetPage = parseInt(link.dataset.page, 10);
+                if (targetPage > 0) {
+                    fetchGallery(targetPage);
+                }
+            }
+        });
+    }
 
     // 1. ADD IMAGE PREVIEW
     const addImgInput = document.getElementById('add_gal_image');
@@ -633,14 +750,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 3. IMAGE PREVIEW LIGHTBOX VIA SWEETALERT2
-    document.querySelectorAll('.btn-view').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const imgUrl = this.getAttribute('href');
-            const card = this.closest('.gallery-card');
-            const caption = card ? (card.dataset.caption || 'Gallery Image') : 'Gallery Image';
+    // 3. IMAGE PREVIEW LIGHTBOX (Event Delegation)
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-view');
+        if (!btn) return;
 
+        e.preventDefault();
+        const imgUrl = btn.getAttribute('href');
+        const card = btn.closest('.gallery-card');
+        const caption = card ? (card.dataset.caption || 'Gallery Image') : 'Gallery Image';
+
+        if (typeof Swal !== 'undefined') {
             Swal.fire({
                 title: caption,
                 imageUrl: imgUrl,
@@ -652,27 +772,32 @@ document.addEventListener('DOMContentLoaded', function() {
                     popup: 'swal2-nandani-popup'
                 }
             });
-        });
+        } else {
+            window.open(imgUrl, '_blank');
+        }
     });
 
-    // 4. EDIT GALLERY MODAL POPULATION
+    // 4. EDIT GALLERY MODAL POPULATION (Event Delegation)
     const editModalEl = document.getElementById('editImageModal');
     const editModal = editModalEl ? new bootstrap.Modal(editModalEl) : null;
     const editForm = document.getElementById('editImageForm');
 
-    document.querySelectorAll('.btn-edit-gallery').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const card = this.closest('.gallery-card');
-            if (!card) return;
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-edit-gallery');
+        if (!btn) return;
 
-            const id = card.dataset.id;
-            const caption = card.dataset.caption || '';
-            const categoryId = card.dataset.categoryId || '';
-            const status = card.dataset.status || 'active';
-            const image = card.dataset.image || '';
+        e.stopPropagation();
+        const card = btn.closest('.gallery-card');
+        if (!card) return;
 
-            // Populate form
+        const id = card.dataset.id;
+        const caption = card.dataset.caption || '';
+        const categoryId = card.dataset.categoryId || '';
+        const status = card.dataset.status || 'active';
+        const image = card.dataset.image || '';
+
+        // Populate form
+        if (editForm) {
             editForm.action = baseUrl + 'admin/gallery/edit/' + id;
             document.getElementById('edit_gal_id').value = id;
             document.getElementById('edit_gal_caption').value = caption;
@@ -683,8 +808,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Reset file input
             if (editImgInput) editImgInput.value = '';
 
-            editModal.show();
-        });
+            if (editModal) editModal.show();
+        }
     });
 });
 </script>

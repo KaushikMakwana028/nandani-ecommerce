@@ -1,24 +1,57 @@
 // ============================
 // AOS Animation Init
 // ============================
-AOS.init({
-  duration: 900,
-  once: true,
-  offset: 100
-});
+if (typeof AOS !== 'undefined') {
+  AOS.init({
+    duration: 800,
+    once: true,
+    offset: 50,
+    disableMutationObserver: false
+  });
+}
 
 // ============================
-// Navbar Scroll Effect
+// Navbar Scroll Effect (Non-blocking & Hysteresis Protected)
 // ============================
-window.addEventListener('scroll', function(){
-  const topBar = document.getElementById('topBar');
+(function() {
   const nav = document.getElementById('mainNav');
+  const topBar = document.getElementById('topBar');
+  if (!nav) return;
 
-  if(window.scrollY > 80){
-    topBar.classList.add('hide');
-    nav.classList.add('scrolled');
-  } else {
-    topBar.classList.remove('hide');
-    nav.classList.remove('scrolled');
+  let isScrolled = false;
+  let ticking = false;
+
+  function updateNavbar() {
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+
+    // Hysteresis gap: activate when scrolled down past 90px,
+    // only deactivate when scrolled back up near the top (< 25px).
+    // This completely eliminates layout thrashing and scroll jitter.
+    if (!isScrolled && scrollY > 90) {
+      isScrolled = true;
+      nav.classList.add('scrolled');
+      if (topBar) topBar.classList.add('hide');
+    } else if (isScrolled && scrollY < 25) {
+      isScrolled = false;
+      nav.classList.remove('scrolled');
+      if (topBar) topBar.classList.remove('hide');
+    }
+
+    ticking = false;
   }
-});
+
+  // Use passive scroll listener so browser scrolling is never blocked
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      window.requestAnimationFrame(updateNavbar);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // Initial check on load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateNavbar);
+  } else {
+    updateNavbar();
+  }
+})();

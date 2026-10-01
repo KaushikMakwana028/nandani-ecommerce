@@ -19,11 +19,24 @@
   box-sizing: border-box;
 }
 
-body{
+:root, html {
+  max-width: 100%;
+  overflow-x: clip;
+  scroll-behavior: auto !important;
+}
+
+body {
   font-family: var(--font-primary);
   color: var(--dark);
-  overflow-x: hidden;
-  scroll-behavior: smooth;
+  max-width: 100%;
+  overflow-x: clip;
+  overflow-y: visible !important;
+  position: relative;
+  scroll-behavior: auto !important;
+}
+
+body:not(.modal-open) {
+  overflow-y: visible !important;
 }
 
 h1, h2, h3, h4{

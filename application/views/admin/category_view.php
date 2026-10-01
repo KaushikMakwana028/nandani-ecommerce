@@ -440,6 +440,53 @@
     </div>
 </div>
 
+<!-- Category Filter Toolbar -->
+<div class="admin-filter-card mb-4">
+    <form id="categoryFilterForm">
+        <!-- Top Tier: Search Input + Per Page & Reset -->
+        <div class="row g-2 align-items-center mb-3">
+            <div class="col-12 col-lg-8">
+                <div class="filter-search-box">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" class="form-control" name="q" id="category_filter_q" value="<?= htmlspecialchars($search_query ?? '') ?>" placeholder="Search category name or description...">
+                    <button type="button" class="btn-clear-search <?= empty($search_query) ? 'd-none' : '' ?>" id="clearCategorySearchBtn" aria-label="Clear Search">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-4 d-flex align-items-center justify-content-lg-end gap-2">
+                <div class="d-flex align-items-center gap-2 flex-grow-1 flex-lg-grow-0">
+                    <span class="text-muted small d-none d-sm-inline">Show:</span>
+                    <select class="form-select form-select-sm filter-control" name="per_page" id="category_filter_per_page" title="Items per page" style="min-width: 95px;">
+                        <option value="10" <?= ($per_page == 10) ? 'selected' : '' ?>>10 / page</option>
+                        <option value="25" <?= ($per_page == 25) ? 'selected' : '' ?>>25 / page</option>
+                        <option value="50" <?= ($per_page == 50) ? 'selected' : '' ?>>50 / page</option>
+                        <option value="100" <?= ($per_page == 100) ? 'selected' : '' ?>>100 / page</option>
+                    </select>
+                </div>
+                <button type="button" class="btn-filter-reset" id="resetCategoryFiltersBtn" title="Reset all filters">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>Reset</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Tier: Status Filter -->
+        <div class="row g-2 pt-2 border-top">
+            <div class="col-12 col-sm-6 col-md-4">
+                <label class="filter-field-label"><i class="fa-solid fa-toggle-on me-1 opacity-75"></i> Status</label>
+                <select class="form-select form-select-sm filter-control" name="status" id="category_filter_status">
+                    <option value="">All Statuses</option>
+                    <option value="active" <?= ($selected_status === 'active') ? 'selected' : '' ?>>Active</option>
+                    <option value="inactive" <?= ($selected_status === 'inactive') ? 'selected' : '' ?>>Inactive</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+
+
 <!-- Tabs Navigation: Product Categories / Gallery Categories / Brand Categories -->
 <ul class="nav cat-nav-tabs mb-4" id="categoryTabs" role="tablist">
     <!-- Tab 1: Product Categories -->
@@ -450,11 +497,12 @@
                 data-bs-target="#productTabPane" 
                 type="button" 
                 role="tab" 
+                data-tab-type="product"
                 aria-controls="productTabPane" 
                 aria-selected="<?= ($active_tab === 'product') ? 'true' : 'false' ?>">
             <i class="fa-solid fa-box-open"></i>
             <span>Product Categories</span>
-            <span class="badge-count"><?= $product_count ?></span>
+            <span class="badge-count" id="productCountBadge"><?= $product_count ?></span>
         </button>
     </li>
 
@@ -466,11 +514,12 @@
                 data-bs-target="#galleryTabPane" 
                 type="button" 
                 role="tab" 
+                data-tab-type="gallery"
                 aria-controls="galleryTabPane" 
                 aria-selected="<?= ($active_tab === 'gallery') ? 'true' : 'false' ?>">
             <i class="fa-solid fa-images"></i>
             <span>Gallery Categories</span>
-            <span class="badge-count"><?= $gallery_count ?></span>
+            <span class="badge-count" id="galleryCountBadge"><?= $gallery_count ?></span>
         </button>
     </li>
 
@@ -482,318 +531,155 @@
                 data-bs-target="#brandTabPane" 
                 type="button" 
                 role="tab" 
+                data-tab-type="brand"
                 aria-controls="brandTabPane" 
                 aria-selected="<?= ($active_tab === 'brand') ? 'true' : 'false' ?>">
             <i class="fa-solid fa-tags"></i>
             <span>Brand Categories</span>
-            <span class="badge-count"><?= $brand_count ?></span>
+            <span class="badge-count" id="brandCountBadge"><?= $brand_count ?></span>
         </button>
     </li>
 </ul>
 
-<!-- Tabs Content -->
-<div class="tab-content" id="categoryTabsContent">
-    
-    <!-- ==================== TAB 1: PRODUCT CATEGORIES ==================== -->
-    <div class="tab-pane fade <?= ($active_tab === 'product') ? 'show active' : '' ?>" id="productTabPane" role="tabpanel" aria-labelledby="product-tab">
-        <div class="cat-card">
-            <div class="cat-card-header d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
-                <div>
-                    <h5 class="fw-bold text-dark mb-0">Product Categories</h5>
-                    <small class="text-muted">Classification for Gas Stoves, Appliances, and Equipment</small>
-                </div>
-                <button type="button" class="btn btn-primary-red d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addProductCategoryModal">
-                    <i class="fa-solid fa-plus me-2"></i>
-                    <span>Add Product Category</span>
-                </button>
-            </div>
-
-            <!-- Product Categories Table -->
-            <div class="table-responsive">
-                <table class="table table-categories">
-                    <thead>
-                        <tr>
-                            <th style="width: 70px;">Image</th>
-                            <th>Name</th>
-                            <th>Icon</th>
-                            <th style="width: 120px;">Status</th>
-                            <th style="width: 100px;">Sort Order</th>
-                            <th style="width: 110px;" class="text-end">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (!empty($product_categories)): ?>
-                            <?php foreach ($product_categories as $cat): ?>
-                                <tr>
-                                    <td>
-                                        <?php if (!empty($cat->image) && file_exists(FCPATH . $cat->image)): ?>
-                                            <img src="<?= base_url($cat->image) ?>" alt="<?= html_escape($cat->name) ?>" class="cat-thumbnail">
-                                        <?php else: ?>
-                                            <div class="cat-thumbnail-placeholder">
-                                                <i class="fa-solid fa-image"></i>
-                                            </div>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <div class="fw-semibold text-dark"><?= html_escape($cat->name) ?></div>
-                                        <?php if (!empty($cat->short_description)): ?>
-                                            <div class="text-muted small text-truncate" style="max-width: 320px;">
-                                                <?= html_escape($cat->short_description) ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?= render_category_icon_badge($cat->icon) ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($cat->status === 'active'): ?>
-                                            <span class="status-pill status-active">
-                                                <i class="fa-solid fa-circle-check" style="font-size: 0.65rem;"></i> Active
-                                            </span>
-                                        <?php else: ?>
-                                            <span class="status-pill status-inactive">
-                                                <i class="fa-solid fa-circle-xmark" style="font-size: 0.65rem;"></i> Inactive
-                                            </span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-light text-dark border px-2 py-1"><?= (int)$cat->sort_order ?></span>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="d-inline-flex gap-1">
-                                            <!-- Open Edit Modal Directly -->
-                                            <button type="button" 
-                                                    class="action-btn btn-edit-category" 
-                                                    title="Edit Category"
-                                                    data-id="<?= $cat->id ?>"
-                                                    data-name="<?= html_escape($cat->name) ?>"
-                                                    data-type="<?= html_escape($cat->type) ?>"
-                                                    data-icon="<?= html_escape(normalize_fa_icon($cat->icon, '')) ?>"
-                                                    data-image="<?= !empty($cat->image) && file_exists(FCPATH . $cat->image) ? base_url($cat->image) : '' ?>"
-                                                    data-short_description="<?= html_escape($cat->short_description) ?>"
-                                                    data-status="<?= html_escape($cat->status) ?>"
-                                                    data-sort_order="<?= (int)$cat->sort_order ?>">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </button>
-                                            <a href="<?= base_url('admin/category/delete/' . $cat->id) ?>" 
-                                               class="action-btn btn-delete" 
-                                               title="Delete Category"
-                                               data-confirm-delete="true"
-                                               data-item-name="<?= html_escape($cat->name) ?>">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="6" class="text-center py-5 text-muted">
-                                    <i class="fa-solid fa-box-open fa-2x mb-2 opacity-50 d-block"></i>
-                                    No product categories found. Click "Add Product Category" to create one.
-                                </td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
+<!-- Tabs Content Wrapper with Loading Overlay -->
+<div class="position-relative mb-4">
+    <!-- Shared Loading Overlay -->
+    <div id="categoryTableOverlay" class="position-absolute w-100 h-100 top-0 start-0 d-none justify-content-center align-items-center" style="background: rgba(255,255,255,0.7); z-index: 10; backdrop-filter: blur(1px); border-radius: 14px; min-height: 200px;">
+        <div class="spinner-border text-danger" role="status">
+            <span class="visually-hidden">Loading categories...</span>
         </div>
     </div>
 
-    <!-- ==================== TAB 2: GALLERY CATEGORIES ==================== -->
-    <div class="tab-pane fade <?= ($active_tab === 'gallery') ? 'show active' : '' ?>" id="galleryTabPane" role="tabpanel" aria-labelledby="gallery-tab">
-        <div class="cat-card">
-            <div class="cat-card-header d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
-                <div>
-                    <h5 class="fw-bold text-dark mb-0">Gallery Categories</h5>
-                    <small class="text-muted">Classification for Events, Exhibitions, and Corporate Media</small>
+    <div class="tab-content" id="categoryTabsContent">
+        
+        <!-- ==================== TAB 1: PRODUCT CATEGORIES ==================== -->
+        <div class="tab-pane fade <?= ($active_tab === 'product') ? 'show active' : '' ?>" id="productTabPane" role="tabpanel" aria-labelledby="product-tab">
+            <div class="cat-card">
+                <div class="cat-card-header d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
+                    <div>
+                        <h5 class="fw-bold text-dark mb-0">Product Categories</h5>
+                        <small class="text-muted">Classification for Gas Stoves, Appliances, and Equipment</small>
+                    </div>
+                    <button type="button" class="btn btn-primary-red d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addProductCategoryModal">
+                        <i class="fa-solid fa-plus me-2"></i>
+                        <span>Add Product Category</span>
+                    </button>
                 </div>
-                <button type="button" class="btn btn-primary-red d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addGalleryCategoryModal">
-                    <i class="fa-solid fa-plus me-2"></i>
-                    <span>Add Gallery Category</span>
-                </button>
-            </div>
 
-            <!-- Gallery Categories Table -->
-            <div class="table-responsive">
-                <table class="table table-categories">
-                    <thead>
-                        <tr>
-                            <th>Category Name</th>
-                            <th style="width: 140px;">Status</th>
-                            <th style="width: 120px;">Sort Order</th>
-                            <th style="width: 110px;" class="text-end">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (!empty($gallery_categories)): ?>
-                            <?php foreach ($gallery_categories as $cat): ?>
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-dark"><?= html_escape($cat->name) ?></div>
-                                    </td>
-                                    <td>
-                                        <?php if ($cat->status === 'active'): ?>
-                                            <span class="status-pill status-active">
-                                                <i class="fa-solid fa-circle-check" style="font-size: 0.65rem;"></i> Active
-                                            </span>
-                                        <?php else: ?>
-                                            <span class="status-pill status-inactive">
-                                                <i class="fa-solid fa-circle-xmark" style="font-size: 0.65rem;"></i> Inactive
-                                            </span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-light text-dark border px-2 py-1"><?= (int)$cat->sort_order ?></span>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="d-inline-flex gap-1">
-                                            <!-- Open Edit Modal Directly -->
-                                            <button type="button" 
-                                                    class="action-btn btn-edit-category" 
-                                                    title="Edit Category"
-                                                    data-id="<?= $cat->id ?>"
-                                                    data-name="<?= html_escape($cat->name) ?>"
-                                                    data-type="<?= html_escape($cat->type) ?>"
-                                                    data-icon="<?= html_escape($cat->icon) ?>"
-                                                    data-image="<?= !empty($cat->image) && file_exists(FCPATH . $cat->image) ? base_url($cat->image) : '' ?>"
-                                                    data-short_description="<?= html_escape($cat->short_description) ?>"
-                                                    data-status="<?= html_escape($cat->status) ?>"
-                                                    data-sort_order="<?= (int)$cat->sort_order ?>">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </button>
-                                            <a href="<?= base_url('admin/category/delete/' . $cat->id) ?>" 
-                                               class="action-btn btn-delete" 
-                                               title="Delete Category"
-                                               data-confirm-delete="true"
-                                               data-item-name="<?= html_escape($cat->name) ?>">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
+                <!-- Product Categories Table -->
+                <div class="table-responsive">
+                    <table class="table table-categories">
+                        <thead>
                             <tr>
-                                <td colspan="4" class="text-center py-5 text-muted">
-                                    <i class="fa-solid fa-images fa-2x mb-2 opacity-50 d-block"></i>
-                                    No gallery categories found. Click "Add Gallery Category" to create one.
-                                </td>
+                                <th style="width: 70px;">Image</th>
+                                <th>Name</th>
+                                <th>Icon</th>
+                                <th style="width: 120px;">Status</th>
+                                <th style="width: 100px;">Sort Order</th>
+                                <th style="width: 110px;" class="text-end">Actions</th>
                             </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody id="productCategoryTableBody">
+                            <?= $this->load->view('admin/partials/category_table_rows', [
+                                'categories'   => $product_categories,
+                                'type'         => 'product',
+                                'search_query' => $search_query ?? ''
+                            ], TRUE) ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- ==================== TAB 3: BRAND CATEGORIES ==================== -->
-    <div class="tab-pane fade <?= ($active_tab === 'brand') ? 'show active' : '' ?>" id="brandTabPane" role="tabpanel" aria-labelledby="brand-tab">
-        <div class="cat-card">
-            <div class="cat-card-header d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
-                <div>
-                    <h5 class="fw-bold text-dark mb-0">Brand Categories</h5>
-                    <small class="text-muted">Classification and taxonomy for associated Brands</small>
+        <!-- ==================== TAB 2: GALLERY CATEGORIES ==================== -->
+        <div class="tab-pane fade <?= ($active_tab === 'gallery') ? 'show active' : '' ?>" id="galleryTabPane" role="tabpanel" aria-labelledby="gallery-tab">
+            <div class="cat-card">
+                <div class="cat-card-header d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
+                    <div>
+                        <h5 class="fw-bold text-dark mb-0">Gallery Categories</h5>
+                        <small class="text-muted">Classification for Events, Exhibitions, and Corporate Media</small>
+                    </div>
+                    <button type="button" class="btn btn-primary-red d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addGalleryCategoryModal">
+                        <i class="fa-solid fa-plus me-2"></i>
+                        <span>Add Gallery Category</span>
+                    </button>
                 </div>
-                <button type="button" class="btn btn-primary-red d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addBrandCategoryModal">
-                    <i class="fa-solid fa-plus me-2"></i>
-                    <span>Add Brand Category</span>
-                </button>
-            </div>
 
-            <!-- Brand Categories Table -->
-            <div class="table-responsive">
-                <table class="table table-categories">
-                    <thead>
-                        <tr>
-                            <th style="width: 70px;">Logo/Image</th>
-                            <th>Brand Category Name</th>
-                            <th>Icon</th>
-                            <th style="width: 120px;">Status</th>
-                            <th style="width: 100px;">Sort Order</th>
-                            <th style="width: 110px;" class="text-end">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (!empty($brand_categories)): ?>
-                            <?php foreach ($brand_categories as $cat): ?>
-                                <tr>
-                                    <td>
-                                        <?php if (!empty($cat->image) && file_exists(FCPATH . $cat->image)): ?>
-                                            <img src="<?= base_url($cat->image) ?>" alt="<?= html_escape($cat->name) ?>" class="cat-thumbnail">
-                                        <?php else: ?>
-                                            <div class="cat-thumbnail-placeholder">
-                                                <i class="fa-solid fa-tag"></i>
-                                            </div>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <div class="fw-semibold text-dark"><?= html_escape($cat->name) ?></div>
-                                        <?php if (!empty($cat->short_description)): ?>
-                                            <div class="text-muted small text-truncate" style="max-width: 320px;">
-                                                <?= html_escape($cat->short_description) ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?= render_category_icon_badge($cat->icon) ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($cat->status === 'active'): ?>
-                                            <span class="status-pill status-active">
-                                                <i class="fa-solid fa-circle-check" style="font-size: 0.65rem;"></i> Active
-                                            </span>
-                                        <?php else: ?>
-                                            <span class="status-pill status-inactive">
-                                                <i class="fa-solid fa-circle-xmark" style="font-size: 0.65rem;"></i> Inactive
-                                            </span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-light text-dark border px-2 py-1"><?= (int)$cat->sort_order ?></span>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="d-inline-flex gap-1">
-                                            <!-- Open Edit Modal Directly -->
-                                            <button type="button" 
-                                                    class="action-btn btn-edit-category" 
-                                                    title="Edit Category"
-                                                    data-id="<?= $cat->id ?>"
-                                                    data-name="<?= html_escape($cat->name) ?>"
-                                                    data-type="<?= html_escape($cat->type) ?>"
-                                                    data-icon="<?= html_escape(normalize_fa_icon($cat->icon, '')) ?>"
-                                                    data-image="<?= !empty($cat->image) && file_exists(FCPATH . $cat->image) ? base_url($cat->image) : '' ?>"
-                                                    data-short_description="<?= html_escape($cat->short_description) ?>"
-                                                    data-status="<?= html_escape($cat->status) ?>"
-                                                    data-sort_order="<?= (int)$cat->sort_order ?>">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </button>
-                                            <a href="<?= base_url('admin/category/delete/' . $cat->id) ?>" 
-                                               class="action-btn btn-delete" 
-                                               title="Delete Category"
-                                               data-confirm-delete="true"
-                                               data-item-name="<?= html_escape($cat->name) ?>">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
+                <!-- Gallery Categories Table -->
+                <div class="table-responsive">
+                    <table class="table table-categories">
+                        <thead>
                             <tr>
-                                <td colspan="6" class="text-center py-5 text-muted">
-                                    <i class="fa-solid fa-tags fa-2x mb-2 opacity-50 d-block"></i>
-                                    No brand categories found. Click "Add Brand Category" to create one.
-                                </td>
+                                <th>Category Name</th>
+                                <th style="width: 140px;">Status</th>
+                                <th style="width: 120px;">Sort Order</th>
+                                <th style="width: 110px;" class="text-end">Actions</th>
                             </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody id="galleryCategoryTableBody">
+                            <?= $this->load->view('admin/partials/category_table_rows', [
+                                'categories'   => $gallery_categories,
+                                'type'         => 'gallery',
+                                'search_query' => $search_query ?? ''
+                            ], TRUE) ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
 
+        <!-- ==================== TAB 3: BRAND CATEGORIES ==================== -->
+        <div class="tab-pane fade <?= ($active_tab === 'brand') ? 'show active' : '' ?>" id="brandTabPane" role="tabpanel" aria-labelledby="brand-tab">
+            <div class="cat-card">
+                <div class="cat-card-header d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
+                    <div>
+                        <h5 class="fw-bold text-dark mb-0">Brand Categories</h5>
+                        <small class="text-muted">Classification and taxonomy for associated Brands</small>
+                    </div>
+                    <button type="button" class="btn btn-primary-red d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addBrandCategoryModal">
+                        <i class="fa-solid fa-plus me-2"></i>
+                        <span>Add Brand Category</span>
+                    </button>
+                </div>
+
+                <!-- Brand Categories Table -->
+                <div class="table-responsive">
+                    <table class="table table-categories">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">Logo/Image</th>
+                                <th>Brand Category Name</th>
+                                <th>Icon</th>
+                                <th style="width: 120px;">Status</th>
+                                <th style="width: 100px;">Sort Order</th>
+                                <th style="width: 110px;" class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="brandCategoryTableBody">
+                            <?= $this->load->view('admin/partials/category_table_rows', [
+                                'categories'   => $brand_categories,
+                                'type'         => 'brand',
+                                'search_query' => $search_query ?? ''
+                            ], TRUE) ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
+
+<!-- Pagination & Entries Bar -->
+<div class="pagination-footer-bar rounded-3 border mb-4">
+    <div class="pagination-entries-text" id="categoryEntriesText">
+        Showing <strong><?= $from_entry ?></strong> to <strong><?= $to_entry ?></strong> of <strong><?= $total_filtered ?></strong> items
+    </div>
+    <div id="categoryPaginationContainer">
+        <?= $pagination_html ?>
+    </div>
+</div>
+
 
 <!-- ==================== MODAL: ADD PRODUCT CATEGORY ==================== -->
 <div class="modal fade" id="addProductCategoryModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
@@ -1121,58 +1007,216 @@
     </div>
 </div>
 
-<!-- Tab URL Sync & Edit Modal Dynamic Population Script -->
+<!-- Tab URL Sync, AJAX Filtering & Dynamic Edit Modal Handler -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Tab switching URL sync
+        const baseUrl = '<?= base_url() ?>';
+        let currentTab = '<?= $active_tab ?>';
+        let searchTimer = null;
+
+        // Elements
+        const filterForm       = document.getElementById('categoryFilterForm');
+        const filterQ          = document.getElementById('category_filter_q');
+        const clearSearchBtn   = document.getElementById('clearCategorySearchBtn');
+        const filterStatus     = document.getElementById('category_filter_status');
+        const filterPerPage    = document.getElementById('category_filter_per_page');
+        const resetFiltersBtn  = document.getElementById('resetCategoryFiltersBtn');
+        const tableOverlay     = document.getElementById('categoryTableOverlay');
+        const paginationBox    = document.getElementById('categoryPaginationContainer');
+        const entriesText      = document.getElementById('categoryEntriesText');
+
+        // AJAX Fetch Function
+        function fetchCategories(page = 1) {
+            if (tableOverlay) {
+                tableOverlay.classList.remove('d-none');
+                tableOverlay.classList.add('d-flex');
+            }
+
+            const params = new URLSearchParams();
+            params.set('tab', currentTab);
+            if (filterQ && filterQ.value.trim() !== '') {
+                params.set('q', filterQ.value.trim());
+            }
+            if (filterStatus && filterStatus.value !== '') {
+                params.set('status', filterStatus.value);
+            }
+            if (filterPerPage && filterPerPage.value !== '') {
+                params.set('per_page', filterPerPage.value);
+            }
+            params.set('page', page);
+            params.set('ajax', '1');
+
+            const requestUrl = baseUrl + 'admin/categories?' + params.toString();
+
+            fetch(requestUrl, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network error');
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    let targetTbody = null;
+                    if (currentTab === 'product') {
+                        targetTbody = document.getElementById('productCategoryTableBody');
+                        const b = document.getElementById('productCountBadge');
+                        if (b && !filterQ.value.trim() && !filterStatus.value) b.textContent = data.total;
+                    } else if (currentTab === 'gallery') {
+                        targetTbody = document.getElementById('galleryCategoryTableBody');
+                        const b = document.getElementById('galleryCountBadge');
+                        if (b && !filterQ.value.trim() && !filterStatus.value) b.textContent = data.total;
+                    } else if (currentTab === 'brand') {
+                        targetTbody = document.getElementById('brandCategoryTableBody');
+                        const b = document.getElementById('brandCountBadge');
+                        if (b && !filterQ.value.trim() && !filterStatus.value) b.textContent = data.total;
+                    }
+
+                    if (targetTbody) targetTbody.innerHTML = data.html;
+                    if (paginationBox) paginationBox.innerHTML = data.pagination;
+                    if (entriesText) {
+                        entriesText.innerHTML = (data.total > 0)
+                            ? `Showing <strong>${data.from}</strong> to <strong>${data.to}</strong> of <strong>${data.total}</strong> items`
+                            : 'No categories found';
+                    }
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching categories:', err);
+            })
+            .finally(() => {
+                if (tableOverlay) {
+                    tableOverlay.classList.add('d-none');
+                    tableOverlay.classList.remove('d-flex');
+                }
+            });
+        }
+
+        // Tab switching listener
         const tabButtons = document.querySelectorAll('#categoryTabs button[data-bs-toggle="tab"]');
         tabButtons.forEach(btn => {
             btn.addEventListener('shown.bs.tab', function(e) {
                 const targetId = e.target.getAttribute('data-bs-target');
-                let tabType = 'product';
                 if (targetId === '#galleryTabPane') {
-                    tabType = 'gallery';
+                    currentTab = 'gallery';
                 } else if (targetId === '#brandTabPane') {
-                    tabType = 'brand';
+                    currentTab = 'brand';
+                } else {
+                    currentTab = 'product';
                 }
+
                 const url = new URL(window.location);
-                url.searchParams.set('tab', tabType);
+                url.searchParams.set('tab', currentTab);
                 window.history.replaceState({}, '', url);
+
+                // Fetch new tab data
+                fetchCategories(1);
             });
         });
 
-        // Edit Modal Dynamic Handler
-        const editModalEl = document.getElementById('editCategoryModal');
-        const editModal = new bootstrap.Modal(editModalEl);
-        const editForm = document.getElementById('editCategoryForm');
-        const editIdInput = document.getElementById('edit_cat_id');
-        const editTypeInput = document.getElementById('edit_cat_type');
-        const editNameInput = document.getElementById('edit_cat_name');
-        const editIconInput = document.getElementById('edit_cat_icon');
-        const editIconPreview = document.getElementById('editIconPreview');
-        const editDescInput = document.getElementById('edit_cat_desc');
-        const editStatusSelect = document.getElementById('edit_cat_status');
-        const editSortInput = document.getElementById('edit_cat_sort');
-        const editBadge = document.getElementById('edit_cat_badge');
+        // Search input debounce
+        if (filterQ) {
+            filterQ.addEventListener('input', function() {
+                if (clearSearchBtn) {
+                    clearSearchBtn.classList.toggle('d-none', !this.value.trim());
+                }
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(() => {
+                    fetchCategories(1);
+                }, 300);
+            });
+        }
+
+        if (clearSearchBtn) {
+            clearSearchBtn.addEventListener('click', function() {
+                if (filterQ) {
+                    filterQ.value = '';
+                    filterQ.focus();
+                }
+                clearSearchBtn.classList.add('d-none');
+                fetchCategories(1);
+            });
+        }
+
+        // Filters select change
+        [filterStatus, filterPerPage].forEach(el => {
+            if (el) {
+                el.addEventListener('change', function() {
+                    fetchCategories(1);
+                });
+            }
+        });
+
+        // Reset button
+        function resetFilters() {
+            if (filterQ) filterQ.value = '';
+            if (clearSearchBtn) clearSearchBtn.classList.add('d-none');
+            if (filterStatus) filterStatus.value = '';
+            if (filterPerPage) filterPerPage.value = '10';
+            fetchCategories(1);
+        }
+
+        if (resetFiltersBtn) {
+            resetFiltersBtn.addEventListener('click', resetFilters);
+        }
+
+        if (filterForm) {
+            filterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                fetchCategories(1);
+            });
+        }
+
+        // Pagination Click Delegation
+        if (paginationBox) {
+            paginationBox.addEventListener('click', function(e) {
+                const link = e.target.closest('.page-link');
+                if (link && link.dataset.page) {
+                    e.preventDefault();
+                    const targetPage = parseInt(link.dataset.page, 10);
+                    if (targetPage > 0) {
+                        fetchCategories(targetPage);
+                    }
+                }
+            });
+        }
+
+        // Edit Modal Dynamic Handler (Event Delegation for AJAX rows)
+        const editModalEl          = document.getElementById('editCategoryModal');
+        const editModal            = editModalEl ? new bootstrap.Modal(editModalEl) : null;
+        const editForm             = document.getElementById('editCategoryForm');
+        const editIdInput          = document.getElementById('edit_cat_id');
+        const editTypeInput        = document.getElementById('edit_cat_type');
+        const editNameInput        = document.getElementById('edit_cat_name');
+        const editIconInput        = document.getElementById('edit_cat_icon');
+        const editIconPreview      = document.getElementById('editIconPreview');
+        const editDescInput        = document.getElementById('edit_cat_desc');
+        const editStatusSelect     = document.getElementById('edit_cat_status');
+        const editSortInput        = document.getElementById('edit_cat_sort');
+        const editBadge            = document.getElementById('edit_cat_badge');
         const editProdBrandSection = document.getElementById('editProdBrandSection');
-        const editCurrentImageBox = document.getElementById('editCurrentImageBox');
-        const editCurrentThumb = document.getElementById('editCurrentThumb');
-        const editFileInput = document.getElementById('edit_cat_image');
+        const editCurrentImageBox  = document.getElementById('editCurrentImageBox');
+        const editCurrentThumb     = document.getElementById('editCurrentThumb');
+        const editFileInput        = document.getElementById('edit_cat_image');
 
-        // Attach click listeners to all edit buttons across all 3 tables
-        document.querySelectorAll('.btn-edit-category').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const name = this.getAttribute('data-name') || '';
-                const type = this.getAttribute('data-type') || 'product';
-                const icon = this.getAttribute('data-icon') || '';
-                const image = this.getAttribute('data-image') || '';
-                const desc = this.getAttribute('data-short_description') || '';
-                const status = this.getAttribute('data-status') || 'active';
-                const sort = this.getAttribute('data-sort_order') || '0';
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-edit-category');
+            if (!btn) return;
 
-                // Set form action
-                editForm.action = '<?= base_url("admin/category/edit/") ?>' + id;
+            const id     = btn.getAttribute('data-id');
+            const name   = btn.getAttribute('data-name') || '';
+            const type   = btn.getAttribute('data-type') || 'product';
+            const icon   = btn.getAttribute('data-icon') || '';
+            const image  = btn.getAttribute('data-image') || '';
+            const desc   = btn.getAttribute('data-short_description') || '';
+            const status = btn.getAttribute('data-status') || 'active';
+            const sort   = btn.getAttribute('data-sort_order') || '0';
+
+            // Set form action
+            if (editForm) {
+                editForm.action = baseUrl + 'admin/category/edit/' + id;
                 editIdInput.value = id;
                 editTypeInput.value = type;
                 editNameInput.value = name;
@@ -1181,35 +1225,37 @@
                 editSortInput.value = sort;
 
                 // Update badge and title
-                editBadge.textContent = type.toUpperCase();
-                document.getElementById('editCategoryModalLabel').textContent = 'Edit ' + type.charAt(0).toUpperCase() + type.slice(1) + ' Category';
+                if (editBadge) editBadge.textContent = type.toUpperCase();
+                const modalTitle = document.getElementById('editCategoryModalLabel');
+                if (modalTitle) modalTitle.textContent = 'Edit ' + type.charAt(0).toUpperCase() + type.slice(1) + ' Category';
 
                 // Reset file input
                 if (editFileInput) editFileInput.value = '';
 
                 // Show/hide relevant fields based on type
                 if (type === 'gallery') {
-                    editProdBrandSection.style.display = 'none';
+                    if (editProdBrandSection) editProdBrandSection.style.display = 'none';
                 } else {
-                    editProdBrandSection.style.display = 'block';
-                    editIconInput.value = icon;
-                    // Trigger input event to update icon preview box and validation
-                    editIconInput.dispatchEvent(new Event('input'));
-                    editDescInput.value = desc;
+                    if (editProdBrandSection) {
+                        editProdBrandSection.style.display = 'block';
+                        editIconInput.value = icon;
+                        editIconInput.dispatchEvent(new Event('input'));
+                        editDescInput.value = desc;
 
-                    // Image preview
-                    if (image) {
-                        editCurrentThumb.src = image;
-                        editCurrentImageBox.classList.remove('d-none');
-                        editCurrentImageBox.classList.add('d-flex');
-                    } else {
-                        editCurrentImageBox.classList.add('d-none');
-                        editCurrentImageBox.classList.remove('d-flex');
+                        // Image preview
+                        if (image) {
+                            editCurrentThumb.src = image;
+                            editCurrentImageBox.classList.remove('d-none');
+                            editCurrentImageBox.classList.add('d-flex');
+                        } else {
+                            editCurrentImageBox.classList.add('d-none');
+                            editCurrentImageBox.classList.remove('d-flex');
+                        }
                     }
                 }
 
-                editModal.show();
-            });
+                if (editModal) editModal.show();
+            }
         });
 
         // Edit form validation

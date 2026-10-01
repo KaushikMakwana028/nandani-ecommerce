@@ -14,37 +14,88 @@ class Category extends Admin_Controller {
     }
 
     /**
-     * List categories organized into three tabs:
-     * - Product Categories (type='product')
-     * - Gallery Categories (type='gallery')
-     * - Brand Categories (type='brand')
+     * List categories organized into three tabs with server-side filtering, pagination, and AJAX support
      */
     public function index() {
-        $active_tab = $this->input->get('tab', TRUE) ?: 'product';
+        $active_tab  = $this->input->get('tab', TRUE) ?: 'product';
         if (!in_array($active_tab, ['product', 'gallery', 'brand'])) {
             $active_tab = 'product';
         }
 
-        // Fetch product categories
-        $product_categories = $this->db->where('type', 'product')
-                                       ->order_by('sort_order', 'ASC')
-                                       ->order_by('name', 'ASC')
-                                       ->get('categories')
-                                       ->result();
+        $search   = trim((string)$this->input->get('q', TRUE));
+        $status   = trim((string)$this->input->get('status', TRUE));
+        $per_page = (int)$this->input->get('per_page', TRUE);
+        $page     = max(1, (int)$this->input->get('page', TRUE));
 
-        // Fetch gallery categories
-        $gallery_categories = $this->db->where('type', 'gallery')
-                                       ->order_by('sort_order', 'ASC')
-                                       ->order_by('name', 'ASC')
-                                       ->get('categories')
-                                       ->result();
+        $allowed_per_page = [10, 25, 50, 100];
+        if (!in_array($per_page, $allowed_per_page)) {
+            $per_page = 10;
+        }
 
-        // Fetch brand categories
-        $brand_categories = $this->db->where('type', 'brand')
-                                     ->order_by('sort_order', 'ASC')
-                                     ->order_by('name', 'ASC')
-                                     ->get('categories')
-                                     ->result();
+        // Base query builder for active tab
+        $apply_filters = function($db) use ($active_tab, $search, $status) {
+            $db->from('categories');
+            $db->where('type', $active_tab);
+
+            if (!empty($search)) {
+                $db->group_start();
+                $db->like('name', $search);
+                $db->or_like('short_description', $search);
+                $db->group_end();
+            }
+
+            if (in_array($status, ['active', 'inactive'], TRUE)) {
+                $db->where('status', $status);
+            }
+        };
+
+        // Total filtered count for active tab
+        $apply_filters($this->db);
+        $total_filtered = $this->db->count_all_results();
+
+        // Paginated records for active tab
+        $this->db->select('*');
+        $apply_filters($this->db);
+        $offset = ($page - 1) * $per_page;
+        $this->db->order_by('sort_order', 'ASC')->order_by('name', 'ASC');
+        $this->db->limit($per_page, $offset);
+        $tab_categories = $this->db->get()->result();
+
+        $pagination_html = $this->build_pagination($total_filtered, $per_page, $page);
+        $from_entry = $total_filtered > 0 ? ($offset + 1) : 0;
+        $to_entry   = min($offset + $per_page, $total_filtered);
+
+        // Check if AJAX request
+        if ($this->is_ajax()) {
+            $rows_html = $this->load->view('admin/partials/category_table_rows', [
+                'categories'   => $tab_categories,
+                'type'         => $active_tab,
+                'search_query' => $search
+            ], TRUE);
+
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output(json_encode([
+                     'status'     => 'success',
+                     'html'       => $rows_html,
+                     'pagination' => $pagination_html,
+                     'total'      => $total_filtered,
+                     'from'       => $from_entry,
+                     'to'         => $to_entry,
+                     'message'    => "Showing {$from_entry} to {$to_entry} of {$total_filtered} items"
+                 ]));
+            return;
+        }
+
+        // Full tab counts for badge counters
+        $product_count = $this->db->where('type', 'product')->count_all_results('categories');
+        $gallery_count = $this->db->where('type', 'gallery')->count_all_results('categories');
+        $brand_count   = $this->db->where('type', 'brand')->count_all_results('categories');
+
+        // Preload tab lists
+        $product_categories = ($active_tab === 'product') ? $tab_categories : $this->db->where('type', 'product')->order_by('sort_order', 'ASC')->order_by('name', 'ASC')->limit($per_page)->get('categories')->result();
+        $gallery_categories = ($active_tab === 'gallery') ? $tab_categories : $this->db->where('type', 'gallery')->order_by('sort_order', 'ASC')->order_by('name', 'ASC')->limit($per_page)->get('categories')->result();
+        $brand_categories   = ($active_tab === 'brand') ? $tab_categories : $this->db->where('type', 'brand')->order_by('sort_order', 'ASC')->order_by('name', 'ASC')->limit($per_page)->get('categories')->result();
 
         $data = [
             'page_title'         => 'Categories Master',
@@ -54,9 +105,17 @@ class Category extends Admin_Controller {
             'product_categories' => $product_categories,
             'gallery_categories' => $gallery_categories,
             'brand_categories'   => $brand_categories,
-            'product_count'      => count($product_categories),
-            'gallery_count'      => count($gallery_categories),
-            'brand_count'        => count($brand_categories)
+            'product_count'      => $product_count,
+            'gallery_count'      => $gallery_count,
+            'brand_count'        => $brand_count,
+            'total_filtered'     => $total_filtered,
+            'search_query'       => $search,
+            'selected_status'    => $status,
+            'per_page'           => $per_page,
+            'current_page'       => $page,
+            'from_entry'         => $from_entry,
+            'to_entry'           => $to_entry,
+            'pagination_html'    => $pagination_html
         ];
 
         $this->render('category_view', $data);
