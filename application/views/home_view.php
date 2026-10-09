@@ -182,10 +182,10 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
       <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
         <div class="about-img-wrap">
           <div class="img-main">
-            <img src="<?= base_url('assets/images/about/about-main.jpg'); ?>" alt="Nandani Warehouse">
+            <img src="<?= base_url('assets/images/about/office2.jpeg'); ?>" alt="Nandani Executive Corporate Office">
           </div>
           <div class="img-small">
-            <img src="<?= base_url('assets/images/about/about-small.jpg'); ?>" alt="Nandani Products">
+            <img src="<?= base_url('assets/images/about/office1.jpeg'); ?>" alt="Nandani Corporate Lounge & Skyline View">
           </div>
 
           <!-- Experience Badge -->
@@ -235,8 +235,9 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
             </div>
           </div>
 
-          <div class="about-btn-wrap">
+          <div class="about-btn-wrap d-flex align-items-center gap-3 flex-wrap">
             <a href="<?= site_url('about'); ?>" class="btn-primary-custom">Discover Our Story <i class="fas fa-arrow-right ms-2"></i></a>
+            <a href="<?= site_url('about#officeTour'); ?>" class="btn-outline-custom"><i class="fas fa-video me-2"></i>Virtual Tour</a>
           </div>
         </div>
       </div>
@@ -412,7 +413,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
         <span class="tag">Why Choose Us</span>
         <h2 class="mb-4">The <span>Nandani Advantage</span> for Your Business Growth</h2>
         <p class="text-muted mb-4">With decades of manufacturing heritage now channeled into distribution excellence, we bring unmatched value to every partnership.</p>
-        <img src="<?= base_url('assets/images/about/why-choose.jpg'); ?>" alt="Why Choose Nandani" class="why-img rounded-4 shadow">
+        <img src="<?= base_url('assets/images/about/office4.jpeg'); ?>" alt="Why Choose Nandani" class="why-img rounded-4 shadow">
       </div>
 
       <div class="col-lg-7">
@@ -509,7 +510,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
 </section>
 
 <!-- ===== CTA BANNER SECTION ===== -->
-<section class="cta-banner-section" style="background-image:url('<?= base_url('assets/images/hero/cta-bg.jpg'); ?>')">
+<section class="cta-banner-section" style="background-image:url('<?= base_url('assets/images/about/office1.jpeg'); ?>')">
   <div class="cta-overlay"></div>
   <div class="container position-relative">
     <div class="row justify-content-center text-center">

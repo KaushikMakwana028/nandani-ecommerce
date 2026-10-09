@@ -13,7 +13,7 @@ if (!empty($settings['phone_numbers'])) {
 ?>
 
 <!-- ===== PAGE BANNER ===== -->
-<section class="page-banner" style="background-image:url('<?= base_url('assets/images/about/about-banner.jpg'); ?>')">
+<section class="page-banner" style="background-image:url('<?= base_url('assets/images/about/office3.jpeg'); ?>')">
   <div class="page-banner-overlay"></div>
   <div class="container position-relative">
     <div class="text-center" data-aos="fade-up">
@@ -38,15 +38,18 @@ if (!empty($settings['phone_numbers'])) {
       <div class="col-lg-6" data-aos="fade-right">
         <div class="intro-img-wrap">
           <div class="intro-img-main">
-            <img src="<?= base_url('assets/images/about/about-main.jpg'); ?>" alt="Nandani Facility">
+            <img src="<?= base_url('assets/images/about/office2.jpeg'); ?>" alt="Nandani Executive Corporate Office">
           </div>
           <div class="intro-img-small">
-            <img src="<?= base_url('assets/images/about/about-small.jpg'); ?>" alt="Nandani Products">
+            <img src="<?= base_url('assets/images/about/office1.jpeg'); ?>" alt="Nandani Corporate Lounge & Skyline View">
           </div>
           <div class="intro-badge">
             <i class="fas fa-award"></i>
             <span><span class="counter" data-target="25">0</span>+ Years</span>
           </div>
+          <a href="#officeTour" class="intro-tour-pill">
+            <i class="fas fa-play-circle text-danger"></i> Virtual Tour
+          </a>
         </div>
       </div>
 
@@ -146,6 +149,143 @@ if (!empty($settings['phone_numbers'])) {
       </div>
 
     </div>
+  </div>
+</section>
+
+<!-- ===== CORPORATE HEADQUARTERS & OFFICE TOUR SECTION ===== -->
+<section class="office-tour-section py-5" id="officeTour">
+  <div class="container py-4">
+
+    <div class="section-title text-center mb-5" data-aos="fade-up">
+      <span class="tag">Corporate Headquarters</span>
+      <h2>Inside Nandani: <span>Where Excellence Takes Shape</span></h2>
+      <p class="mx-auto" style="max-width: 680px;">Take a tour of our modern corporate headquarters — designed for executive leadership, dealer conferences, brand summits, and seamless distribution operations.</p>
+    </div>
+
+    <!-- Main Video & Overview Showcase -->
+    <div class="row g-4 align-items-stretch mb-4">
+      <!-- Left: Video Player -->
+      <div class="col-lg-7" data-aos="fade-right">
+        <div class="office-video-card h-100">
+          <div class="office-video-wrap">
+            <div class="video-live-pill">
+              <span class="pulse-indicator"></span>
+              <span>Virtual Facility Tour</span>
+            </div>
+            <video id="officeVideoPlayer" poster="<?= base_url('assets/images/about/office2.jpeg'); ?>" controls playsinline preload="metadata">
+              <source src="<?= base_url('assets/images/about/office-vd-1.mp4'); ?>" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="office-video-body">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+              <span class="badge rounded-pill bg-danger-subtle text-danger px-3 py-1 fw-bold" style="background: rgba(200,16,46,0.08) !important; color: var(--primary-red) !important; font-size: 12px;">
+                <i class="fas fa-video me-1"></i> Video Walkthrough
+              </span>
+              <span class="text-muted small"><i class="fas fa-play me-1"></i> Interactive Video Player</span>
+            </div>
+            <h3>Executive Conference Suite &amp; Corporate Hub</h3>
+            <p>
+              An inside look at our state-of-the-art boardroom and corporate headquarters. Engineered to host high-level business summits, authorized dealer meets, and strategic planning sessions with India's leading appliance manufacturers.
+            </p>
+            <div class="office-features-grid">
+              <div class="office-feature-chip">
+                <i class="fas fa-users text-gold"></i>
+                <span>20+ Executive Boardroom Capacity</span>
+              </div>
+              <div class="office-feature-chip">
+                <i class="fas fa-handshake text-danger"></i>
+                <span>Strategic Partner Summit Hub</span>
+              </div>
+              <div class="office-feature-chip">
+                <i class="fas fa-city text-gold"></i>
+                <span>Panoramic Skyline Outlook</span>
+              </div>
+              <div class="office-feature-chip">
+                <i class="fas fa-truck-ramp-box text-danger"></i>
+                <span>Connected Distribution Command</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Photo Highlights -->
+      <div class="col-lg-5" data-aos="fade-left">
+        <div class="d-flex flex-column gap-4 h-100">
+
+          <!-- Photo Card 1: Boardroom -->
+          <div class="office-gallery-card flex-fill">
+            <div class="office-photo-box">
+              <span class="office-photo-badge"><i class="fas fa-camera me-1"></i> Boardroom</span>
+              <img src="<?= base_url('assets/images/about/office2.jpeg'); ?>" alt="Nandani Executive Boardroom">
+            </div>
+            <div class="office-card-body">
+              <h4>Executive Boardroom &amp; Conference Suite</h4>
+              <p>Features an expansive Italian marble conference table, premium executive seating, and integrated presentation amenities for dealer alliances.</p>
+              <div class="card-meta">
+                <span><i class="fas fa-check-circle me-1"></i> Dealer Meets &amp; Strategy</span>
+                <span class="ms-auto text-muted small"><i class="fas fa-expand me-1"></i> Corporate Suite</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Photo Card 2: Skyline Lounge -->
+          <div class="office-gallery-card flex-fill">
+            <div class="office-photo-box">
+              <span class="office-photo-badge"><i class="fas fa-eye me-1"></i> Cityscape</span>
+              <img src="<?= base_url('assets/images/about/office1.jpeg'); ?>" alt="Nandani Office Skyline View">
+            </div>
+            <div class="office-card-body">
+              <h4>Executive Lounge &amp; Cityscape View</h4>
+              <p>Floor-to-ceiling glass wall design with vibrant indoor botanical planters offering natural daylighting and an inspiring panoramic view across the city.</p>
+              <div class="card-meta">
+                <span><i class="fas fa-check-circle me-1"></i> Collaborative Atmosphere</span>
+                <span class="ms-auto text-muted small"><i class="fas fa-seedling me-1"></i> Green Space</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Gallery Row: Executive Hall & Leadership Suite -->
+    <div class="row g-4 mt-2" data-aos="fade-up">
+      <div class="col-md-6">
+        <div class="office-gallery-card">
+          <div class="office-photo-box">
+            <span class="office-photo-badge"><i class="fas fa-building me-1"></i> Conference Hall</span>
+            <img src="<?= base_url('assets/images/about/office3.jpeg'); ?>" alt="Nandani Executive Conference Hall">
+          </div>
+          <div class="office-card-body">
+            <h4>Executive Conference Hall &amp; Media Center</h4>
+            <p>Spacious, acoustically-optimized boardroom featuring recessed ceiling lighting, conference amenities, and dedicated executive meeting zones.</p>
+            <div class="card-meta">
+              <span><i class="fas fa-check-circle me-1"></i> Multi-Brand Summits</span>
+              <span class="ms-auto text-muted small"><i class="fas fa-arrows-alt me-1"></i> Wide Panorama</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="office-gallery-card">
+          <div class="office-photo-box">
+            <span class="office-photo-badge"><i class="fas fa-handshake me-1"></i> Strategy Suite</span>
+            <img src="<?= base_url('assets/images/about/office4.jpeg'); ?>" alt="Nandani Strategy Suite">
+          </div>
+          <div class="office-card-body">
+            <h4>Strategic Planning &amp; Leadership Suite</h4>
+            <p>Designed for high-impact negotiations, vendor onboarding, and executive presentations with direct access to our core administrative team.</p>
+            <div class="card-meta">
+              <span><i class="fas fa-check-circle me-1"></i> Dealer Onboarding</span>
+              <span class="ms-auto text-muted small"><i class="fas fa-shield-alt me-1"></i> Executive Hub</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -284,7 +424,7 @@ if (!empty($settings['phone_numbers'])) {
 
       <div class="col-lg-5" data-aos="fade-right">
         <div class="founder-img-wrap">
-          <img src="<?= base_url('assets/images/about/founder.jpg'); ?>" alt="Founder">
+          <img src="<?= base_url('assets/images/about/founder2.jpeg'); ?>" alt="Founder">
           <div class="founder-quote-icon"><i class="fas fa-quote-right"></i></div>
         </div>
       </div>
@@ -306,7 +446,7 @@ if (!empty($settings['phone_numbers'])) {
 </section>
 
 <!-- ===== CTA BANNER SECTION ===== -->
-<section class="cta-banner-section" style="background-image:url('<?= base_url('assets/images/hero/cta-bg.jpg'); ?>')">
+<section class="cta-banner-section" style="background-image:url('<?= base_url('assets/images/about/office1.jpeg'); ?>')">
   <div class="cta-overlay"></div>
   <div class="container position-relative">
     <div class="row justify-content-center text-center">

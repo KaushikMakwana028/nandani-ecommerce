@@ -72,7 +72,7 @@ foreach ($display_brands as $item) {
 ?>
 
 <!-- ===== PAGE BANNER ===== -->
-<section class="page-banner" style="background-image:url('<?= base_url('assets/images/about/about-banner.jpg'); ?>')">
+<section class="page-banner" style="background-image:url('<?= base_url('assets/images/about/office3.jpeg'); ?>')">
   <div class="page-banner-overlay"></div>
   <div class="container position-relative">
     <div class="text-center" data-aos="fade-up">
@@ -228,7 +228,7 @@ foreach ($display_brands as $item) {
 </section>
 
 <!-- ===== CTA BANNER SECTION ===== -->
-<section class="cta-banner-section" style="background-image:url('<?= base_url('assets/images/hero/cta-bg.jpg'); ?>')">
+<section class="cta-banner-section" style="background-image:url('<?= base_url('assets/images/about/office1.jpeg'); ?>')">
   <div class="cta-overlay"></div>
   <div class="container position-relative">
     <div class="row justify-content-center text-center">

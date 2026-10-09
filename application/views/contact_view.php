@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <!-- ===== PAGE BANNER ===== -->
-<section class="page-banner" style="background-image:url('<?= base_url('assets/images/about/about-banner.jpg'); ?>')">
+<section class="page-banner" style="background-image:url('<?= base_url('assets/images/about/office3.jpeg'); ?>')">
   <div class="page-banner-overlay"></div>
   <div class="container position-relative">
     <div class="text-center" data-aos="fade-up">

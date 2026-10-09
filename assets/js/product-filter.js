@@ -1,22 +1,23 @@
 // ============================
 // Product Category Filter
 // ============================
-const pFilterBtns = document.querySelectorAll('.products-toolbar-section .filter-btn');
+const pFilterBtns = document.querySelectorAll('.cat-pill-btn, .products-toolbar-section .filter-btn');
 const productItems = document.querySelectorAll('.product-item');
 const noProductResults = document.getElementById('noProductResults');
 const searchInput = document.getElementById('productSearch');
 
 function filterProducts(){
-  const activeCategory = document.querySelector('.products-toolbar-section .filter-btn.active').getAttribute('data-filter');
-  const searchValue = searchInput.value.toLowerCase().trim();
+  const activeBtn = document.querySelector('.cat-pill-btn.active, .products-toolbar-section .filter-btn.active');
+  const activeCategory = activeBtn ? activeBtn.getAttribute('data-filter') : 'all';
+  const searchValue = searchInput ? searchInput.value.toLowerCase().trim() : '';
   let visibleCount = 0;
 
   productItems.forEach(item => {
     const category = item.getAttribute('data-category');
-    const name = item.getAttribute('data-name');
+    const name = item.getAttribute('data-name') || '';
 
     const matchesCategory = activeCategory === 'all' || category === activeCategory;
-    const matchesSearch = name.includes(searchValue);
+    const matchesSearch = !searchValue || name.includes(searchValue);
 
     if(matchesCategory && matchesSearch){
       item.classList.remove('hide');
@@ -26,7 +27,13 @@ function filterProducts(){
     }
   });
 
-  noProductResults.style.display = visibleCount === 0 ? 'block' : 'none';
+  if (noProductResults) {
+    if (productItems.length === 0) {
+      noProductResults.style.display = 'none';
+    } else {
+      noProductResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+  }
 }
 
 // Category Filter Click
@@ -41,7 +48,21 @@ pFilterBtns.forEach(btn => {
 // Search Input
 if(searchInput){
   searchInput.addEventListener('keyup', filterProducts);
+  searchInput.addEventListener('input', filterProducts);
 }
+
+// Reset Filter helper
+window.resetProductFilters = function() {
+  if (searchInput) {
+    searchInput.value = '';
+  }
+  const allCategoryBtn = document.querySelector('.cat-pill-btn[data-filter="all"], .products-toolbar-section .filter-btn[data-filter="all"]');
+  if (allCategoryBtn) {
+    allCategoryBtn.click();
+  } else {
+    filterProducts();
+  }
+};
 
 // ============================
 // Quick View Modal - Populate Data

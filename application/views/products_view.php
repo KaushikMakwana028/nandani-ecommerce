@@ -53,6 +53,7 @@ foreach ($db_products as $p) {
 
     $product_cards[] = [
         'id'            => $p->id,
+        'brand_id'      => $p->brand_id,
         'name'          => $p->name,
         'brand_name'    => $brand_name,
         'category_name' => $cat_name,
@@ -90,18 +91,31 @@ if (!empty($selected_cat)) {
 ?>
 
 <!-- ===== PAGE BANNER ===== -->
-<section class="page-banner" style="background-image:url('<?= base_url('assets/images/about/about-banner.jpg'); ?>')">
+<section class="page-banner" style="background-image:url('<?= base_url('assets/images/about/office3.jpeg'); ?>')">
   <div class="page-banner-overlay"></div>
   <div class="container position-relative">
     <div class="text-center" data-aos="fade-up">
-      <span class="tag tag-light">Our Catalogue</span>
-      <h1 class="text-white">Products</h1>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb justify-content-center mb-0">
-          <li class="breadcrumb-item"><a href="<?= site_url(''); ?>">Home</a></li>
-          <li class="breadcrumb-item active text-gold" aria-current="page">Products</li>
-        </ol>
-      </nav>
+      <?php if (!empty($current_brand)): ?>
+        <span class="tag tag-light"><?= htmlspecialchars($current_brand->name); ?> Portfolio</span>
+        <h1 class="text-white"><?= htmlspecialchars($current_brand->name); ?> Products</h1>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-center mb-0">
+            <li class="breadcrumb-item"><a href="<?= site_url(''); ?>">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?= site_url('brands'); ?>">Our Brands</a></li>
+            <li class="breadcrumb-item"><a href="<?= site_url('products'); ?>">Products</a></li>
+            <li class="breadcrumb-item active text-gold" aria-current="page"><?= htmlspecialchars($current_brand->name); ?></li>
+          </ol>
+        </nav>
+      <?php else: ?>
+        <span class="tag tag-light">Our Catalogue</span>
+        <h1 class="text-white">Products</h1>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-center mb-0">
+            <li class="breadcrumb-item"><a href="<?= site_url(''); ?>">Home</a></li>
+            <li class="breadcrumb-item active text-gold" aria-current="page">Products</li>
+          </ol>
+        </nav>
+      <?php endif; ?>
     </div>
   </div>
 </section>
@@ -110,28 +124,92 @@ if (!empty($selected_cat)) {
 <section class="products-toolbar-section py-5">
   <div class="container py-3">
 
-    <div class="row align-items-center g-4 mb-5">
+    <!-- Header & Search -->
+    <div class="row align-items-center g-4 mb-4">
       <div class="col-lg-7" data-aos="fade-right">
-        <span class="tag">Explore Range</span>
-        <h2 class="mb-0">Our Complete <span>Product Catalogue</span></h2>
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="tag mb-0">
+            <?= !empty($current_brand) ? 'Authorized Brand' : 'Explore Range'; ?>
+          </span>
+          <?php if (!empty($current_brand)): ?>
+            <span class="active-brand-chip">
+              <i class="fas fa-check-circle me-1"></i><?= htmlspecialchars($current_brand->name); ?>
+            </span>
+          <?php endif; ?>
+        </div>
+        <h2 class="products-main-heading mb-1">
+          <?= !empty($current_brand) ? (htmlspecialchars($current_brand->name) . ' <span>Collection</span>') : 'Our Complete <span>Product Catalogue</span>'; ?>
+        </h2>
+        <p class="text-muted small mb-0">
+          <?php if (!empty($current_brand)): ?>
+            Showing <strong><?= count($product_cards); ?></strong> <?= count($product_cards) === 1 ? 'product' : 'products'; ?> available from <?= htmlspecialchars($current_brand->name); ?>
+            <a href="<?= site_url('products'); ?>" class="clear-brand-inline ms-2">
+              <i class="fas fa-times-circle me-1"></i>View All Brands
+            </a>
+          <?php else: ?>
+            Showing <strong><?= !empty($total_all_products) ? $total_all_products : count($product_cards); ?></strong> products from all authorized brands
+          <?php endif; ?>
+        </p>
       </div>
       <div class="col-lg-5" data-aos="fade-left">
         <div class="product-search-box">
           <i class="fas fa-search"></i>
-          <input type="text" id="productSearch" placeholder="Search products..." value="<?= htmlspecialchars($search_query ?? ''); ?>">
+          <input type="text" id="productSearch" placeholder="<?= !empty($current_brand) ? ('Search ' . htmlspecialchars($current_brand->name) . ' products...') : 'Search products...'; ?>" value="<?= htmlspecialchars($search_query ?? ''); ?>">
         </div>
       </div>
     </div>
 
-    <!-- Filter Buttons (Only categories available in DB) -->
-    <?php if (count($dynamic_filters) > 1): ?>
-      <div class="brand-filter text-center mb-5" data-aos="fade-up">
-        <button class="filter-btn <?= ($active_filter_slug === 'all') ? 'active' : ''; ?>" data-filter="all">All Products</button>
-        <?php foreach ($dynamic_filters as $filter_slug => $filter_data): ?>
-          <button class="filter-btn <?= ($active_filter_slug === $filter_slug) ? 'active' : ''; ?>" data-filter="<?= htmlspecialchars($filter_slug); ?>"><?= htmlspecialchars($filter_data['name']); ?></button>
-        <?php endforeach; ?>
-      </div>
-    <?php endif; ?>
+    <!-- Unified Filter Panel -->
+    <div class="catalogue-filter-card mb-4" data-aos="fade-up">
+      <!-- Row 1: Brand Selector -->
+      <?php if (!empty($brands) && count($brands) > 1): ?>
+        <div class="filter-card-row brand-row">
+          <div class="filter-row-header">
+            <span class="filter-row-title"><i class="fas fa-tag"></i> Brands</span>
+          </div>
+          <div class="filter-pills-list">
+            <a href="<?= site_url('products'); ?>" class="brand-pill-btn <?= empty($current_brand) ? 'active' : ''; ?>">
+              <span>All Brands</span>
+              <span class="pill-badge"><?= !empty($total_all_products) ? $total_all_products : count($product_cards); ?></span>
+            </a>
+            <?php foreach ($brands as $b): ?>
+              <?php
+                $is_active_b = (!empty($current_brand) && (int)$current_brand->id === (int)$b->id);
+                $b_count = isset($brand_product_counts[$b->id]) ? $brand_product_counts[$b->id] : 0;
+              ?>
+              <a href="<?= site_url('products?brand=' . $b->id); ?>" class="brand-pill-btn <?= $is_active_b ? 'active' : ''; ?>">
+                <span><?= htmlspecialchars($b->name); ?></span>
+                <span class="pill-badge"><?= $b_count; ?></span>
+              </a>
+            <?php endforeach; ?>
+            <?php if (!empty($current_brand)): ?>
+              <a href="<?= site_url('products'); ?>" class="clear-filter-btn" title="Clear Brand Filter">
+                <i class="fas fa-times"></i> Reset
+              </a>
+            <?php endif; ?>
+          </div>
+        </div>
+      <?php endif; ?>
+
+      <!-- Row 2: Category Selector -->
+      <?php if (count($dynamic_filters) > 1): ?>
+        <div class="filter-card-row category-row">
+          <div class="filter-row-header">
+            <span class="filter-row-title"><i class="fas fa-layer-group"></i> Categories</span>
+          </div>
+          <div class="filter-pills-list">
+            <button class="cat-pill-btn <?= ($active_filter_slug === 'all') ? 'active' : ''; ?>" data-filter="all">
+              All Products
+            </button>
+            <?php foreach ($dynamic_filters as $filter_slug => $filter_data): ?>
+              <button class="cat-pill-btn <?= ($active_filter_slug === $filter_slug) ? 'active' : ''; ?>" data-filter="<?= htmlspecialchars($filter_slug); ?>">
+                <?= htmlspecialchars($filter_data['name']); ?>
+              </button>
+            <?php endforeach; ?>
+          </div>
+        </div>
+      <?php endif; ?>
+    </div>
 
     <!-- Products Grid (Strictly DB Products) -->
     <div class="row g-4" id="productGrid">
@@ -140,7 +218,7 @@ if (!empty($selected_cat)) {
           <?php
             $delay = (($index % 4) + 1) * 50;
           ?>
-          <div class="col-lg-3 col-md-4 col-sm-6 product-item" data-category="<?= htmlspecialchars($item['category_slug']); ?>" data-name="<?= htmlspecialchars($item['search_str']); ?>" data-aos="fade-up" data-aos-delay="<?= $delay; ?>">
+          <div class="col-lg-3 col-md-4 col-sm-6 product-item" data-category="<?= htmlspecialchars($item['category_slug']); ?>" data-name="<?= htmlspecialchars($item['search_str']); ?>" data-brand="<?= htmlspecialchars($item['brand_name']); ?>" data-brand-id="<?= htmlspecialchars($item['brand_id'] ?? ''); ?>" data-aos="fade-up" data-aos-delay="<?= $delay; ?>">
             <div class="product-card">
               <?php if (!empty($item['badge'])): ?>
                 <div class="product-badge <?= $item['badge'] === 'bestseller' ? 'bestseller' : ''; ?>">
@@ -175,12 +253,21 @@ if (!empty($selected_cat)) {
             <div class="empty-icon-wrap mb-3" style="width:76px; height:76px; margin:0 auto; border-radius:50%; background:linear-gradient(135deg, rgba(200,16,46,0.1), rgba(212,175,55,0.15)); display:flex; align-items:center; justify-content:center;">
               <i class="fas fa-boxes-stacked" style="font-size:32px; color:var(--primary-red);"></i>
             </div>
-            <h4 class="mb-2" style="font-family:'Playfair Display', serif; font-weight:700;">No Products Currently Available</h4>
-            <p class="text-muted mb-4" style="max-width:480px; margin:0 auto;">Our catalogue is currently being synchronized with new inventory and specifications. Please contact our sales desk for immediate enquiries.</p>
-            <div class="d-flex justify-content-center gap-3 flex-wrap">
-              <a href="<?= site_url('contact'); ?>" class="btn-primary-custom">Enquire Now <i class="fas fa-arrow-right ms-2"></i></a>
-              <a href="tel:<?= $phone_raw; ?>" class="btn-outline-custom"><i class="fas fa-phone-alt me-2"></i>Call Us</a>
-            </div>
+            <?php if (!empty($current_brand)): ?>
+              <h4 class="mb-2" style="font-family:'Playfair Display', serif; font-weight:700;">No Products Currently Available for <?= htmlspecialchars($current_brand->name); ?></h4>
+              <p class="text-muted mb-4" style="max-width:480px; margin:0 auto;">We are currently updating our <?= htmlspecialchars($current_brand->name); ?> catalogue. Please check back shortly or explore our full collection from other brand partners.</p>
+              <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="<?= site_url('products'); ?>" class="btn-primary-custom">View All Products <i class="fas fa-arrow-right ms-2"></i></a>
+                <a href="<?= site_url('brands'); ?>" class="btn-outline-custom"><i class="fas fa-arrow-left me-2"></i>Back to Brands</a>
+              </div>
+            <?php else: ?>
+              <h4 class="mb-2" style="font-family:'Playfair Display', serif; font-weight:700;">No Products Currently Available</h4>
+              <p class="text-muted mb-4" style="max-width:480px; margin:0 auto;">Our catalogue is currently being synchronized with new inventory and specifications. Please contact our sales desk for immediate enquiries.</p>
+              <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="<?= site_url('contact'); ?>" class="btn-primary-custom">Enquire Now <i class="fas fa-arrow-right ms-2"></i></a>
+                <a href="tel:<?= $phone_raw; ?>" class="btn-outline-custom"><i class="fas fa-phone-alt me-2"></i>Call Us</a>
+              </div>
+            <?php endif; ?>
           </div>
         </div>
       <?php endif; ?>
@@ -195,8 +282,8 @@ if (!empty($selected_cat)) {
           </div>
           <h4 class="mb-2" style="font-family:'Playfair Display', serif; font-weight:700;">No Matching Products Found</h4>
           <p class="text-muted mb-4" style="max-width:480px; margin:0 auto;">We couldn't find any products matching your selected category or search keyword. Try clearing filters or searching another keyword.</p>
-          <button type="button" class="btn-primary-custom" onclick="document.getElementById('productSearchInput').value=''; document.querySelector('.brand-filter .filter-btn[data-filter=\'all\']').click();">
-            <i class="fas fa-undo me-2"></i>Reset All Filters
+          <button type="button" class="btn-primary-custom" onclick="if(window.resetProductFilters){ window.resetProductFilters(); }">
+            <i class="fas fa-undo me-2"></i>Reset Filter
           </button>
         </div>
       </div>
@@ -235,7 +322,7 @@ if (!empty($selected_cat)) {
 </section>
 
 <!-- ===== CTA BANNER SECTION ===== -->
-<section class="cta-banner-section" style="background-image:url('<?= base_url('assets/images/hero/cta-bg.jpg'); ?>')">
+<section class="cta-banner-section" style="background-image:url('<?= base_url('assets/images/about/office1.jpeg'); ?>')">
   <div class="cta-overlay"></div>
   <div class="container position-relative">
     <div class="row justify-content-center text-center">

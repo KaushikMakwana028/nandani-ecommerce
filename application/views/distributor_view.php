@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <!-- ===== PAGE BANNER ===== -->
-<section class="page-banner" style="background-image:url('<?= base_url('assets/images/hero/cta-bg.jpg'); ?>')">
+<section class="page-banner" style="background-image:url('<?= base_url('assets/images/about/office3.jpeg'); ?>')">
   <div class="page-banner-overlay"></div>
   <div class="container position-relative">
     <div class="text-center" data-aos="fade-up">
@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
       <div class="col-lg-6" data-aos="fade-right">
         <div class="dist-img-wrap">
-          <img src="<?= base_url('assets/images/about/distributor-hero.jpg'); ?>" alt="Become a Distributor" class="rounded-4" onerror="this.onerror=null; this.src='<?= base_url('assets/images/about/about-main.jpg'); ?>';">
+          <img src="<?= base_url('assets/images/about/office2.jpeg'); ?>" alt="Nandani Executive Corporate Boardroom" class="rounded-4 shadow">
           <div class="dist-floating-card">
             <i class="fas fa-chart-line"></i>
             <div>
