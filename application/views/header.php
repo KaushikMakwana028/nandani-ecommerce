@@ -130,7 +130,7 @@ $active_menu = isset($active_menu) ? $active_menu : 'home';
         <li class="nav-item"><a class="nav-link <?= $active_menu === 'gallery' ? 'active' : ''; ?>" href="<?= site_url('gallery'); ?>">Gallery</a></li>
         <li class="nav-item"><a class="nav-link <?= $active_menu === 'contact' ? 'active' : ''; ?>" href="<?= site_url('contact'); ?>">Contact</a></li>
         <li class="nav-item ms-lg-3">
-          <a href="<?= site_url('distributor'); ?>" class="btn-distributor <?= $active_menu === 'distributor' ? 'active-distributor' : ''; ?>">Become a Distributor</a>
+          <a href="<?= site_url('distributor'); ?>" class="btn-distributor <?= $active_menu === 'distributor' ? 'active-distributor' : ''; ?>">Become a Dealer</a>
         </li>
       </ul>
     </div>
