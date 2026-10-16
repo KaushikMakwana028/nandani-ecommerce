@@ -1,5 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 
+<!-- Founder Section Styles for 100% Visual Parity with About Us Page -->
+<link rel="stylesheet" href="<?= base_url('assets/css/founder.css?v=2.0'); ?>">
+
 <!-- Page-Scoped Styles -->
 <style>
     .settings-header {
@@ -77,6 +80,11 @@
     .badge-icon-purple {
         background-color: rgba(147, 51, 234, 0.1);
         color: #9333EA;
+    }
+
+    .badge-icon-gold {
+        background-color: rgba(212, 175, 55, 0.15);
+        color: #B38F26;
     }
 
     .settings-card-body {
@@ -229,7 +237,7 @@
     </div>
 
     <!-- Main Settings Form -->
-    <form id="settingsForm" action="<?= base_url('admin/settings/save') ?>" method="POST" novalidate>
+    <form id="settingsForm" action="<?= base_url('admin/settings/save') ?>" method="POST" enctype="multipart/form-data" novalidate>
 
         <!-- SECTION 1: Contact Information -->
         <div class="settings-card">
@@ -276,7 +284,7 @@
                                    id="emails" 
                                    name="emails" 
                                    value="<?= html_escape($settings->emails ?? '') ?>" 
-                                   placeholder="e.g. info@nandani.com, sales@nandani.com"
+                                   placeholder="e.g. info@nandini.com, sales@nandini.com"
                                    maxlength="255">
                         </div>
                         <div class="form-hint">Official email inboxes for general and sales inquiries.</div>
@@ -390,7 +398,7 @@
                                    id="social_facebook" 
                                    name="social_facebook" 
                                    value="<?= html_escape($settings->social_facebook ?? '') ?>" 
-                                   placeholder="https://facebook.com/nandaniofficial"
+                                   placeholder="https://facebook.com/nandiniofficial"
                                    maxlength="255">
                         </div>
                     </div>
@@ -405,7 +413,7 @@
                                    id="social_instagram" 
                                    name="social_instagram" 
                                    value="<?= html_escape($settings->social_instagram ?? '') ?>" 
-                                   placeholder="https://instagram.com/nandaniofficial"
+                                   placeholder="https://instagram.com/nandiniofficial"
                                    maxlength="255">
                         </div>
                     </div>
@@ -420,7 +428,7 @@
                                    id="social_linkedin" 
                                    name="social_linkedin" 
                                    value="<?= html_escape($settings->social_linkedin ?? '') ?>" 
-                                   placeholder="https://linkedin.com/company/nandani"
+                                   placeholder="https://linkedin.com/company/nandini"
                                    maxlength="255">
                         </div>
                     </div>
@@ -450,7 +458,7 @@
                                    id="social_youtube" 
                                    name="social_youtube" 
                                    value="<?= html_escape($settings->social_youtube ?? '') ?>" 
-                                   placeholder="https://youtube.com/@nandaniofficial"
+                                   placeholder="https://youtube.com/@nandiniofficial"
                                    maxlength="255">
                         </div>
                     </div>
@@ -511,6 +519,171 @@
             </div>
         </div>
 
+        <!-- SECTION 5: Founder & Managing Director -->
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <h3 class="settings-card-title">
+                    <span class="section-icon-badge badge-icon-gold">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </span>
+                    <span>5. Founder &amp; Managing Director</span>
+                </h3>
+                <span class="badge bg-light text-dark border px-3 py-1">About Us Page Showcase</span>
+            </div>
+            <div class="settings-card-body">
+                <div class="row g-4">
+                    <!-- Left Column: Details & Message -->
+                    <div class="col-lg-7">
+                        <div class="row g-3">
+                            <!-- Founder Full Name -->
+                            <div class="col-12">
+                                <label for="founder_name" class="form-label-custom">
+                                    <span>Founder &amp; Managing Director Name</span>
+                                    <span class="text-muted small fw-normal">(Optional Person Name)</span>
+                                </label>
+                                <div class="input-group input-group-custom">
+                                    <span class="input-group-text"><i class="fa-solid fa-signature"></i></span>
+                                    <input type="text" 
+                                           class="form-control form-control-custom" 
+                                           id="founder_name" 
+                                           name="founder_name" 
+                                           value="<?= html_escape($settings->founder_name ?? '') ?>" 
+                                           placeholder="e.g. Deepak Mohan Agrawal"
+                                           maxlength="150">
+                                </div>
+                                <div class="form-hint">Displayed prominently as the leader's name on the website About Us page.</div>
+                            </div>
+
+                            <!-- Executive Title / Designation -->
+                            <div class="col-md-6">
+                                <label for="founder_title" class="form-label-custom">
+                                    <span>Designation / Role Title</span>
+                                </label>
+                                <div class="input-group input-group-custom">
+                                    <span class="input-group-text"><i class="fa-solid fa-briefcase"></i></span>
+                                    <input type="text" 
+                                           class="form-control form-control-custom" 
+                                           id="founder_title" 
+                                           name="founder_title" 
+                                           value="<?= html_escape(!empty($settings->founder_title) ? $settings->founder_title : 'Founder & Managing Director') ?>" 
+                                           placeholder="e.g. Founder & Managing Director"
+                                           maxlength="150">
+                                </div>
+                                <div class="form-hint">Official executive title shown to website visitors.</div>
+                            </div>
+
+                            <!-- Company / Subtitle -->
+                            <div class="col-md-6">
+                                <label for="founder_subtitle" class="form-label-custom">
+                                    <span>Company / Subtitle</span>
+                                </label>
+                                <div class="input-group input-group-custom">
+                                    <span class="input-group-text"><i class="fa-solid fa-building"></i></span>
+                                    <input type="text" 
+                                           class="form-control form-control-custom" 
+                                           id="founder_subtitle" 
+                                           name="founder_subtitle" 
+                                           value="<?= html_escape(!empty($settings->founder_subtitle) ? $settings->founder_subtitle : 'Nandini Appliances') ?>" 
+                                           placeholder="e.g. Nandini Appliances"
+                                           maxlength="150">
+                                </div>
+                                <div class="form-hint">Organization or brand subtitle shown below designation.</div>
+                            </div>
+
+                            <!-- Founder Message / Quote -->
+                            <div class="col-12">
+                                <label for="founder_message" class="form-label-custom">
+                                    <span>Message / Quote From Founder</span>
+                                    <span class="text-muted small fw-normal">Inspirational Quote</span>
+                                </label>
+                                <textarea class="form-control form-control-custom" 
+                                          id="founder_message" 
+                                          name="founder_message" 
+                                          rows="4" 
+                                          placeholder="Enter the founder's quote or leave blank for default heritage quote..."><?= html_escape($settings->founder_message ?? '') ?></textarea>
+                                <div class="form-hint">Displayed in quotation format on the About Us page founder section.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: High Quality Portrait & Preview Button -->
+                    <div class="col-lg-5">
+                        <?php
+                            $founder_img_src = (!empty($settings->founder_image) && file_exists(FCPATH . 'uploads/founder/' . $settings->founder_image))
+                                ? base_url('uploads/founder/' . $settings->founder_image)
+                                : base_url('assets/images/about/founder2.jpeg');
+                            $has_custom_founder_img = (!empty($settings->founder_image) && file_exists(FCPATH . 'uploads/founder/' . $settings->founder_image));
+                        ?>
+                        <div class="founder-upload-box p-3 border rounded-3 bg-light h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <label class="form-label-custom mb-0"><span>Founder Portrait Photo</span></label>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 small fw-semibold" style="font-size: 0.72rem;">
+                                        <i class="fa-solid fa-shield-halved me-1"></i> Ultra-High Quality Allowed
+                                    </span>
+                                </div>
+                                <p class="text-muted small mb-3" style="font-size: 0.8rem; line-height: 1.4;">
+                                    Upload professional studio portraits in any quality, resolution, or format (up to 100MB).
+                                </p>
+
+                                <!-- Portrait Image Box -->
+                                <div class="position-relative text-center mb-3">
+                                    <div class="founder-thumb-wrap mx-auto" style="width: 170px; height: 210px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 24px rgba(0,0,0,0.12); position: relative; background: #E5E7EB;">
+                                        <img src="<?= $founder_img_src; ?>" 
+                                             id="founderImageThumb" 
+                                             alt="Founder Photo" 
+                                             style="width: 100%; height: 100%; object-fit: cover; object-position: top center;"
+                                             onerror="this.onerror=null; this.src='<?= base_url('assets/images/about/founder2.jpeg'); ?>';">
+                                        <div class="founder-thumb-overlay position-absolute bottom-0 start-0 end-0 py-1 bg-dark bg-opacity-75 text-white small" style="font-size: 0.72rem;">
+                                            <span id="founderThumbStatusText"><?= $has_custom_founder_img ? 'Custom Photo Active' : 'Default Photo' ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- File Input (hidden, triggered by button) -->
+                                <input type="file" 
+                                       id="founder_image" 
+                                       name="founder_image" 
+                                       class="d-none" 
+                                       accept="image/*,.jpg,.jpeg,.png,.webp,.bmp,.gif,.tif,.tiff,.svg,.avif,.heic,.heif">
+                                <input type="hidden" id="remove_founder_image" name="remove_founder_image" value="0">
+
+                                <div class="d-flex gap-2 justify-content-center mb-2">
+                                    <button type="button" class="btn btn-outline-primary btn-sm px-3 fw-semibold d-inline-flex align-items-center gap-2" id="btnChooseFounderImage">
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                        <span id="btnChooseFounderText"><?= $has_custom_founder_img ? 'Change Photo' : 'Upload New Photo' ?></span>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm px-3 fw-semibold <?= $has_custom_founder_img ? '' : 'd-none' ?>" id="btnRemoveFounderImage" title="Revert to default photo">
+                                        <i class="fa-solid fa-trash-can me-1"></i> Revert
+                                    </button>
+                                </div>
+
+                                <div class="text-center text-muted small mb-3" style="font-size: 0.73rem;">
+                                    Supports: JPG, PNG, WEBP, BMP, SVG, TIFF, AVIF, HEIC (Max 100MB)
+                                </div>
+                            </div>
+
+                            <!-- Live User Side Preview Action Button -->
+                            <div class="pt-2 border-top">
+                                <button type="button" 
+                                        class="btn btn-primary-custom-preview w-100 py-2 d-inline-flex align-items-center justify-content-center gap-2 fw-semibold text-white shadow-sm"
+                                        id="btnPreviewFounderWebsite"
+                                        style="background: linear-gradient(135deg, #C8102E 0%, #A00C23 100%); border: none; border-radius: 10px; font-size: 0.92rem;">
+                                    <i class="fa-solid fa-eye"></i>
+                                    <span>Preview How It Looks on User Side</span>
+                                </button>
+                                <div class="text-center mt-1">
+                                    <small class="text-muted" style="font-size: 0.72rem;">
+                                        <i class="fa-solid fa-circle-info me-1"></i> Previews instantly with your latest text and photo
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Sticky Bottom Save Bar -->
         <div class="settings-bottom-bar mb-5">
             <div class="d-flex align-items-center gap-2 text-muted small">
@@ -530,6 +703,79 @@
 
     </form>
 
+    <!-- Live User Side Preview Modal for Founder & Managing Director -->
+    <div class="modal fade" id="founderPreviewModal" tabindex="-1" aria-labelledby="founderPreviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 20px; overflow: hidden; border: none; box-shadow: 0 25px 60px rgba(0,0,0,0.25);">
+                <!-- Modal Header -->
+                <div class="modal-header px-4 py-3 bg-light border-bottom d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="modal-title fw-bold text-dark d-flex align-items-center gap-2" id="founderPreviewModalLabel" style="font-family: var(--font-heading, 'Playfair Display', serif);">
+                            <i class="fa-solid fa-display text-danger"></i>
+                            <span>Website Live Preview &mdash; Founder &amp; Managing Director Section</span>
+                        </h5>
+                        <p class="text-muted small mb-0">Exact simulation of how this section renders to visitors on the About Us page (<code>/about</code>).</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="<?= base_url('about') ?>" target="_blank" class="btn btn-sm btn-outline-secondary d-none d-sm-inline-flex align-items-center gap-1">
+                            <span>Visit Live About Page</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square small"></i>
+                        </a>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
+
+                <!-- Modal Body (100% Visual Parity with About Us page via founder.css) -->
+                <div class="modal-body p-4 p-md-5 founder-section" style="background: #FFFFFF;">
+                    <div class="container-fluid">
+                        <div class="row align-items-center g-5">
+                            <!-- Left: Founder Image with circular quote badge -->
+                            <div class="col-lg-5 text-center text-lg-start">
+                                <div class="founder-img-wrap">
+                                    <div class="founder-img-box">
+                                        <img src="<?= $founder_img_src; ?>" 
+                                             id="modalFounderImgPreview" 
+                                             alt="Founder Preview">
+                                    </div>
+                                    <div class="founder-quote-icon">
+                                        <i class="fas fa-quote-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Tag, Heading, Quote, and Name/Designation -->
+                            <div class="col-lg-7">
+                                <span class="tag">Message From Our Founder</span>
+                                <h2 class="mb-4">
+                                    Building Trust, <span>One Partnership</span> At A Time
+                                </h2>
+                                <p class="founder-text mb-4" id="modalFounderQuotePreview">
+                                    &ldquo;Our journey from manufacturing to distribution has been driven by one constant belief &mdash; quality and trust are non-negotiable. As we transitioned into a new chapter, our commitment to our partners, dealers, and customers has only grown stronger. Nandini is not just a business; it's a legacy we continue to build every single day.&rdquo;
+                                </p>
+                                <div class="founder-info">
+                                    <h5 id="modalFounderNamePreview">
+                                        Founder &amp; Managing Director
+                                    </h5>
+                                    <span id="modalFounderTitlePreview">
+                                        Nandini Appliances
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer px-4 py-3 bg-light border-top d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">
+                        <i class="fa-solid fa-circle-check text-success me-1"></i> Interactive live preview generated in real-time
+                    </span>
+                    <button type="button" class="btn btn-secondary px-4 fw-semibold" data-bs-dismiss="modal">Close Preview</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <!-- JavaScript: Live Form AJAX Save, Toast Alert, Map Sanitization & Input Re-population -->
@@ -544,6 +790,85 @@ document.addEventListener('DOMContentLoaded', function() {
     const whatsappInput = document.getElementById('whatsapp_number');
     const whatsappLink = document.getElementById('whatsappPreviewLink');
     const whatsappText = document.getElementById('whatsappPreviewText');
+
+    // Founder & Managing Director Elements
+    const founderImageInput = document.getElementById('founder_image');
+    const btnChooseFounderImage = document.getElementById('btnChooseFounderImage');
+    const btnChooseFounderText = document.getElementById('btnChooseFounderText');
+    const btnRemoveFounderImage = document.getElementById('btnRemoveFounderImage');
+    const removeFounderImageInput = document.getElementById('remove_founder_image');
+    const founderImageThumb = document.getElementById('founderImageThumb');
+    const founderThumbStatusText = document.getElementById('founderThumbStatusText');
+    const btnPreviewFounderWebsite = document.getElementById('btnPreviewFounderWebsite');
+    const founderPreviewModalEl = document.getElementById('founderPreviewModal');
+    const modalFounderImgPreview = document.getElementById('modalFounderImgPreview');
+    const modalFounderNamePreview = document.getElementById('modalFounderNamePreview');
+    const modalFounderTitlePreview = document.getElementById('modalFounderTitlePreview');
+    const modalFounderQuotePreview = document.getElementById('modalFounderQuotePreview');
+    const defaultFounderImg = '<?= base_url('assets/images/about/founder2.jpeg') ?>';
+    const defaultFounderQuote = "Our journey from manufacturing to distribution has been driven by one constant belief — quality and trust are non-negotiable. As we transitioned into a new chapter, our commitment to our partners, dealers, and customers has only grown stronger. Nandini is not just a business; it's a legacy we continue to build every single day.";
+
+    // Trigger photo file selection
+    if (btnChooseFounderImage && founderImageInput) {
+        btnChooseFounderImage.addEventListener('click', function() {
+            founderImageInput.click();
+        });
+
+        // Instant FileReader client-side image preview
+        founderImageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    founderImageThumb.src = e.target.result;
+                    modalFounderImgPreview.src = e.target.result;
+                    const nameSnippet = file.name.length > 20 ? file.name.substring(0, 18) + '...' : file.name;
+                    founderThumbStatusText.textContent = 'Selected: ' + nameSnippet;
+                    btnChooseFounderText.textContent = 'Change Photo';
+                    btnRemoveFounderImage.classList.remove('d-none');
+                    removeFounderImageInput.value = '0';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // Revert/Remove custom photo
+    if (btnRemoveFounderImage) {
+        btnRemoveFounderImage.addEventListener('click', function() {
+            founderImageInput.value = '';
+            removeFounderImageInput.value = '1';
+            founderImageThumb.src = defaultFounderImg;
+            modalFounderImgPreview.src = defaultFounderImg;
+            founderThumbStatusText.textContent = 'Reverted to Default (Unsaved)';
+            btnRemoveFounderImage.classList.add('d-none');
+            btnChooseFounderText.textContent = 'Upload New Photo';
+        });
+    }
+
+    // Live User Side Preview Modal Trigger
+    if (btnPreviewFounderWebsite && founderPreviewModalEl) {
+        btnPreviewFounderWebsite.addEventListener('click', function() {
+            const name = (document.getElementById('founder_name').value || '').trim();
+            const title = (document.getElementById('founder_title').value || '').trim() || 'Founder & Managing Director';
+            const subtitle = (document.getElementById('founder_subtitle').value || '').trim() || 'Nandini Appliances';
+            const msg = (document.getElementById('founder_message').value || '').trim();
+
+            if (name) {
+                modalFounderNamePreview.textContent = name;
+                modalFounderTitlePreview.textContent = title + (subtitle ? ' • ' + subtitle : '');
+            } else {
+                modalFounderNamePreview.textContent = title;
+                modalFounderTitlePreview.textContent = subtitle;
+            }
+
+            const cleanQuote = msg ? msg.replace(/^[“"']+|[”"']+$/g, '') : defaultFounderQuote;
+            modalFounderQuotePreview.innerHTML = '&ldquo;' + cleanQuote.replace(/\n/g, '<br>') + '&rdquo;';
+
+            const bsModal = bootstrap.Modal.getOrCreateInstance(founderPreviewModalEl);
+            bsModal.show();
+        });
+    }
 
     // Configured sleek Toast matching global dashboard aesthetic
     const Toast = Swal.mixin({
@@ -676,6 +1001,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('social_youtube').value = s.social_youtube || '';
                     document.getElementById('whatsapp_number').value = s.whatsapp_number || '';
 
+                    // Founder fields re-population
+                    document.getElementById('founder_name').value = s.founder_name || '';
+                    document.getElementById('founder_title').value = s.founder_title || 'Founder & Managing Director';
+                    document.getElementById('founder_subtitle').value = s.founder_subtitle || 'Nandini Appliances';
+                    document.getElementById('founder_message').value = s.founder_message || '';
+                    removeFounderImageInput.value = '0';
+                    founderImageInput.value = '';
+
+                    if (s.founder_image_url) {
+                        founderImageThumb.src = s.founder_image_url;
+                        modalFounderImgPreview.src = s.founder_image_url;
+                    }
+                    if (s.founder_image) {
+                        founderThumbStatusText.textContent = 'Custom Photo Active';
+                        btnRemoveFounderImage.classList.remove('d-none');
+                        btnChooseFounderText.textContent = 'Change Photo';
+                    } else {
+                        founderThumbStatusText.textContent = 'Default Photo';
+                        btnRemoveFounderImage.classList.add('d-none');
+                        btnChooseFounderText.textContent = 'Upload New Photo';
+                    }
+
                     // Update timestamp badge
                     if (s.updated_at) {
                         const dateObj = new Date(s.updated_at.replace(/-/g, "/"));
@@ -735,6 +1082,21 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             updateMapPreview(mapEmbedTextarea.value);
             updateWhatsAppPreview();
+            founderImageInput.value = '';
+            removeFounderImageInput.value = '0';
+            <?php if (!empty($settings->founder_image) && file_exists(FCPATH . 'uploads/founder/' . $settings->founder_image)): ?>
+                founderImageThumb.src = '<?= base_url('uploads/founder/' . $settings->founder_image) ?>';
+                modalFounderImgPreview.src = '<?= base_url('uploads/founder/' . $settings->founder_image) ?>';
+                founderThumbStatusText.textContent = 'Custom Photo Active';
+                btnRemoveFounderImage.classList.remove('d-none');
+                btnChooseFounderText.textContent = 'Change Photo';
+            <?php else: ?>
+                founderImageThumb.src = defaultFounderImg;
+                modalFounderImgPreview.src = defaultFounderImg;
+                founderThumbStatusText.textContent = 'Default Photo';
+                btnRemoveFounderImage.classList.add('d-none');
+                btnChooseFounderText.textContent = 'Upload New Photo';
+            <?php endif; ?>
         }, 50);
     });
 });

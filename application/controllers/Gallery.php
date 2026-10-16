@@ -35,7 +35,7 @@ class Gallery extends CI_Controller {
             }
         }
 
-        $email_display = 'info@nandani.com';
+        $email_display = 'info@nandini.com';
         if (!empty($settings_row['emails'])) {
             $emails = array_map('trim', explode(',', $settings_row['emails']));
             if (!empty($emails[0])) {
@@ -70,8 +70,8 @@ class Gallery extends CI_Controller {
         $selected_category = $this->input->get('category', TRUE) ?? $category_slug;
 
         $data = [
-            'page_title'         => 'Gallery - Nandani | Kitchen Appliance Distributors',
-            'meta_description'   => 'Explore Nandani\'s gallery - warehouse, events, product showcases, and team moments.',
+            'page_title'         => 'Gallery - Nandini | Kitchen Appliance Dealers',
+            'meta_description'   => 'Explore Nandini\'s gallery - warehouse, events, product showcases, and team moments.',
             'active_menu'        => 'gallery',
             'settings'           => !empty($settings_row) ? $settings_row : [],
             'phone_display'      => $phone_display,

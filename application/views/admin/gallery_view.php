@@ -432,7 +432,7 @@
                         <label for="add_gal_caption" class="form-label fw-bold small text-dark mb-1">
                             Title / Caption
                         </label>
-                        <input type="text" class="form-control" name="title_caption" id="add_gal_caption" placeholder="e.g., Annual Distributor Meet 2026" maxlength="150">
+                        <input type="text" class="form-control" name="title_caption" id="add_gal_caption" placeholder="e.g., Annual Dealer Meet 2026" maxlength="150">
                         <small class="text-muted" style="font-size: 0.72rem;">Optional description displayed beneath the image.</small>
                     </div>
 

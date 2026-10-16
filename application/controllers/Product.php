@@ -36,7 +36,7 @@ class Product extends CI_Controller {
             }
         }
 
-        $email_display = 'info@nandani.com';
+        $email_display = 'info@nandini.com';
         if (!empty($settings_row['emails'])) {
             $emails = array_map('trim', explode(',', $settings_row['emails']));
             if (!empty($emails[0])) {
@@ -115,11 +115,11 @@ class Product extends CI_Controller {
         $this->db->order_by('products.id', 'DESC');
         $products = $this->db->get()->result();
 
-        $page_title = 'Products - Nandani | Kitchen Appliance Catalogue';
-        $meta_description = 'Explore Nandani\'s complete range of kitchen appliances - Gas Stoves, Mixer Grinders, Cookware, Chimneys and more from reputed brands.';
+        $page_title = 'Products - Nandini | Kitchen Appliance Catalogue';
+        $meta_description = 'Explore Nandini\'s complete range of kitchen appliances - Gas Stoves, Mixer Grinders, Cookware, Chimneys and more from reputed brands.';
         if (!empty($current_brand)) {
-            $page_title = $current_brand->name . ' Products - Nandani | Kitchen Appliance Catalogue';
-            $meta_description = 'Explore the full range of ' . $current_brand->name . ' kitchen appliances authorized and distributed by Nandani.';
+            $page_title = $current_brand->name . ' Products - Nandini | Kitchen Appliance Catalogue';
+            $meta_description = 'Explore the full range of ' . $current_brand->name . ' kitchen appliances authorized and supplied by Nandini.';
         }
 
         $data = [

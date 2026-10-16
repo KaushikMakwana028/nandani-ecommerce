@@ -2,9 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Distributor Controller
+ * Dealer Controller
  * 
- * Handles the public-facing "Become a Distributor" page and dealership application submissions.
+ * Handles the public-facing "Become a Dealer" page and dealership application submissions.
  */
 class Distributor extends CI_Controller {
 
@@ -16,7 +16,7 @@ class Distributor extends CI_Controller {
     }
 
     /**
-     * Display Become a Distributor page
+     * Display Become a Dealer page
      */
     public function index() {
         // Fetch global settings
@@ -59,9 +59,9 @@ class Distributor extends CI_Controller {
         $prefilled_interest = trim((string)$this->input->get('interest', TRUE));
 
         $data = [
-            'page_title'         => 'Become a Distributor - Nandani | Kitchen Appliance Distribution',
-            'meta_description'   => 'Partner with Nandani and become an authorized distributor of India\'s leading kitchen appliance brands. Apply now.',
-            'active_menu'        => 'distributor',
+            'page_title'         => 'Become a Dealer - Nandini | Kitchen Appliance Dealership',
+            'meta_description'   => 'Partner with Nandini and become an authorized dealer of India\'s leading kitchen appliance brands. Apply now.',
+            'active_menu'        => 'dealer',
             'settings'           => $settings,
             'categories'         => $categories,
             'primary_phone'      => $primary_phone,
@@ -77,7 +77,7 @@ class Distributor extends CI_Controller {
     }
 
     /**
-     * Handle Distributor Application Submission
+     * Handle Dealer Application Submission
      */
     public function submit() {
         $is_ajax = $this->input->is_ajax_request() || 

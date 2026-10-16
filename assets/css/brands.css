@@ -168,6 +168,13 @@
   margin: 0 auto;
 }
 
+.spotlight-card-link{
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .spotlight-card{
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,199,44,0.15);

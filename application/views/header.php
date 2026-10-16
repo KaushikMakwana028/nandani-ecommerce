@@ -12,7 +12,7 @@ if (!empty($settings['phone_numbers'])) {
     }
 }
 
-$email_display = 'info@nandani.com';
+$email_display = 'info@nandini.com';
 if (!empty($settings['emails'])) {
     $emails = array_map('trim', explode(',', $settings['emails']));
     if (!empty($emails[0])) {
@@ -27,8 +27,8 @@ $active_menu = isset($active_menu) ? $active_menu : 'home';
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= isset($page_title) ? htmlspecialchars($page_title) : 'Nandani - Kitchen Appliance Distributors'; ?></title>
-<meta name="description" content="<?= isset($meta_description) ? htmlspecialchars($meta_description) : 'Nandani - Trusted distributors of premium kitchen appliances across India. From manufacturing legacy to authorized distribution excellence.'; ?>">
+<title><?= isset($page_title) ? htmlspecialchars($page_title) : 'Nandini - Kitchen Appliance Dealers'; ?></title>
+<meta name="description" content="<?= isset($meta_description) ? htmlspecialchars($meta_description) : 'Nandini - Trusted dealers of premium kitchen appliances across India. From manufacturing legacy to authorized dealership excellence.'; ?>">
 
 <!-- Favicon -->
 <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/images/fav.png'); ?>">
@@ -116,7 +116,7 @@ $active_menu = isset($active_menu) ? $active_menu : 'home';
 <nav class="navbar navbar-expand-lg main-navbar sticky-top" id="mainNav">
   <div class="container">
     <a class="navbar-brand" href="<?= site_url(''); ?>">
-      <img src="<?= base_url('assets/images/logo.png'); ?>" alt="Nandani Logo">
+      <img src="<?= base_url('assets/images/logo.png'); ?>" alt="Nandini Logo">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"><span></span></span>
@@ -130,7 +130,7 @@ $active_menu = isset($active_menu) ? $active_menu : 'home';
         <li class="nav-item"><a class="nav-link <?= $active_menu === 'gallery' ? 'active' : ''; ?>" href="<?= site_url('gallery'); ?>">Gallery</a></li>
         <li class="nav-item"><a class="nav-link <?= $active_menu === 'contact' ? 'active' : ''; ?>" href="<?= site_url('contact'); ?>">Contact</a></li>
         <li class="nav-item ms-lg-3">
-          <a href="<?= site_url('distributor'); ?>" class="btn-distributor <?= $active_menu === 'distributor' ? 'active-distributor' : ''; ?>">Become a Dealer</a>
+          <a href="<?= site_url('distributor'); ?>" class="btn-distributor <?= ($active_menu === 'distributor' || $active_menu === 'dealer') ? 'active-distributor' : ''; ?>">Become a Dealer</a>
         </li>
       </ul>
     </div>

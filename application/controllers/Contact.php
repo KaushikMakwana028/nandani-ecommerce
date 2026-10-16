@@ -48,7 +48,7 @@ class Contact extends CI_Controller {
 
         // Parse email addresses
         $emails = [];
-        $email_primary = 'info@nandani.com';
+        $email_primary = 'info@nandini.com';
         if (!empty($settings['emails'])) {
             $raw_emails = array_map('trim', explode(',', $settings['emails']));
             foreach ($raw_emails as $idx => $e) {
@@ -87,8 +87,8 @@ class Contact extends CI_Controller {
         $prefill_subject = $this->input->get('subject', TRUE) ?: (!empty($prefill_enquiry) ? 'Product Enquiry' : 'General Enquiry');
 
         $data = [
-            'page_title'            => 'Contact Us - Nandani | Kitchen Appliance Distributors',
-            'meta_description'      => 'Get in touch with Nandani for product enquiries, distributorship opportunities, or general questions.',
+            'page_title'            => 'Contact Us - Nandini | Kitchen Appliance Dealers',
+            'meta_description'      => 'Get in touch with Nandini for product enquiries, dealership opportunities, or general questions.',
             'active_menu'           => 'contact',
             'settings'              => $settings,
             'phone_numbers'         => $phone_numbers,

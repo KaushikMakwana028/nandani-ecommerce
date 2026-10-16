@@ -27,6 +27,18 @@
   font-size:14px;
   margin:0;
 }
+.contact-info-item p a:hover{
+  color: var(--primary-red) !important;
+}
+.contact-info-icon a{
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+}
 
 .contact-form-box{
   background:#fff;

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password | Nandani Admin</title>
+    <title>Reset Password | Nandini Admin</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="<?= base_url('assets/images/logo.png') ?>">
@@ -169,8 +169,8 @@
     
     <!-- Brand & Heading -->
     <div class="brand-header text-center mb-4">
-        <a href="<?= base_url() ?>" class="d-inline-block mb-3" title="Nandani">
-            <img src="<?= base_url('assets/images/logo.png') ?>" alt="Nandani Logo" class="reset-brand-logo" style="height: 70px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(200, 16, 46, 0.18));">
+        <a href="<?= base_url() ?>" class="d-inline-block mb-3" title="Nandini">
+            <img src="<?= base_url('assets/images/logo.png') ?>" alt="Nandini Logo" class="reset-brand-logo" style="height: 70px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(200, 16, 46, 0.18));">
         </a>
         <h1 class="brand-title">Reset Admin Password</h1>
         <p class="brand-subtitle">Enter your registered admin email to set a new password</p>

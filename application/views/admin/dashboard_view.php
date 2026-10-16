@@ -997,12 +997,12 @@
             </a>
         </div>
 
-        <!-- Distributor Leads -->
+        <!-- Dealer Leads -->
         <div class="col-6 col-lg-3">
             <a href="<?= base_url('admin/enquiries/distributor') ?>" class="dashboard-kpi-card kpi-purple" title="View Dealership Applications">
                 <div class="kpi-header">
                     <div>
-                        <div class="kpi-label">Distributors</div>
+                        <div class="kpi-label">Dealers</div>
                         <div class="kpi-value"><?= (int)$distributor_total ?></div>
                     </div>
                     <div class="kpi-icon-wrapper icon-bg-purple"><i class="fa-solid fa-briefcase"></i></div>
@@ -1123,12 +1123,12 @@
                             <i class="fa-solid fa-chart-simple text-warning"></i>
                             <span>Lead Processing Pipeline</span>
                         </h2>
-                        <p class="chart-card-subtitle">Status stages across queries &amp; distributor leads</p>
+                        <p class="chart-card-subtitle">Status stages across queries &amp; dealer leads</p>
                     </div>
                 </div>
                 <div class="chart-legend">
                     <span><i style="background:#C8102E"></i> Customer Queries</span>
-                    <span><i style="background:#2563EB"></i> Distributor Leads</span>
+                    <span><i style="background:#2563EB"></i> Dealer Leads</span>
                 </div>
                 <div class="chart-canvas-container">
                     <canvas id="pipelineStatusChart"></canvas>
@@ -1522,7 +1522,7 @@
                         barPercentage: 0.7,
                         categoryPercentage: 0.75
                     }, {
-                        label: 'Distributor Leads',
+                        label: 'Dealer Leads',
                         data: distributorStatus,
                         backgroundColor: '#2563EB',
                         borderRadius: 6,

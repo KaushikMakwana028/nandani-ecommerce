@@ -25,6 +25,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   </div>
 </section>
 
+<?php
+  $clean_address_query = preg_replace('/\s+/', ' ', strip_tags($address));
+  $maps_link = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($clean_address_query);
+?>
+
 <!-- ===== CONTACT INFO CARDS (From Settings) ===== -->
 <section class="contact-info-cards-section py-5">
   <div class="container py-4">
@@ -32,25 +37,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
       <!-- Card 1: Our Office -->
       <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="50">
-        <div class="contact-card">
-          <div class="contact-card-icon"><i class="fas fa-map-marker-alt"></i></div>
-          <h5>Our Office</h5>
-          <p><?= nl2br(htmlspecialchars($address)); ?></p>
-        </div>
+        <a href="<?= $maps_link; ?>" target="_blank" rel="noopener noreferrer" class="text-decoration-none d-block h-100" title="Open Office in Google Maps">
+          <div class="contact-card h-100">
+            <div class="contact-card-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <h5>Our Office</h5>
+            <p class="text-muted"><?= nl2br(htmlspecialchars($address)); ?></p>
+            <div class="mt-3 text-danger fw-semibold small d-inline-flex align-items-center">
+              <span>Open in Maps</span> <i class="fas fa-external-link-alt ms-1" style="font-size: 10px;"></i>
+            </div>
+          </div>
+        </a>
       </div>
 
       <!-- Card 2: Call Us -->
       <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="contact-card">
+        <div class="contact-card h-100">
           <div class="contact-card-icon"><i class="fas fa-phone-alt"></i></div>
           <h5>Call Us</h5>
           <p>
             <?php if (!empty($phone_numbers)): ?>
               <?php foreach ($phone_numbers as $idx => $p): ?>
-                <a href="tel:<?= $p['raw']; ?>" class="d-block text-muted text-decoration-none hover-gold"><?= htmlspecialchars($p['display']); ?></a>
+                <a href="tel:<?= $p['raw']; ?>" class="d-block text-muted text-decoration-none mb-1" style="transition: color 0.2s;" onmouseover="this.style.color='var(--primary-red)'" onmouseout="this.style.color=''" title="Call <?= htmlspecialchars($p['display']); ?>">
+                  <i class="fas fa-phone-alt me-1 text-danger small"></i> <?= htmlspecialchars($p['display']); ?>
+                </a>
               <?php endforeach; ?>
             <?php else: ?>
-              <a href="tel:<?= $phone_raw; ?>" class="d-block text-muted text-decoration-none hover-gold"><?= htmlspecialchars($phone_display); ?></a>
+              <a href="tel:<?= $phone_raw; ?>" class="d-block text-muted text-decoration-none" style="transition: color 0.2s;" onmouseover="this.style.color='var(--primary-red)'" onmouseout="this.style.color=''" title="Call <?= htmlspecialchars($phone_display); ?>">
+                <i class="fas fa-phone-alt me-1 text-danger small"></i> <?= htmlspecialchars($phone_display); ?>
+              </a>
             <?php endif; ?>
           </p>
         </div>
@@ -58,16 +72,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
       <!-- Card 3: Email Us -->
       <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="150">
-        <div class="contact-card">
+        <div class="contact-card h-100">
           <div class="contact-card-icon"><i class="fas fa-envelope"></i></div>
           <h5>Email Us</h5>
           <p>
             <?php if (!empty($emails)): ?>
               <?php foreach ($emails as $idx => $e): ?>
-                <a href="mailto:<?= htmlspecialchars($e); ?>" class="d-block text-muted text-decoration-none hover-gold"><?= htmlspecialchars($e); ?></a>
+                <a href="mailto:<?= htmlspecialchars($e); ?>" class="d-block text-muted text-decoration-none mb-1" style="transition: color 0.2s;" onmouseover="this.style.color='var(--primary-red)'" onmouseout="this.style.color=''" title="Send Email to <?= htmlspecialchars($e); ?>">
+                  <i class="fas fa-envelope me-1 text-danger small"></i> <?= htmlspecialchars($e); ?>
+                </a>
               <?php endforeach; ?>
             <?php else: ?>
-              <a href="mailto:<?= htmlspecialchars($email_display); ?>" class="d-block text-muted text-decoration-none hover-gold"><?= htmlspecialchars($email_display); ?></a>
+              <a href="mailto:<?= htmlspecialchars($email_display); ?>" class="d-block text-muted text-decoration-none" style="transition: color 0.2s;" onmouseover="this.style.color='var(--primary-red)'" onmouseout="this.style.color=''" title="Send Email to <?= htmlspecialchars($email_display); ?>">
+                <i class="fas fa-envelope me-1 text-danger small"></i> <?= htmlspecialchars($email_display); ?>
+              </a>
             <?php endif; ?>
           </p>
         </div>
@@ -75,7 +93,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
       <!-- Card 4: Working Hours -->
       <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
-        <div class="contact-card">
+        <div class="contact-card h-100">
           <div class="contact-card-icon"><i class="fas fa-clock"></i></div>
           <h5>Working Hours</h5>
           <p><?= nl2br(htmlspecialchars($working_hours)); ?></p>
@@ -135,7 +153,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <select name="subject" class="form-select">
                   <option value="General Enquiry" <?= ($prefill_subject === 'General Enquiry') ? 'selected' : ''; ?>>General Enquiry</option>
                   <option value="Product Enquiry" <?= ($prefill_subject === 'Product Enquiry') ? 'selected' : ''; ?>>Product Enquiry</option>
-                  <option value="Distributorship Enquiry" <?= ($prefill_subject === 'Distributorship Enquiry') ? 'selected' : ''; ?>>Distributorship Enquiry</option>
+                  <option value="Dealership Enquiry" <?= ($prefill_subject === 'Distributorship Enquiry' || $prefill_subject === 'Dealership Enquiry') ? 'selected' : ''; ?>>Dealership Enquiry</option>
                   <option value="Support" <?= ($prefill_subject === 'Support') ? 'selected' : ''; ?>>Support</option>
                 </select>
               </div>
@@ -165,7 +183,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div class="col-lg-6" data-aos="fade-left">
         <span class="tag">Find Us Here</span>
         <h2 class="mb-4">Visit Our <span>Office</span></h2>
-        <p class="text-muted mb-4">Drop by our office for an in-person consultation about our products and distributorship opportunities.</p>
+        <p class="text-muted mb-4">Drop by our office for an in-person consultation about our products and dealership opportunities.</p>
 
         <div class="map-box">
           <?php
@@ -182,6 +200,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 echo '<iframe src="https://maps.google.com/maps?q=' . $map_query . '&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy"></iframe>';
             }
           ?>
+        </div>
+        <div class="mt-2 text-center">
+          <a href="<?= $maps_link; ?>" target="_blank" rel="noopener noreferrer" class="btn btn-outline-danger btn-sm w-100 py-2" title="Open in Google Maps">
+            <i class="fas fa-directions me-2"></i>Open in Google Maps / Get Directions <i class="fas fa-external-link-alt ms-1 small"></i>
+          </a>
         </div>
 
         <div class="social-connect-box mt-4">

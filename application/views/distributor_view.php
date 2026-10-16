@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <div class="container position-relative">
     <div class="text-center" data-aos="fade-up">
       <span class="tag tag-light">Partner With Us</span>
-      <h1 class="text-white">Become a Distributor</h1>
+      <h1 class="text-white">Become a Dealer</h1>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb justify-content-center mb-0">
           <li class="breadcrumb-item"><a href="<?= site_url(''); ?>">Home</a></li>
-          <li class="breadcrumb-item active text-gold" aria-current="page">Become a Distributor</li>
+          <li class="breadcrumb-item active text-gold" aria-current="page">Become a Dealer</li>
         </ol>
       </nav>
     </div>
@@ -26,22 +26,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
       <div class="col-lg-6" data-aos="fade-right">
         <div class="dist-img-wrap">
-          <img src="<?= base_url('assets/images/about/office2.jpeg'); ?>" alt="Nandani Executive Corporate Boardroom" class="rounded-4 shadow">
+          <img src="<?= base_url('assets/images/about/office2.jpeg'); ?>" alt="Nandini Executive Corporate Boardroom" class="rounded-4 shadow">
           <div class="dist-floating-card">
             <i class="fas fa-chart-line"></i>
             <div>
               <h4><span class="counter" data-target="100">0</span>+</h4>
-              <p>Successful Distributors</p>
+              <p>Successful Dealers</p>
             </div>
           </div>
         </div>
       </div>
 
       <div class="col-lg-6" data-aos="fade-left">
-        <span class="tag">Grow With Nandani</span>
-        <h2 class="mb-4">Why Partner With <span>Nandani?</span></h2>
+        <span class="tag">Grow With Nandini</span>
+        <h2 class="mb-4">Why Partner With <span>Nandini?</span></h2>
         <p class="text-muted mb-4">
-          Joining Nandani's distribution network means aligning with a business built on decades of manufacturing expertise and authorized brand partnerships. We offer more than just products — we offer a growth partnership.
+          Joining Nandini's dealer network means aligning with a business built on decades of manufacturing expertise and authorized brand partnerships. We offer more than just products — we offer a growth partnership.
         </p>
 
         <div class="dist-benefit-list">
@@ -56,7 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="dist-benefit-icon"><i class="fas fa-shield-alt"></i></div>
             <div>
               <h6>100% Genuine Products</h6>
-              <p>Authorized distribution ensuring authentic, warranty-backed products.</p>
+              <p>Authorized dealership ensuring authentic, warranty-backed products.</p>
             </div>
           </div>
           <div class="dist-benefit-item">
@@ -86,7 +86,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="section-title text-center" data-aos="fade-up">
       <span class="tag">Requirements</span>
       <h2>Eligibility <span>Criteria</span></h2>
-      <p>Basic requirements to become an authorized Nandani distributor.</p>
+      <p>Basic requirements to become an authorized Nandini dealer.</p>
     </div>
 
     <div class="row g-4">
@@ -118,7 +118,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="eligibility-card">
           <div class="eligibility-number">04</div>
           <div class="eligibility-icon"><i class="fas fa-truck"></i></div>
-          <h5>Distribution Network</h5>
+          <h5>Dealer Network</h5>
           <p>Existing retail/dealer network or strong local market connections.</p>
         </div>
       </div>
@@ -141,7 +141,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <div class="process-icon"><i class="fas fa-file-signature"></i></div>
           <span class="process-num">Step 1</span>
           <h5>Submit Application</h5>
-          <p>Fill out our online distributor application form with your business details.</p>
+          <p>Fill out our online dealer application form with your business details.</p>
         </div>
       </div>
       <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
@@ -157,7 +157,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <div class="process-icon"><i class="fas fa-handshake"></i></div>
           <span class="process-num">Step 3</span>
           <h5>Agreement Signing</h5>
-          <p>Complete documentation and sign the distributorship agreement.</p>
+          <p>Complete documentation and sign the dealership agreement.</p>
         </div>
       </div>
       <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
@@ -327,7 +327,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="section-title text-center" data-aos="fade-up">
       <span class="tag">Got Questions?</span>
       <h2>Frequently Asked <span>Questions</span></h2>
-      <p>Everything you need to know before becoming our distributor.</p>
+      <p>Everything you need to know before becoming our dealer.</p>
     </div>
 
     <div class="row justify-content-center">
@@ -337,7 +337,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <div class="accordion-item">
             <h2 class="accordion-header">
               <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                What is the minimum investment required to become a distributor?
+                What is the minimum investment required to become a dealer?
               </button>
             </h2>
             <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
@@ -368,7 +368,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </h2>
             <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
               <div class="accordion-body">
-                While prior experience is beneficial, it's not mandatory. We provide complete product training and business support to help new distributors succeed in the kitchen appliance market.
+                While prior experience is beneficial, it's not mandatory. We provide complete product training and business support to help new dealers succeed in the kitchen appliance market.
               </div>
             </div>
           </div>
@@ -376,7 +376,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <div class="accordion-item">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-                What kind of support does Nandani provide to distributors?
+                What kind of support does Nandini provide to dealers?
               </button>
             </h2>
             <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
@@ -389,12 +389,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <div class="accordion-item">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
-                Can I distribute multiple brands under Nandani?
+                Can I deal in multiple brands under Nandini?
               </button>
             </h2>
             <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
               <div class="accordion-body">
-                Yes! As our distributor, you get access to our complete brand portfolio across multiple product categories, allowing you to diversify your business offerings.
+                Yes! As our dealer, you get access to our complete brand portfolio across multiple product categories, allowing you to diversify your business offerings.
               </div>
             </div>
           </div>

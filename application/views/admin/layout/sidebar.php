@@ -3,8 +3,8 @@
 <aside id="adminSidebar" class="admin-sidebar d-flex flex-column flex-shrink-0 text-white">
     <!-- Brand Header -->
     <div class="sidebar-brand d-flex align-items-center justify-content-between px-3 py-3 border-bottom border-secondary border-opacity-25">
-        <a href="<?= base_url('admin/dashboard') ?>" class="d-flex align-items-center justify-content-center flex-grow-1 text-decoration-none py-1" title="Nandani Admin Panel">
-            <img src="<?= base_url('assets/images/logo-white.png') ?>" alt="Nandani" class="sidebar-brand-img" style="height: 46px; max-width: 155px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));">
+        <a href="<?= base_url('admin/dashboard') ?>" class="d-flex align-items-center justify-content-center flex-grow-1 text-decoration-none py-1" title="Nandini Admin Panel">
+            <img src="<?= base_url('assets/images/logo-white.png') ?>" alt="Nandini" class="sidebar-brand-img" style="height: 46px; max-width: 155px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));">
         </a>
         <!-- Close button on Mobile/Tablet -->
         <button type="button" class="btn-close btn-close-white d-lg-none ms-2" id="sidebarCloseBtn" aria-label="Close"></button>
@@ -92,7 +92,7 @@
                             <li>
                                 <a href="<?= base_url('admin/enquiries/distributor') ?>" class="submenu-link <?= ($active_menu === 'distributor_enquiries') ? 'active' : '' ?>">
                                     <i class="fa-solid fa-briefcase submenu-icon"></i>
-                                    <span>Distributor</span>
+                                    <span>Dealer</span>
                                 </a>
                             </li>
                         </ul>

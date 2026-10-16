@@ -105,7 +105,7 @@ $box_patterns = ['tall', '', '', 'wide', '', 'tall', '', '', 'wide', '', '', '']
 
     <div class="section-title text-center" data-aos="fade-up">
       <span class="tag">Our Moments</span>
-      <h2>A Glimpse Into <span>Nandani's World</span></h2>
+      <h2>A Glimpse Into <span>Nandini's World</span></h2>
       <p>Explore our warehouse, events, product showcases, and the people behind our success.</p>
     </div>
 
@@ -163,7 +163,7 @@ $box_patterns = ['tall', '', '', 'wide', '', 'tall', '', '', 'wide', '', '', '']
   <div class="container position-relative">
     <div class="row justify-content-center text-center">
       <div class="col-lg-8" data-aos="zoom-in">
-        <span class="tag tag-light">Grow With Nandani</span>
+        <span class="tag tag-light">Grow With Nandini</span>
         <h2 class="text-white">Want to See More Of Our <span>Business In Action?</span></h2>
         <p class="text-light-grey mb-4">Visit our facility or connect with us to learn more about our operations and products.</p>
         <div class="d-flex justify-content-center gap-3 flex-wrap">

@@ -14,8 +14,8 @@ if (empty($whatsapp_clean) && !empty($settings['phone_numbers'])) {
     <div class="row g-4 py-5">
 
       <div class="col-lg-4 col-md-6">
-        <img src="<?= base_url('assets/images/logo-white.png'); ?>" alt="Nandani" class="footer-logo mb-3" onerror="this.onerror=null; this.src='<?= base_url('assets/images/logo.png'); ?>';">
-        <p class="text-light-grey">From decades of manufacturing legacy to trusted distribution excellence — Nandani continues to bring quality kitchen appliances closer to every home.</p>
+        <img src="<?= base_url('assets/images/logo-white.png'); ?>" alt="Nandini" class="footer-logo mb-3" onerror="this.onerror=null; this.src='<?= base_url('assets/images/logo.png'); ?>';">
+        <p class="text-light-grey">From decades of manufacturing legacy to trusted distribution excellence — Nandini continues to bring quality kitchen appliances closer to every home.</p>
         <div class="footer-social">
           <?php if (!empty($settings['social_facebook'])): ?>
             <a href="<?= htmlspecialchars($settings['social_facebook']); ?>" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -52,7 +52,7 @@ if (empty($whatsapp_clean) && !empty($settings['phone_numbers'])) {
           <li><a href="<?= site_url('products'); ?>">Products</a></li>
           <li><a href="<?= site_url('gallery'); ?>">Gallery</a></li>
           <li><a href="<?= site_url('contact'); ?>">Contact Us</a></li>
-          <li><a href="<?= site_url('distributor'); ?>">Become a Distributor</a></li>
+          <li><a href="<?= site_url('distributor'); ?>">Become a Dealer</a></li>
         </ul>
       </div>
 
@@ -83,10 +83,10 @@ if (empty($whatsapp_clean) && !empty($settings['phone_numbers'])) {
     <div class="footer-bottom">
       <div class="row align-items-center">
         <div class="col-md-6">
-          <p class="mb-0">© <?= date('Y'); ?> Nandani. All Rights Reserved.</p>
+          <p class="mb-0">© <?= date('Y'); ?> Nandini. All Rights Reserved.</p>
         </div>
         <div class="col-md-6 text-md-end">
-          <p class="mb-0">Designed with <i class="fas fa-heart" style="color:var(--gold)"></i> for Nandani</p>
+          <p class="mb-0">Designed with <i class="fas fa-heart" style="color:var(--gold)"></i> for Nandini</p>
         </div>
       </div>
     </div>
@@ -95,7 +95,7 @@ if (empty($whatsapp_clean) && !empty($settings['phone_numbers'])) {
 
 <?php if (!empty($whatsapp_clean)): ?>
 <!-- WhatsApp Floating Button -->
-<a href="https://wa.me/<?= $whatsapp_clean; ?>" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat with Nandani on WhatsApp">
+<a href="https://wa.me/<?= $whatsapp_clean; ?>" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat with Nandini on WhatsApp">
   <i class="fab fa-whatsapp"></i>
 </a>
 <?php endif; ?>

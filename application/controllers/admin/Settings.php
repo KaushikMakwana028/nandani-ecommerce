@@ -50,6 +50,10 @@ class Settings extends Admin_Controller {
         $this->form_validation->set_rules('social_whatsapp', 'WhatsApp Link', 'trim|max_length[255]');
         $this->form_validation->set_rules('social_youtube', 'YouTube URL', 'trim|max_length[255]');
         $this->form_validation->set_rules('whatsapp_number', 'WhatsApp Number', 'trim|max_length[20]');
+        $this->form_validation->set_rules('founder_name', 'Founder Name', 'trim|max_length[150]');
+        $this->form_validation->set_rules('founder_title', 'Founder Designation/Title', 'trim|max_length[150]');
+        $this->form_validation->set_rules('founder_subtitle', 'Company / Subtitle', 'trim|max_length[150]');
+        $this->form_validation->set_rules('founder_message', 'Founder Message', 'trim');
 
         if ($this->form_validation->run() === FALSE) {
             $error_message = validation_errors(' ', ' ');
@@ -98,7 +102,63 @@ class Settings extends Admin_Controller {
         $phone_numbers = $this->input->post('phone_numbers', TRUE) ?: '';
         $whatsapp_number = $this->input->post('whatsapp_number', TRUE) ?: '';
 
-        // 6. Prepare update payload
+        // 6. Handle High-Quality Photo Upload specifically for Founder & Managing Director
+        $founder_image_file = $settings->founder_image ?? '';
+
+        // Check if removal was requested
+        if ($this->input->post('remove_founder_image') == '1') {
+            if (!empty($founder_image_file) && file_exists(FCPATH . 'uploads/founder/' . $founder_image_file)) {
+                @unlink(FCPATH . 'uploads/founder/' . $founder_image_file);
+            }
+            $founder_image_file = '';
+        }
+
+        // Check if a new image was submitted
+        if (!empty($_FILES['founder_image']['name'])) {
+            $upload_path = FCPATH . 'uploads/founder/';
+            if (!is_dir($upload_path)) {
+                @mkdir($upload_path, 0755, TRUE);
+            }
+
+            // Exclusively for Founder & Managing Director: unrestricted dimensions & high file size (up to 100MB)
+            $upload_config = [
+                'upload_path'   => $upload_path,
+                'allowed_types' => 'jpg|jpeg|png|webp|bmp|gif|tif|tiff|svg|avif|heic|heif',
+                'max_size'      => 102400, // 100MB ultra-high quality
+                'max_width'     => 0,      // Unlimited resolution (raw, 4K, 8K studio shots)
+                'max_height'    => 0,
+                'encrypt_name'  => TRUE,
+                'remove_spaces' => TRUE
+            ];
+
+            $this->load->library('upload');
+            $this->upload->initialize($upload_config);
+
+            if ($this->upload->do_upload('founder_image')) {
+                $upload_data = $this->upload->data();
+                // Remove previous image file if different
+                if (!empty($founder_image_file) && file_exists($upload_path . $founder_image_file)) {
+                    @unlink($upload_path . $founder_image_file);
+                }
+                $founder_image_file = $upload_data['file_name'];
+            } else {
+                $upload_error = $this->upload->display_errors('', '');
+                if ($is_ajax) {
+                    return $this->output
+                        ->set_content_type('application/json')
+                        ->set_output(json_encode([
+                            'status'  => 'error',
+                            'message' => 'Founder Photo Upload Failed: ' . $upload_error
+                        ]));
+                } else {
+                    $this->session->set_flashdata('error', 'Founder Photo Upload Failed: ' . $upload_error);
+                    redirect('admin/settings');
+                    return;
+                }
+            }
+        }
+
+        // 7. Prepare update payload
         $update_data = [
             'phone_numbers'    => $phone_numbers,
             'emails'           => $raw_emails,
@@ -110,14 +170,25 @@ class Settings extends Admin_Controller {
             'social_linkedin'  => $this->input->post('social_linkedin', TRUE) ?: '',
             'social_whatsapp'  => $this->input->post('social_whatsapp', TRUE) ?: '',
             'social_youtube'   => $this->input->post('social_youtube', TRUE) ?: '',
-            'whatsapp_number'  => $whatsapp_number
+            'whatsapp_number'  => $whatsapp_number,
+            'founder_name'     => $this->input->post('founder_name', TRUE) ?: '',
+            'founder_title'    => $this->input->post('founder_title', TRUE) ?: 'Founder & Managing Director',
+            'founder_subtitle' => $this->input->post('founder_subtitle', TRUE) ?: 'Nandini Appliances',
+            'founder_image'    => $founder_image_file,
+            'founder_message'  => $this->input->post('founder_message', TRUE) ?: ''
         ];
 
-        // 7. Enforce single-row update ONLY (Never insert a new row)
+        // 8. Enforce single-row update ONLY (Never insert a new row)
         $this->db->where('id', (int)$settings->id)->limit(1)->update('settings', $update_data);
 
-        // 8. Re-fetch fresh row from DB to confirm the save worked
+        // 9. Re-fetch fresh row from DB to confirm the save worked
         $fresh_settings = $this->db->where('id', (int)$settings->id)->get('settings')->row();
+
+        // Attach computed image URL for immediate frontend/preview sync
+        $founder_image_url = (!empty($fresh_settings->founder_image) && file_exists(FCPATH . 'uploads/founder/' . $fresh_settings->founder_image))
+            ? base_url('uploads/founder/' . $fresh_settings->founder_image)
+            : base_url('assets/images/about/founder2.jpeg');
+        $fresh_settings->founder_image_url = $founder_image_url;
 
         if ($is_ajax) {
             return $this->output
@@ -155,7 +226,12 @@ class Settings extends Admin_Controller {
                 'social_linkedin'  => '',
                 'social_whatsapp'  => '',
                 'social_youtube'   => '',
-                'whatsapp_number'  => ''
+                'whatsapp_number'  => '',
+                'founder_name'     => '',
+                'founder_title'    => 'Founder & Managing Director',
+                'founder_subtitle' => 'Nandini Appliances',
+                'founder_image'    => '',
+                'founder_message'  => ''
             ];
             $this->db->insert('settings', $seed);
             return $this->db->order_by('id', 'ASC')->limit(1)->get('settings')->row();

@@ -35,7 +35,7 @@ class Brand extends CI_Controller {
             }
         }
 
-        $email_display = 'info@nandani.com';
+        $email_display = 'info@nandini.com';
         if (!empty($settings_row['emails'])) {
             $emails = array_map('trim', explode(',', $settings_row['emails']));
             if (!empty($emails[0])) {
@@ -64,8 +64,8 @@ class Brand extends CI_Controller {
         $product_count = $this->db->where('status', 'active')->count_all_results('products');
 
         $data = [
-            'page_title'       => 'Our Brands - Nandani | Authorized Kitchen Appliance Distributors',
-            'meta_description' => 'Nandani proudly partners with India\'s most reputed kitchen appliance brands. Explore our authorized brand portfolio.',
+            'page_title'       => 'Our Brands - Nandini | Authorized Kitchen Appliance Dealers',
+            'meta_description' => 'Nandini proudly partners with India\'s most reputed kitchen appliance brands. Explore our authorized brand portfolio.',
             'active_menu'      => 'brands',
             'settings'         => !empty($settings_row) ? $settings_row : [],
             'phone_display'    => $phone_display,

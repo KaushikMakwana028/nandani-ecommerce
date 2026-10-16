@@ -18,7 +18,7 @@ if (!empty($settings['phone_numbers'])) {
   <div class="container position-relative">
     <div class="text-center" data-aos="fade-up">
       <span class="tag tag-light">Who We Are</span>
-      <h1 class="text-white">About Nandani</h1>
+      <h1 class="text-white">About Nandini</h1>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb justify-content-center mb-0">
           <li class="breadcrumb-item"><a href="<?= site_url(''); ?>">Home</a></li>
@@ -38,10 +38,10 @@ if (!empty($settings['phone_numbers'])) {
       <div class="col-lg-6" data-aos="fade-right">
         <div class="intro-img-wrap">
           <div class="intro-img-main">
-            <img src="<?= base_url('assets/images/about/office2.jpeg'); ?>" alt="Nandani Executive Corporate Office">
+            <img src="<?= base_url('assets/images/about/office2.jpeg'); ?>" alt="Nandini Executive Corporate Office">
           </div>
           <div class="intro-img-small">
-            <img src="<?= base_url('assets/images/about/office1.jpeg'); ?>" alt="Nandani Corporate Lounge & Skyline View">
+            <img src="<?= base_url('assets/images/about/office1.jpeg'); ?>" alt="Nandini Corporate Lounge & Skyline View">
           </div>
           <div class="intro-badge">
             <i class="fas fa-award"></i>
@@ -58,10 +58,10 @@ if (!empty($settings['phone_numbers'])) {
         <span class="tag">Our Story</span>
         <h2 class="mb-4">Who We Are & <span>Where We Come From</span></h2>
         <p class="text-muted mb-3">
-          Nandani began its journey decades ago as a dedicated manufacturer of kitchen appliances, building a reputation for quality, durability, and innovation. Our products once graced kitchens across the region, crafted with precision and care.
+          Nandini began its journey decades ago as a dedicated manufacturer of kitchen appliances, building a reputation for quality, durability, and innovation. Our products once graced kitchens across the region, crafted with precision and care.
         </p>
         <p class="text-muted mb-4">
-          Over time, as the market evolved, we recognized a greater opportunity — to leverage our deep industry knowledge and become a trusted bridge between India's most reputed kitchen appliance manufacturers and dealers nationwide. Today, Nandani proudly operates as an authorized distributor, carrying forward the same values of trust and quality that defined our manufacturing era.
+          Over time, as the market evolved, we recognized a greater opportunity — to leverage our deep industry knowledge and become a trusted bridge between India's most reputed kitchen appliance manufacturers and dealers nationwide. Today, Nandini proudly operates as an authorized dealer, carrying forward the same values of trust and quality that defined our manufacturing era.
         </p>
 
         <div class="row g-3">
@@ -69,7 +69,7 @@ if (!empty($settings['phone_numbers'])) {
             <div class="intro-tick"><i class="fas fa-check-circle"></i> Manufacturing Heritage</div>
           </div>
           <div class="col-6">
-            <div class="intro-tick"><i class="fas fa-check-circle"></i> Authorized Distribution</div>
+            <div class="intro-tick"><i class="fas fa-check-circle"></i> Authorized Dealership</div>
           </div>
           <div class="col-6">
             <div class="intro-tick"><i class="fas fa-check-circle"></i> Pan-India Network</div>
@@ -92,7 +92,7 @@ if (!empty($settings['phone_numbers'])) {
         <span class="tag">Present Focus</span>
         <h2 class="mb-4">Our <span>Business Today</span></h2>
         <p class="text-muted mb-0">
-          Today, Nandani Kitchen Appliances Pvt. Ltd. operates primarily as a <strong>distributor in Maharashtra</strong>, representing established brands in the kitchen and home appliance industry. We work at the distributor level, partnering with reputed brands such as <strong>Marlex, Kanchan and Greenchef</strong>, along with a wide range of kitchenware, home appliances and utility products.
+          Today, Nandini Kitchen Appliances Pvt. Ltd. operates primarily as a <strong>dealer in Maharashtra</strong>, representing established brands in the kitchen and home appliance industry. We work at the dealer level, partnering with reputed brands such as <strong>Marlex, Kanchan and Greenchef</strong>, along with a wide range of kitchenware, home appliances and utility products.
         </p>
         <p class="text-muted mt-3">
           Our objective is to provide dealers and retailers with a wide and reliable range of products under one roof, supported by efficient distribution, market knowledge and dependable service. Our long-standing manufacturing experience gives us a strong understanding of product quality, market requirements and customer expectations.
@@ -158,7 +158,7 @@ if (!empty($settings['phone_numbers'])) {
 
     <div class="section-title text-center mb-5" data-aos="fade-up">
       <span class="tag">Corporate Headquarters</span>
-      <h2>Inside Nandani: <span>Where Excellence Takes Shape</span></h2>
+      <h2>Inside Nandini: <span>Where Excellence Takes Shape</span></h2>
       <p class="mx-auto" style="max-width: 680px;">Take a tour of our modern corporate headquarters — designed for executive leadership, dealer conferences, brand summits, and seamless distribution operations.</p>
     </div>
 
@@ -218,7 +218,7 @@ if (!empty($settings['phone_numbers'])) {
           <div class="office-gallery-card flex-fill">
             <div class="office-photo-box">
               <span class="office-photo-badge"><i class="fas fa-camera me-1"></i> Boardroom</span>
-              <img src="<?= base_url('assets/images/about/office2.jpeg'); ?>" alt="Nandani Executive Boardroom">
+              <img src="<?= base_url('assets/images/about/office2.jpeg'); ?>" alt="Nandini Executive Boardroom">
             </div>
             <div class="office-card-body">
               <h4>Executive Boardroom &amp; Conference Suite</h4>
@@ -234,7 +234,7 @@ if (!empty($settings['phone_numbers'])) {
           <div class="office-gallery-card flex-fill">
             <div class="office-photo-box">
               <span class="office-photo-badge"><i class="fas fa-eye me-1"></i> Cityscape</span>
-              <img src="<?= base_url('assets/images/about/office1.jpeg'); ?>" alt="Nandani Office Skyline View">
+              <img src="<?= base_url('assets/images/about/office1.jpeg'); ?>" alt="Nandini Office Skyline View">
             </div>
             <div class="office-card-body">
               <h4>Executive Lounge &amp; Cityscape View</h4>
@@ -256,7 +256,7 @@ if (!empty($settings['phone_numbers'])) {
         <div class="office-gallery-card">
           <div class="office-photo-box">
             <span class="office-photo-badge"><i class="fas fa-building me-1"></i> Conference Hall</span>
-            <img src="<?= base_url('assets/images/about/office3.jpeg'); ?>" alt="Nandani Executive Conference Hall">
+            <img src="<?= base_url('assets/images/about/office3.jpeg'); ?>" alt="Nandini Executive Conference Hall">
           </div>
           <div class="office-card-body">
             <h4>Executive Conference Hall &amp; Media Center</h4>
@@ -272,7 +272,7 @@ if (!empty($settings['phone_numbers'])) {
         <div class="office-gallery-card">
           <div class="office-photo-box">
             <span class="office-photo-badge"><i class="fas fa-handshake me-1"></i> Strategy Suite</span>
-            <img src="<?= base_url('assets/images/about/office4.jpeg'); ?>" alt="Nandani Strategy Suite">
+            <img src="<?= base_url('assets/images/about/office4.jpeg'); ?>" alt="Nandini Strategy Suite">
           </div>
           <div class="office-card-body">
             <h4>Strategic Planning &amp; Leadership Suite</h4>
@@ -368,8 +368,8 @@ if (!empty($settings['phone_numbers'])) {
       <div class="timeline-item left" data-aos="fade-right">
         <div class="timeline-content">
           <span class="timeline-year">1993</span>
-          <h5>Entering Distribution</h5>
-          <p>Royal Distributors was established for wholesale distribution of home appliances, kitchenware and modern utensils.</p>
+          <h5>Entering Dealership</h5>
+          <p>Royal Dealers was established for wholesale dealership of home appliances, kitchenware and modern utensils.</p>
         </div>
       </div>
 
@@ -377,7 +377,7 @@ if (!empty($settings['phone_numbers'])) {
         <div class="timeline-content">
           <span class="timeline-year">2003</span>
           <h5>Non-Stick Manufacturing</h5>
-          <p>Started manufacturing Non-Stick Cookware under Nandani Kitchen Appliances.</p>
+          <p>Started manufacturing Non-Stick Cookware under Nandini Kitchen Appliances.</p>
         </div>
       </div>
 
@@ -418,13 +418,25 @@ if (!empty($settings['phone_numbers'])) {
 </section>
 
 <!-- ===== FOUNDER MESSAGE SECTION ===== -->
+<?php
+$founder_img = (!empty($settings['founder_image']) && file_exists(FCPATH . 'uploads/founder/' . $settings['founder_image']))
+    ? base_url('uploads/founder/' . $settings['founder_image'])
+    : base_url('assets/images/about/founder2.jpeg');
+
+$founder_name     = !empty($settings['founder_name']) ? trim($settings['founder_name']) : '';
+$founder_title    = !empty($settings['founder_title']) ? trim($settings['founder_title']) : 'Founder & Managing Director';
+$founder_subtitle = !empty($settings['founder_subtitle']) ? trim($settings['founder_subtitle']) : 'Nandini Appliances';
+$founder_message  = !empty($settings['founder_message']) ? trim($settings['founder_message']) : "Our journey from manufacturing to distribution has been driven by one constant belief — quality and trust are non-negotiable. As we transitioned into a new chapter, our commitment to our partners, dealers, and customers has only grown stronger. Nandini is not just a business; it's a legacy we continue to build every single day.";
+?>
 <section class="founder-section py-5">
   <div class="container py-5">
     <div class="row align-items-center g-5">
 
-      <div class="col-lg-5" data-aos="fade-right">
+      <div class="col-lg-5 text-center text-lg-start" data-aos="fade-right">
         <div class="founder-img-wrap">
-          <img src="<?= base_url('assets/images/about/founder2.jpeg'); ?>" alt="Founder">
+          <div class="founder-img-box">
+            <img src="<?= $founder_img; ?>" alt="<?= htmlspecialchars(!empty($founder_name) ? $founder_name : $founder_title); ?>" onerror="this.onerror=null; this.src='<?= base_url('assets/images/about/founder2.jpeg'); ?>';">
+          </div>
           <div class="founder-quote-icon"><i class="fas fa-quote-right"></i></div>
         </div>
       </div>
@@ -433,11 +445,16 @@ if (!empty($settings['phone_numbers'])) {
         <span class="tag">Message From Our Founder</span>
         <h2 class="mb-4">Building Trust, <span>One Partnership</span> At A Time</h2>
         <p class="founder-text">
-          "Our journey from manufacturing to distribution has been driven by one constant belief — quality and trust are non-negotiable. As we transitioned into a new chapter, our commitment to our partners, dealers, and customers has only grown stronger. Nandani is not just a business; it's a legacy we continue to build every single day."
+          &ldquo;<?= nl2br(htmlspecialchars(trim($founder_message, " \t\n\r\0\x0B\"'“”"))); ?>&rdquo;
         </p>
         <div class="founder-info">
-          <h5>Founder &amp; Managing Director</h5>
-          <span>Nandani Appliances</span>
+          <?php if (!empty($founder_name)): ?>
+            <h5><?= htmlspecialchars($founder_name); ?></h5>
+            <span><?= htmlspecialchars($founder_title); ?><?= !empty($founder_subtitle) ? ' &bull; ' . htmlspecialchars($founder_subtitle) : ''; ?></span>
+          <?php else: ?>
+            <h5><?= htmlspecialchars($founder_title); ?></h5>
+            <span><?= htmlspecialchars($founder_subtitle); ?></span>
+          <?php endif; ?>
         </div>
       </div>
 
@@ -451,8 +468,8 @@ if (!empty($settings['phone_numbers'])) {
   <div class="container position-relative">
     <div class="row justify-content-center text-center">
       <div class="col-lg-8" data-aos="zoom-in">
-        <span class="tag tag-light">Grow With Nandani</span>
-        <h2 class="text-white">Ready to Become Our <span>Authorized Distributor?</span></h2>
+        <span class="tag tag-light">Grow With Nandini</span>
+        <h2 class="text-white">Ready to Become Our <span>Authorized Dealer?</span></h2>
         <p class="text-light-grey mb-4">Join hands with a trusted name in kitchen appliance distribution and unlock new business opportunities today.</p>
         <div class="d-flex justify-content-center gap-3 flex-wrap">
           <a href="<?= site_url('distributor'); ?>" class="btn-primary-custom">Apply Now <i class="fas fa-arrow-right ms-2"></i></a>

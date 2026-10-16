@@ -105,6 +105,12 @@
   z-index: 2;
 }
 
+.brand-logo-link{
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .brand-logo-box{
   background: var(--light-grey);
   height: 160px;

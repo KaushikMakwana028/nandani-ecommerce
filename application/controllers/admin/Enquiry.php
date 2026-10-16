@@ -222,8 +222,8 @@ class Enquiry extends Admin_Controller {
         }
 
         $data = [
-            'page_title'      => 'Distributor Applications',
-            'breadcrumb'      => 'Distributor Applications',
+            'page_title'      => 'Dealer Applications',
+            'breadcrumb'      => 'Dealer Applications',
             'active_menu'     => 'distributor_enquiries',
             'status_filter'   => $status_filter,
             'interest_filter' => $interest_filter,
@@ -386,7 +386,7 @@ class Enquiry extends Admin_Controller {
         $status_label = ($status === 'all') ? 'all' : $status;
 
         if ($type === 'distributor') {
-            $filename = "distributor_applications_{$status_label}_{$timestamp}.csv";
+            $filename = "dealer_applications_{$status_label}_{$timestamp}.csv";
             $headers  = [
                 'ID',
                 'Applicant Name',
@@ -482,8 +482,8 @@ class Enquiry extends Admin_Controller {
      */
     public function notifyAdminOfNewEnquiry($type, $enquiry) {
         $data = (array)$enquiry;
-        $admin_email = 'admin@nandani.com';
-        $admin_name  = 'Nandani Admin Team';
+        $admin_email = 'admin@nandini.com';
+        $admin_name  = 'Nandini Admin Team';
 
         if ($type === 'distributor') {
             $subject = 'New Dealership Application: ' . ($data['business_name'] ?? $data['name'] ?? 'Prospective Partner');
@@ -500,7 +500,7 @@ class Enquiry extends Admin_Controller {
                 <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #E5E7EB; border-radius: 8px; overflow: hidden;'>
                     <div style='background: #C8102E; color: #FFFFFF; padding: 20px; text-align: center;'>
                         <h2 style='margin: 0; font-size: 20px;'>New Distributor Dealership Application</h2>
-                        <p style='margin: 5px 0 0; font-size: 13px; opacity: 0.9;'>Nandani Appliances Business Portal</p>
+                        <p style='margin: 5px 0 0; font-size: 13px; opacity: 0.9;'>Nandini Appliances Business Portal</p>
                     </div>
                     <div style='padding: 24px; color: #374151; font-size: 14px; line-height: 1.6;'>
                         <p>Hello Admin,</p>
@@ -536,7 +536,7 @@ class Enquiry extends Admin_Controller {
                 <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #E5E7EB; border-radius: 8px; overflow: hidden;'>
                     <div style='background: #C8102E; color: #FFFFFF; padding: 20px; text-align: center;'>
                         <h2 style='margin: 0; font-size: 20px;'>New Customer Contact Enquiry</h2>
-                        <p style='margin: 5px 0 0; font-size: 13px; opacity: 0.9;'>Nandani Appliances Business Portal</p>
+                        <p style='margin: 5px 0 0; font-size: 13px; opacity: 0.9;'>Nandini Appliances Business Portal</p>
                     </div>
                     <div style='padding: 24px; color: #374151; font-size: 14px; line-height: 1.6;'>
                         <p>Hello Admin,</p>

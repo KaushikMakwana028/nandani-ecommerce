@@ -430,7 +430,7 @@
                             <label for="add_brand_name" class="form-label fw-bold small text-dark mb-1">
                                 Brand Name <span class="text-danger">*</span>
                             </label>
-                            <input type="text" class="form-control" name="name" id="add_brand_name" placeholder="e.g., Nandani Premium Stoves" maxlength="100" required>
+                            <input type="text" class="form-control" name="name" id="add_brand_name" placeholder="e.g., Nandini Premium Stoves" maxlength="100" required>
                         </div>
                         <div class="col-md-5">
                             <label for="add_category_id" class="form-label fw-bold small text-dark mb-1">

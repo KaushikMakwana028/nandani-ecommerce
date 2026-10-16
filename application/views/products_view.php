@@ -31,7 +31,7 @@ $db_products = !empty($products) ? $products : [];
 
 foreach ($db_products as $p) {
     $cat_name = !empty($p->category_name) ? $p->category_name : 'Kitchen Appliances';
-    $brand_name = !empty($p->brand_name) ? $p->brand_name : 'Nandani';
+    $brand_name = !empty($p->brand_name) ? $p->brand_name : 'Nandini';
     $cat_slug = get_product_cat_slug($cat_name);
 
     // Resolve product image
@@ -239,7 +239,7 @@ if (!empty($selected_cat)) {
                 </div>
               </div>
               <div class="product-body">
-                <span class="product-brand"><?= htmlspecialchars($item['brand_name']); ?></span>
+                <a href="<?= site_url('products?brand=' . ($item['brand_id'] ?? '')); ?>" class="product-brand text-decoration-none" title="Filter by <?= htmlspecialchars($item['brand_name']); ?>"><?= htmlspecialchars($item['brand_name']); ?></a>
                 <h5><?= htmlspecialchars($item['name']); ?></h5>
                 <span class="product-cat-tag"><?= htmlspecialchars($item['category_name']); ?></span>
                 <a href="<?= site_url('contact?enquiry=' . urlencode('Product: ' . $item['name'])); ?>" class="btn-enquire">Enquire Now <i class="fas fa-arrow-right"></i></a>
@@ -327,11 +327,11 @@ if (!empty($selected_cat)) {
   <div class="container position-relative">
     <div class="row justify-content-center text-center">
       <div class="col-lg-8" data-aos="zoom-in">
-        <span class="tag tag-light">Grow With Nandani</span>
+        <span class="tag tag-light">Grow With Nandini</span>
         <h2 class="text-white">Interested In Our <span>Product Range?</span></h2>
-        <p class="text-light-grey mb-4">Become an authorized dealer and get access to our complete product catalogue at distributor prices.</p>
+        <p class="text-light-grey mb-4">Become an authorized dealer and get access to our complete product catalogue at dealer prices.</p>
         <div class="d-flex justify-content-center gap-3 flex-wrap">
-          <a href="<?= site_url('distributor'); ?>" class="btn-primary-custom">Become a Distributor <i class="fas fa-arrow-right ms-2"></i></a>
+          <a href="<?= site_url('distributor'); ?>" class="btn-primary-custom">Become a Dealer <i class="fas fa-arrow-right ms-2"></i></a>
           <a href="tel:<?= $phone_raw; ?>" class="btn-outline-light-custom"><i class="fas fa-phone-alt me-2"></i>Call Us Now</a>
         </div>
       </div>
@@ -359,7 +359,7 @@ if (!empty($selected_cat)) {
             <ul class="modal-feature-list">
               <li><i class="fas fa-check-circle"></i> 100% Genuine Product</li>
               <li><i class="fas fa-check-circle"></i> Manufacturer Warranty</li>
-              <li><i class="fas fa-check-circle"></i> Distributor Pricing Available</li>
+              <li><i class="fas fa-check-circle"></i> Dealer Pricing Available</li>
             </ul>
             <a href="<?= site_url('contact'); ?>" id="modalProductEnquireBtn" data-base-url="<?= site_url('contact'); ?>" class="btn-primary-custom w-100 text-center">Enquire About This Product <i class="fas fa-paper-plane ms-2"></i></a>
           </div>

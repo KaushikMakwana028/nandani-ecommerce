@@ -67,8 +67,8 @@ class Home extends CI_Controller {
         $product_count = $this->db->where('status', 'active')->count_all_results('products');
 
         $data = [
-            'page_title'       => 'Nandani - Kitchen Appliance Distributors',
-            'meta_description' => 'Nandani - Trusted distributors of premium kitchen appliances across India. From manufacturing legacy to authorized distribution excellence.',
+            'page_title'       => 'Nandini - Kitchen Appliance Dealers',
+            'meta_description' => 'Nandini - Trusted dealers of premium kitchen appliances across India. From manufacturing legacy to authorized dealership excellence.',
             'active_menu'      => 'home',
             'hero_slides'      => $hero_slides,
             'brands'           => $brands,
@@ -141,12 +141,12 @@ class Home extends CI_Controller {
                                ->result();
 
         $data = [
-            'page_title'       => 'About Us - Nandani | Kitchen Appliance Distributors',
-            'meta_description' => 'Discover Nandani\'s journey from a trusted kitchen appliance manufacturer to India\'s leading authorized distributor.',
+            'page_title'       => 'About Us - Nandini | Kitchen Appliance Dealers',
+            'meta_description' => 'Discover Nandini\'s journey from a trusted kitchen appliance manufacturer to India\'s leading authorized dealer.',
             'active_menu'      => 'about',
             'settings'         => !empty($settings_row) ? $settings_row : [],
             'categories'       => $categories,
-            'extra_css'        => ['page-banner.css', 'about-intro.css', 'mission-vision.css', 'timeline.css', 'founder.css']
+            'extra_css'        => ['page-banner.css', 'about-intro.css', 'mission-vision.css', 'timeline.css', 'founder.css?v=2.0']
         ];
 
         $this->load->view('header', $data);

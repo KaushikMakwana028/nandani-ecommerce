@@ -50,6 +50,12 @@
   line-height: 1.6;
   margin: 0;
 }
+.contact-card a{
+  cursor: pointer;
+}
+.contact-card p a:hover{
+  color: var(--primary-red) !important;
+}
 
 /* ============================
    CONTACT FORM + MAP SECTION

@@ -5,9 +5,9 @@
         <!-- Simple Footer Component -->
         <footer class="admin-footer py-3 bg-light border-top text-center mt-auto">
             <div class="container-fluid d-flex align-items-center justify-content-center gap-2 flex-wrap">
-                <img src="<?= base_url('assets/images/logo.png') ?>" alt="Nandani Logo" style="height: 22px; width: auto; object-fit: contain; opacity: 0.85;">
+                <img src="<?= base_url('assets/images/logo.png') ?>" alt="Nandini Logo" style="height: 22px; width: auto; object-fit: contain; opacity: 0.85;">
                 <small class="text-muted fw-normal" style="font-size: 0.82rem;">
-                    Nandani &copy; <?= date('Y') ?> Admin Panel. All rights reserved.
+                    Nandini &copy; <?= date('Y') ?> Admin Panel. All rights reserved.
                 </small>
             </div>
         </footer>

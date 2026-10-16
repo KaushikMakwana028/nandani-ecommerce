@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= html_escape($page_title ?? 'Admin') ?> | Nandani Admin Panel</title>
+    <title><?= html_escape($page_title ?? 'Admin') ?> | Nandini Admin Panel</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="<?= base_url('assets/images/fav.png') ?>">
@@ -864,7 +864,7 @@
                                 <?= html_escape($admin_user['name'] ?? 'Admin') ?>
                             </div>
                             <div class="text-muted text-truncate mb-1" style="font-size: 0.75rem;">
-                                <?= html_escape($admin_user['email'] ?? 'admin@nandanienterprise.com') ?>
+                                <?= html_escape($admin_user['email'] ?? 'admin@nandinienterprise.com') ?>
                             </div>
                             <span class="role-badge-gold">
                                 <i class="fa-solid fa-shield-halved me-1"></i><?= html_escape($admin_user['role'] ?? 'Super Admin') ?>

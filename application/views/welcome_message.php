@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nandani — Premium Kitchen & Home Appliances</title>
+    <title>Nandini — Premium Kitchen & Home Appliances</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="<?= base_url('assets/images/logo.png') ?>">
@@ -155,7 +155,7 @@
     <!-- Header Navigation -->
     <nav class="landing-navbar d-flex align-items-center justify-content-between">
         <a href="<?= base_url() ?>" class="d-inline-flex align-items-center text-decoration-none">
-            <img src="<?= base_url('assets/images/logo.png') ?>" alt="Nandani Logo" style="height: 46px; width: auto; object-fit: contain;">
+            <img src="<?= base_url('assets/images/logo.png') ?>" alt="Nandini Logo" style="height: 46px; width: auto; object-fit: contain;">
         </a>
         <a href="<?= base_url('admin') ?>" class="btn btn-sm btn-outline-dark px-3 py-2 fw-semibold d-inline-flex align-items-center gap-2">
             <i class="fa-solid fa-lock"></i>
@@ -167,7 +167,7 @@
     <main class="hero-section">
         <div class="hero-card">
             <div class="mb-3 text-center">
-                <img src="<?= base_url('assets/images/logo.png') ?>" alt="Nandani" style="height: 75px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 14px rgba(200, 16, 46, 0.22));">
+                <img src="<?= base_url('assets/images/logo.png') ?>" alt="Nandini" style="height: 75px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 14px rgba(200, 16, 46, 0.22));">
             </div>
 
             <div class="badge-status">
@@ -180,7 +180,7 @@
             </h1>
 
             <p class="hero-lead">
-                Welcome to <strong>Nandani Enterprise</strong>. Our customer-facing catalog and shopping experience are currently under preparation. Administrative personnel can manage master categories, products, and configurations via the Admin Portal.
+                Welcome to <strong>Nandini Enterprise</strong>. Our customer-facing catalog and shopping experience are currently under preparation. Administrative personnel can manage master categories, products, and configurations via the Admin Portal.
             </p>
 
             <div>
@@ -200,7 +200,7 @@
 
     <!-- Footer -->
     <footer class="landing-footer">
-        Nandani &copy; <?= date('Y') ?> Business Portal. All rights reserved.
+        Nandini &copy; <?= date('Y') ?> Business Portal. All rights reserved.
     </footer>
 
 </body>

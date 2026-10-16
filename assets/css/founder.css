@@ -1,62 +1,187 @@
-/* ============================
-   FOUNDER MESSAGE SECTION
-============================ */
-.founder-section{ background: #fff; }
+/* ========================================================
+   FOUNDER MESSAGE SECTION & LIVE PREVIEW MODAL
+   Shared styling ensuring 100% visual parity between
+   the Admin live preview modal and public /about page.
+======================================================== */
 
-.founder-img-wrap{
+.founder-section {
+  background: #FFFFFF;
   position: relative;
+}
+
+/* Image Wrapper (Unclipped to allow floating quote badge) */
+.founder-img-wrap {
+  position: relative;
+  max-width: 380px;
+  margin: 0 auto;
+  display: inline-block;
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  .founder-img-wrap {
+    margin: 0 auto 0 0;
+  }
+}
+
+/* Inner Image Container (Provides rounded corners & studio backdrop) */
+.founder-img-box {
+  position: relative;
+  width: 100%;
+  height: 440px;
   border-radius: 20px;
   overflow: hidden;
-}
-.founder-img-wrap img{
-  width: 100%;
-  height: 480px;
-  object-fit: cover;
-  border-radius: 20px;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+  background: linear-gradient(145deg, #1f1f26 0%, #111115 100%);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15), 0 6px 18px rgba(200, 16, 46, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.founder-quote-icon{
+/* Founder Photo: Perfectly fitted, top-aligned so faces and titles are never chopped */
+.founder-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 20px;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.founder-img-wrap:hover .founder-img-box img {
+  transform: scale(1.03);
+}
+
+/* Floating Circular Quote Badge */
+.founder-quote-icon {
   position: absolute;
-  bottom: -20px;
-  right: -20px;
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
-  color: var(--gold);
+  bottom: -15px;
+  right: -15px;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #C8102E, #8B0000);
+  color: #FFFFFF !important;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
-  box-shadow: 0 15px 35px rgba(200,16,46,0.4);
-  border: 5px solid #fff;
+  font-size: 26px;
+  box-shadow: 0 12px 28px rgba(200, 16, 46, 0.4);
+  border: 4px solid #FFFFFF;
+  z-index: 5;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.founder-text{
-  font-size: 17px;
-  line-height: 1.9;
-  color: #555;
+.founder-quote-icon i {
+  color: #FFFFFF !important;
+}
+
+.founder-img-wrap:hover .founder-quote-icon {
+  transform: scale(1.08);
+  box-shadow: 0 16px 32px rgba(200, 16, 46, 0.52);
+}
+
+/* Tag / Eyebrow Pill */
+.founder-section .tag,
+.preview-founder-modal .tag,
+#founderPreviewModal .tag {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #C8102E;
+  background: rgba(200, 16, 46, 0.08);
+  padding: 6px 18px;
+  border-radius: 50px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(200, 16, 46, 0.12);
+}
+
+/* Heading H2 with Serif Styling & Red Highlight */
+.founder-section h2,
+.preview-founder-modal h2,
+#founderPreviewModal h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.15rem;
+  font-weight: 700;
+  color: #1A1A1A;
+  line-height: 1.25;
+  margin-bottom: 22px;
+}
+
+.founder-section h2 span,
+.preview-founder-modal h2 span,
+#founderPreviewModal h2 span {
+  color: #C8102E !important;
+}
+
+/* Founder Quote Paragraph with Gold Accent Border */
+.founder-text {
+  font-size: 16px;
+  line-height: 1.85;
+  color: #555555;
   font-style: italic;
   position: relative;
-  padding-left: 25px;
-  border-left: 4px solid var(--gold);
-  margin-bottom: 30px;
+  padding-left: 22px;
+  border-left: 4px solid #D4AF37;
+  margin-bottom: 25px;
 }
 
-.founder-info h5{
+/* Founder Name & Designation */
+.founder-info h5 {
   font-weight: 700;
   font-size: 20px;
-  color: var(--dark);
-  margin-bottom: 5px;
-}
-.founder-info span{
-  color: var(--primary-red);
-  font-weight: 500;
-  font-size: 14px;
+  color: #1A1A1A;
+  margin-bottom: 4px;
+  font-family: 'Poppins', sans-serif;
 }
 
-@media (max-width: 767px){
-  .founder-img-wrap img{ height: 320px; }
-  .founder-text{ font-size: 15px; }
+.founder-info span {
+  color: #C8102E;
+  font-weight: 600;
+  font-size: 14px;
+  display: block;
+  letter-spacing: 0.3px;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 991px) {
+  .founder-img-wrap {
+    max-width: 340px;
+    margin-bottom: 25px;
+  }
+  .founder-img-box {
+    height: 400px;
+  }
+  .founder-section h2,
+  #founderPreviewModal h2 {
+    font-size: 1.85rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .founder-img-wrap {
+    max-width: 300px;
+  }
+  .founder-img-box {
+    height: 360px;
+  }
+  .founder-quote-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 22px;
+    bottom: -10px;
+    right: -10px;
+  }
+  .founder-section h2,
+  #founderPreviewModal h2 {
+    font-size: 1.6rem;
+  }
+  .founder-text {
+    font-size: 15px;
+    padding-left: 18px;
+  }
 }

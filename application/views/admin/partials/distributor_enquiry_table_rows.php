@@ -178,7 +178,7 @@
                 <i class="fa-solid fa-briefcase fa-3x text-muted opacity-50 mb-3"></i>
                 <h5 class="fw-bold text-dark mb-1">No Applications Found</h5>
                 <p class="text-muted small mb-0">
-                    <?= !empty($search_query) ? 'No dealership applications match "' . html_escape($search_query) . '".' : 'There are currently no distributor applications under this filter selection.' ?>
+                    <?= !empty($search_query) ? 'No dealership applications match "' . html_escape($search_query) . '".' : 'There are currently no dealer applications under this filter selection.' ?>
                 </p>
             </div>
         </td>

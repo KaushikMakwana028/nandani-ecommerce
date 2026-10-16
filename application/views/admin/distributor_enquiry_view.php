@@ -444,13 +444,13 @@
     <!-- Page Header Top -->
     <div class="enquiry-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
         <div>
-            <h1 class="enquiry-title">Distributor Applications</h1>
-            <p class="text-muted small mb-0 mt-1">Review dealership franchise applications, warehouse capacity, and distributor proposals.</p>
+            <h1 class="enquiry-title">Dealer Applications</h1>
+            <p class="text-muted small mb-0 mt-1">Review dealership franchise applications, warehouse capacity, and dealer proposals.</p>
         </div>
         <div class="d-flex align-items-center gap-2">
             <a href="<?= base_url('admin/enquiries/export/distributor?status=' . $status_filter) ?>" 
                class="btn btn-outline-success d-inline-flex align-items-center gap-2 px-3 py-2 fw-semibold"
-               title="Export filtered distributor applications to CSV">
+               title="Export filtered dealer applications to CSV">
                 <i class="fa-solid fa-file-csv fs-5"></i>
                 <span>Export to CSV</span>
             </a>

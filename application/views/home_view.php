@@ -13,23 +13,29 @@ function render_hero_heading($heading_text, $highlighted_word) {
 }
 
 // Settings fallback
+$phones_list = [];
 $phone_display = '+91 123 456 7890';
 $phone_raw = '+911234567890';
 if (!empty($settings['phone_numbers'])) {
     $phones = array_map('trim', explode(',', $settings['phone_numbers']));
-    if (!empty($phones[0])) {
-        $phone_display = $phones[0];
-        $phone_raw = preg_replace('/[^0-9+]/', '', $phones[0]);
+    $phones_list = array_values(array_filter($phones));
+    if (!empty($phones_list[0])) {
+        $phone_display = $phones_list[0];
+        $phone_raw = preg_replace('/[^0-9+]/', '', $phones_list[0]);
     }
 }
-$email_display = 'info@nandani.com';
+$emails_list = [];
+$email_display = 'info@nandini.com';
 if (!empty($settings['emails'])) {
     $emails = array_map('trim', explode(',', $settings['emails']));
-    if (!empty($emails[0])) {
-        $email_display = $emails[0];
+    $emails_list = array_values(array_filter($emails));
+    if (!empty($emails_list[0])) {
+        $email_display = $emails_list[0];
     }
 }
+$office_address_raw = !empty($settings['address']) ? trim(strip_tags($settings['address'])) : 'Plot 101, Industrial Area, Rajkot, Gujarat - 360002';
 $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($settings['address'])) : 'Plot 101, Industrial Area<br>Rajkot, Gujarat - 360002';
+$maps_url = 'https://www.google.com/maps/search/?api=1&query=' . urlencode(preg_replace('/\s+/', ' ', $office_address_raw));
 ?>
 
 <!-- ===== HERO SLIDER SECTION ===== -->
@@ -80,11 +86,11 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
             <div class="row">
               <div class="col-lg-8">
                 <span class="hero-tag" data-swiper-parallax="-300">Trusted Since Years</span>
-                <h1 data-swiper-parallax="-400">Your Trusted Partner in <span>Kitchen Appliance</span> Distribution</h1>
-                <p data-swiper-parallax="-200">From decades of manufacturing excellence to becoming an authorized distributor of India's most reputed kitchen appliance brands.</p>
+                <h1 data-swiper-parallax="-400">Your Trusted Partner in <span>Kitchen Appliance</span> Dealership</h1>
+                <p data-swiper-parallax="-200">From decades of manufacturing excellence to becoming an authorized dealer of India's most reputed kitchen appliance brands.</p>
                 <div class="hero-btns" data-swiper-parallax="-100">
                   <a href="<?= site_url('products'); ?>" class="btn-primary-custom">Explore Products <i class="fas fa-arrow-right ms-2"></i></a>
-                  <a href="<?= site_url('distributor'); ?>" class="btn-outline-light-custom">Become a Distributor</a>
+                  <a href="<?= site_url('distributor'); ?>" class="btn-outline-light-custom">Become a Dealer</a>
                 </div>
               </div>
             </div>
@@ -97,7 +103,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
           <div class="container hero-content">
             <div class="row">
               <div class="col-lg-8">
-                <span class="hero-tag" data-swiper-parallax="-300">Authorized Distributors</span>
+                <span class="hero-tag" data-swiper-parallax="-300">Authorized Dealers</span>
                 <h1 data-swiper-parallax="-400">Bringing <span>Reputed Brands</span> Closer to Every Kitchen</h1>
                 <p data-swiper-parallax="-200">We proudly represent top-tier kitchen appliance manufacturers, delivering quality and trust across our distribution network.</p>
                 <div class="hero-btns" data-swiper-parallax="-100">
@@ -166,7 +172,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
         <div class="col-6 col-md-3 stat-item">
           <i class="fas fa-map-marker-alt"></i>
           <h3><span class="counter" data-target="100">0</span>+</h3>
-          <p>Distributors Network</p>
+          <p>Dealers Network</p>
         </div>
       </div>
     </div>
@@ -182,10 +188,10 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
       <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
         <div class="about-img-wrap">
           <div class="img-main">
-            <img src="<?= base_url('assets/images/about/office2.jpeg'); ?>" alt="Nandani Executive Corporate Office">
+            <img src="<?= base_url('assets/images/about/office2.jpeg'); ?>" alt="Nandini Executive Corporate Office">
           </div>
           <div class="img-small">
-            <img src="<?= base_url('assets/images/about/office1.jpeg'); ?>" alt="Nandani Corporate Lounge & Skyline View">
+            <img src="<?= base_url('assets/images/about/office1.jpeg'); ?>" alt="Nandini Corporate Lounge & Skyline View">
           </div>
 
           <!-- Experience Badge -->
@@ -202,10 +208,10 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
       <!-- RIGHT: Content -->
       <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
         <div class="about-content">
-          <span class="section-title-tag">About Nandani</span>
+          <span class="section-title-tag">About Nandini</span>
           <h2 class="about-heading">From <span>Manufacturing Legacy</span> to Trusted Distribution Excellence</h2>
           <p class="about-text">
-            What began decades ago as a proud manufacturer of kitchen appliances has today evolved into a trusted name in authorized distribution. Nandani now proudly partners with India's most reputed kitchen appliance brands, bringing quality products closer to distributors and retailers nationwide.
+            What began decades ago as a proud manufacturer of kitchen appliances has today evolved into a trusted name in authorized dealership. Nandini now proudly partners with India's most reputed kitchen appliance brands, bringing quality products closer to dealers and retailers nationwide.
           </p>
 
           <!-- Journey Checklist -->
@@ -222,7 +228,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
               <div class="journey-icon"><i class="fas fa-handshake"></i></div>
               <div class="journey-text">
                 <h5>Strategic Transition</h5>
-                <p>Evolved into an authorized distributor for India's leading appliance brands.</p>
+                <p>Evolved into an authorized dealer for India's leading appliance brands.</p>
               </div>
             </div>
 
@@ -254,7 +260,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
   <div class="container position-relative">
     <div class="section-title text-center" data-aos="fade-up">
       <span class="tag tag-light">OUR BRAND PARTNERS</span>
-      <h2 class="text-white">Proud Distributors of <span>India's Most Trusted</span> Kitchen Brands</h2>
+      <h2 class="text-white">Proud Dealers of <span>India's Most Trusted</span> Kitchen Brands</h2>
       <p class="text-light-grey">We collaborate with industry-leading manufacturers to bring you unmatched quality and reliability.</p>
     </div>
 
@@ -275,18 +281,21 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
               $logo_url = (!empty($b->logo_image) && file_exists(FCPATH . 'uploads/brands/' . $b->logo_image))
                           ? base_url('uploads/brands/' . $b->logo_image)
                           : base_url('assets/images/logo.png');
+              $brand_prod_url = site_url('products?brand=' . $b->id);
             ?>
             <div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-up" data-aos-delay="<?= $delay; ?>">
-              <div class="spotlight-card text-light">
-                <span class="spotlight-num"><?= $num; ?></span>
-                <div class="spotlight-logo-wrap">
-                  <img src="<?= $logo_url; ?>" alt="<?= htmlspecialchars($b->name); ?>" onerror="this.onerror=null; this.src='<?= base_url('assets/images/logo.png'); ?>';">
+              <a href="<?= $brand_prod_url; ?>" class="spotlight-card-link text-decoration-none d-block h-100" title="View <?= htmlspecialchars($b->name); ?> Products">
+                <div class="spotlight-card text-light">
+                  <span class="spotlight-num"><?= $num; ?></span>
+                  <div class="spotlight-logo-wrap">
+                    <img src="<?= $logo_url; ?>" alt="<?= htmlspecialchars($b->name); ?>" onerror="this.onerror=null; this.src='<?= base_url('assets/images/logo.png'); ?>';">
+                  </div>
+                  <h5 class="spotlight-name"><?= htmlspecialchars($b->name); ?></h5>
+                  <span class="spotlight-category"><?= htmlspecialchars($cat_name); ?></span>
+                  <span class="spotlight-since">EST. <?= htmlspecialchars($since_yr); ?></span>
+                  <div class="spotlight-glow"></div>
                 </div>
-                <h5 class="spotlight-name"><?= htmlspecialchars($b->name); ?></h5>
-                <span class="spotlight-category"><?= htmlspecialchars($cat_name); ?></span>
-                <span class="spotlight-since">EST. <?= htmlspecialchars($since_yr); ?></span>
-                <div class="spotlight-glow"></div>
-              </div>
+              </a>
             </div>
           <?php endforeach; ?>
         <?php else: ?>
@@ -308,7 +317,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
     <div class="brands-trust-strip" data-aos="fade-up" data-aos-delay="300">
       <div class="trust-item">
         <i class="fas fa-certificate"></i>
-        <span>100% Authorized Distributor</span>
+        <span>100% Authorized Dealer</span>
       </div>
       <div class="trust-divider"></div>
       <div class="trust-item">
@@ -391,7 +400,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
               <i class="fas fa-layer-group" style="font-size: 28px; color: var(--primary-red);"></i>
             </div>
             <h4 class="mb-2">Categories Updating</h4>
-            <p class="text-muted mb-3">Our product categories are currently being organized. Explore our full product range or contact our team for distributor enquiries.</p>
+            <p class="text-muted mb-3">Our product categories are currently being organized. Explore our full product range or contact our team for dealer enquiries.</p>
             <a href="<?= site_url('products'); ?>" class="btn-primary-custom btn-sm">Explore Products <i class="fas fa-arrow-right ms-2"></i></a>
           </div>
         </div>
@@ -411,9 +420,9 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
 
       <div class="col-lg-5" data-aos="fade-right">
         <span class="tag">Why Choose Us</span>
-        <h2 class="mb-4">The <span>Nandani Advantage</span> for Your Business Growth</h2>
+        <h2 class="mb-4">The <span>Nandini Advantage</span> for Your Business Growth</h2>
         <p class="text-muted mb-4">With decades of manufacturing heritage now channeled into distribution excellence, we bring unmatched value to every partnership.</p>
-        <img src="<?= base_url('assets/images/about/office4.jpeg'); ?>" alt="Why Choose Nandani" class="why-img rounded-4 shadow">
+        <img src="<?= base_url('assets/images/about/office4.jpeg'); ?>" alt="Why Choose Nandini" class="why-img rounded-4 shadow">
       </div>
 
       <div class="col-lg-7">
@@ -443,7 +452,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
             <div class="why-box">
               <div class="why-icon"><i class="fas fa-headset"></i></div>
               <h5>Dedicated Support</h5>
-              <p>Personalized assistance for all our distributor partners.</p>
+              <p>Personalized assistance for all our dealer partners.</p>
             </div>
           </div>
           <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
@@ -485,7 +494,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
       <div class="col-lg-6" data-aos="fade-left">
         <span class="tag">Our Reach</span>
         <h2 class="mb-4">Expanding Our <span>Distribution Network</span> Across the Nation</h2>
-        <p class="text-muted mb-4">We are continuously growing our footprint, building strong dealer and distributor relationships to bring quality kitchen appliances to every corner.</p>
+        <p class="text-muted mb-4">We are continuously growing our footprint, building strong dealer relationships to bring quality kitchen appliances to every corner.</p>
 
         <div class="row g-3 mb-4">
           <div class="col-6">
@@ -497,7 +506,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
           <div class="col-6">
             <div class="network-stat">
               <h3><span class="counter" data-target="100">0</span>+</h3>
-              <p>Active Distributors</p>
+              <p>Active Dealers</p>
             </div>
           </div>
         </div>
@@ -515,8 +524,8 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
   <div class="container position-relative">
     <div class="row justify-content-center text-center">
       <div class="col-lg-8" data-aos="zoom-in">
-        <span class="tag tag-light">Grow With Nandani</span>
-        <h2 class="text-white">Ready to Become Our <span>Authorized Distributor?</span></h2>
+        <span class="tag tag-light">Grow With Nandini</span>
+        <h2 class="text-white">Ready to Become Our <span>Authorized Dealer?</span></h2>
         <p class="text-light-grey mb-4">Join hands with a trusted name in kitchen appliance distribution and unlock new business opportunities today.</p>
         <div class="d-flex justify-content-center gap-3 flex-wrap">
           <a href="<?= site_url('distributor'); ?>" class="btn-primary-custom">Apply Now <i class="fas fa-arrow-right ms-2"></i></a>
@@ -532,8 +541,8 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
   <div class="container py-5">
     <div class="section-title text-center" data-aos="fade-up">
       <span class="tag">Testimonials</span>
-      <h2>What Our <span>Distributors Say</span></h2>
-      <p>Trusted by dealers and distributors across the country.</p>
+      <h2>What Our <span>Dealers Say</span></h2>
+      <p>Trusted by dealers across the country.</p>
     </div>
 
     <div class="swiper testimonialSwiper" data-aos="fade-up" data-aos-delay="200">
@@ -542,12 +551,12 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
         <div class="swiper-slide">
           <div class="testimonial-card">
             <i class="fas fa-quote-left quote-icon"></i>
-            <p class="testimonial-text">Partnering with Nandani has been a game-changer for our business. Timely delivery and genuine products every time!</p>
+            <p class="testimonial-text">Partnering with Nandini has been a game-changer for our business. Timely delivery and genuine products every time!</p>
             <div class="testimonial-author">
               <img src="<?= base_url('assets/images/testimonials/client-1.jpg'); ?>" alt="Rajesh Sharma">
               <div>
                 <h6>Rajesh Sharma</h6>
-                <span>Distributor, Delhi</span>
+                <span>Dealer, Delhi</span>
               </div>
             </div>
             <div class="rating">★★★★★</div>
@@ -557,7 +566,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
         <div class="swiper-slide">
           <div class="testimonial-card">
             <i class="fas fa-quote-left quote-icon"></i>
-            <p class="testimonial-text">Excellent support team and quality brand portfolio. Nandani truly understands distributor needs.</p>
+            <p class="testimonial-text">Excellent support team and quality brand portfolio. Nandini truly understands dealer needs.</p>
             <div class="testimonial-author">
               <img src="<?= base_url('assets/images/testimonials/client-2.jpg'); ?>" alt="Priya Mehta">
               <div>
@@ -572,7 +581,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
         <div class="swiper-slide">
           <div class="testimonial-card">
             <i class="fas fa-quote-left quote-icon"></i>
-            <p class="testimonial-text">Their legacy in manufacturing reflects in the quality of service they provide as distributors. Highly recommended!</p>
+            <p class="testimonial-text">Their legacy in manufacturing reflects in the quality of service they provide as dealers. Highly recommended!</p>
             <div class="testimonial-author">
               <img src="<?= base_url('assets/images/testimonials/client-3.jpg'); ?>" alt="Amit Verma">
               <div>
@@ -587,12 +596,12 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
         <div class="swiper-slide">
           <div class="testimonial-card">
             <i class="fas fa-quote-left quote-icon"></i>
-            <p class="testimonial-text">Unmatched dealer margins and seamless distribution logistics. Nandani is our most trusted kitchen appliance partner.</p>
+            <p class="testimonial-text">Unmatched dealer margins and seamless distribution logistics. Nandini is our most trusted kitchen appliance partner.</p>
             <div class="testimonial-author">
               <img src="<?= base_url('assets/images/testimonials/client-4.jpg'); ?>" alt="Vikram Patel">
               <div>
                 <h6>Vikram Patel</h6>
-                <span>Distributor, Ahmedabad</span>
+                <span>Dealer, Ahmedabad</span>
               </div>
             </div>
             <div class="rating">★★★★★</div>
@@ -627,7 +636,7 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
                      : ((!empty($g_item->image) && file_exists(FCPATH . 'assets/images/gallery/' . $g_item->image))
                         ? base_url('assets/images/gallery/' . $g_item->image)
                         : base_url('assets/images/gallery/gallery-1.jpg'));
-            $g_title = !empty($g_item->title_caption) ? $g_item->title_caption : 'Nandani Facility & Operations';
+            $g_title = !empty($g_item->title_caption) ? $g_item->title_caption : 'Nandini Facility & Operations';
             
             // Dynamic column sizing based on actual available count
             if ($g_count === 1) {
@@ -680,19 +689,53 @@ $office_address = !empty($settings['address']) ? nl2br(htmlspecialchars($setting
       <div class="col-lg-5" data-aos="fade-right">
         <span class="tag">Get In Touch</span>
         <h2 class="mb-4">Let's Start a <span>Business Conversation</span></h2>
-        <p class="text-muted mb-4">Have questions about our products or interested in becoming a distributor? Reach out to us today.</p>
+        <p class="text-muted mb-4">Have questions about our products or interested in becoming a dealer? Reach out to us today.</p>
 
         <div class="contact-info-item">
-          <div class="contact-info-icon"><i class="fas fa-map-marker-alt"></i></div>
-          <div><h6>Our Office</h6><p><?= $office_address; ?></p></div>
+          <div class="contact-info-icon">
+            <a href="<?= $maps_url; ?>" target="_blank" rel="noopener noreferrer" class="text-white text-decoration-none" title="Open Office in Google Maps">
+              <i class="fas fa-map-marker-alt"></i>
+            </a>
+          </div>
+          <div>
+            <h6>Our Office</h6>
+            <p>
+              <a href="<?= $maps_url; ?>" target="_blank" rel="noopener noreferrer" class="text-decoration-none text-muted" style="transition: color 0.2s;" onmouseover="this.style.color='var(--primary-red)'" onmouseout="this.style.color=''" title="Open Office in Google Maps">
+                <?= $office_address; ?>
+              </a>
+            </p>
+          </div>
         </div>
         <div class="contact-info-item">
           <div class="contact-info-icon"><i class="fas fa-phone-alt"></i></div>
-          <div><h6>Call Us</h6><p><?= htmlspecialchars($phone_display); ?></p></div>
+          <div>
+            <h6>Call Us</h6>
+            <p>
+              <?php if (!empty($phones_list)): ?>
+                <?php foreach ($phones_list as $p_item): ?>
+                  <?php $p_clean = preg_replace('/[^0-9+]/', '', $p_item); ?>
+                  <a href="tel:<?= $p_clean; ?>" class="d-block text-decoration-none text-muted mb-1" style="transition: color 0.2s;" onmouseover="this.style.color='var(--primary-red)'" onmouseout="this.style.color=''" title="Call <?= htmlspecialchars($p_item); ?>"><?= htmlspecialchars($p_item); ?></a>
+                <?php endforeach; ?>
+              <?php else: ?>
+                <a href="tel:<?= $phone_raw; ?>" class="d-block text-decoration-none text-muted" style="transition: color 0.2s;" onmouseover="this.style.color='var(--primary-red)'" onmouseout="this.style.color=''" title="Call <?= htmlspecialchars($phone_display); ?>"><?= htmlspecialchars($phone_display); ?></a>
+              <?php endif; ?>
+            </p>
+          </div>
         </div>
         <div class="contact-info-item">
           <div class="contact-info-icon"><i class="fas fa-envelope"></i></div>
-          <div><h6>Email Us</h6><p><?= htmlspecialchars($email_display); ?></p></div>
+          <div>
+            <h6>Email Us</h6>
+            <p>
+              <?php if (!empty($emails_list)): ?>
+                <?php foreach ($emails_list as $e_item): ?>
+                  <a href="mailto:<?= htmlspecialchars($e_item); ?>" class="d-block text-decoration-none text-muted mb-1" style="transition: color 0.2s;" onmouseover="this.style.color='var(--primary-red)'" onmouseout="this.style.color=''" title="Send Email to <?= htmlspecialchars($e_item); ?>"><?= htmlspecialchars($e_item); ?></a>
+                <?php endforeach; ?>
+              <?php else: ?>
+                <a href="mailto:<?= htmlspecialchars($email_display); ?>" class="d-block text-decoration-none text-muted" style="transition: color 0.2s;" onmouseover="this.style.color='var(--primary-red)'" onmouseout="this.style.color=''" title="Send Email to <?= htmlspecialchars($email_display); ?>"><?= htmlspecialchars($email_display); ?></a>
+              <?php endif; ?>
+            </p>
+          </div>
         </div>
       </div>
 

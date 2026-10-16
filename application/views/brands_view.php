@@ -46,7 +46,7 @@ foreach ($db_brands_list as $i => $db_b) {
     // Resolve description
     $desc = !empty($db_b->short_description)
             ? $db_b->short_description
-            : ('Authorized distributor of high quality ' . strtolower($cat_name) . ' appliances.');
+            : ('Authorized dealer of high quality ' . strtolower($cat_name) . ' appliances.');
 
     $display_brands[] = [
         'id'            => $db_b->id,
@@ -94,9 +94,9 @@ foreach ($display_brands as $item) {
     <div class="row justify-content-center">
       <div class="col-lg-8" data-aos="fade-up">
         <span class="tag">Trusted Partnerships</span>
-        <h2 class="mb-4">We Are Proud Distributors of <span>India's Leading</span> Kitchen Appliance Brands</h2>
+        <h2 class="mb-4">We Are Proud Dealers of <span>India's Leading</span> Kitchen Appliance Brands</h2>
         <p class="text-muted">
-          Every brand we represent is a result of careful selection based on quality, reliability, and market trust. As an authorized distributor, we ensure 100% genuine products reach our dealer network with complete confidence.
+          Every brand we represent is a result of careful selection based on quality, reliability, and market trust. As an authorized dealer, we ensure 100% genuine products reach our dealer network with complete confidence.
         </p>
       </div>
     </div>
@@ -157,11 +157,13 @@ foreach ($display_brands as $item) {
               <?php if (!empty($item['since_year'])): ?>
                 <div class="brand-since">Since <?= htmlspecialchars($item['since_year']); ?></div>
               <?php endif; ?>
-              <div class="brand-logo-box">
-                <img src="<?= $item['logo_url']; ?>" alt="<?= htmlspecialchars($item['name']); ?>" onerror="this.onerror=null; this.src='<?= $item['fallback_logo']; ?>';">
-              </div>
+              <a href="<?= $item['products_url']; ?>" class="brand-logo-link d-block" title="View <?= htmlspecialchars($item['name']); ?> Products">
+                <div class="brand-logo-box">
+                  <img src="<?= $item['logo_url']; ?>" alt="<?= htmlspecialchars($item['name']); ?>" onerror="this.onerror=null; this.src='<?= $item['fallback_logo']; ?>';">
+                </div>
+              </a>
               <div class="brand-info">
-                <h5><?= htmlspecialchars($item['name']); ?></h5>
+                <h5><a href="<?= $item['products_url']; ?>" class="text-decoration-none text-dark" style="transition: color 0.2s;" onmouseover="this.style.color='var(--primary-red)'" onmouseout="this.style.color=''" title="View <?= htmlspecialchars($item['name']); ?> Products"><?= htmlspecialchars($item['name']); ?></a></h5>
                 <span class="brand-category"><?= htmlspecialchars($item['category_name']); ?></span>
                 <p><?= htmlspecialchars($item['description']); ?></p>
                 <a href="<?= $item['products_url']; ?>" class="brand-link">View Products <i class="fas fa-arrow-right"></i></a>
@@ -176,7 +178,7 @@ foreach ($display_brands as $item) {
               <i class="fas fa-handshake" style="font-size:32px; color:var(--primary-red);"></i>
             </div>
             <h4 class="mb-2" style="font-family:'Playfair Display', serif; font-weight:700;">No Brands Currently Available</h4>
-            <p class="text-muted mb-4" style="max-width:480px; margin:0 auto;">Our brand partnership catalogue is currently being updated. Connect with our distribution desk for current brand availability and dealership queries.</p>
+            <p class="text-muted mb-4" style="max-width:480px; margin:0 auto;">Our brand partnership catalogue is currently being updated. Connect with our dealership desk for current brand availability and dealership queries.</p>
             <div class="d-flex justify-content-center gap-3 flex-wrap">
               <a href="<?= site_url('contact'); ?>" class="btn-primary-custom">Contact Us <i class="fas fa-arrow-right ms-2"></i></a>
               <a href="tel:<?= $phone_raw; ?>" class="btn-outline-custom"><i class="fas fa-phone-alt me-2"></i>Call Us</a>
@@ -217,7 +219,7 @@ foreach ($display_brands as $item) {
         </div>
         <div class="col-lg-7 col-md-9">
           <h4>100% Authorized & Genuine Products Guarantee</h4>
-          <p class="mb-0">Every brand featured here is officially authorized for distribution by Nandani. We guarantee genuine, warranty-backed products for all our dealers and distributors.</p>
+          <p class="mb-0">Every brand featured here is officially authorized for dealership by Nandini. We guarantee genuine, warranty-backed products for all our dealers.</p>
         </div>
         <div class="col-lg-3 text-lg-end text-center">
           <a href="<?= site_url('contact'); ?>" class="btn-primary-custom">Verify Partnership <i class="fas fa-arrow-right ms-2"></i></a>
@@ -233,11 +235,11 @@ foreach ($display_brands as $item) {
   <div class="container position-relative">
     <div class="row justify-content-center text-center">
       <div class="col-lg-8" data-aos="zoom-in">
-        <span class="tag tag-light">Grow With Nandani</span>
-        <h2 class="text-white">Want To Distribute These <span>Trusted Brands?</span></h2>
-        <p class="text-light-grey mb-4">Partner with Nandani today and get access to India's most trusted kitchen appliance brand portfolio.</p>
+        <span class="tag tag-light">Grow With Nandini</span>
+        <h2 class="text-white">Want To Deal In These <span>Trusted Brands?</span></h2>
+        <p class="text-light-grey mb-4">Partner with Nandini today and get access to India's most trusted kitchen appliance brand portfolio.</p>
         <div class="d-flex justify-content-center gap-3 flex-wrap">
-          <a href="<?= site_url('distributor'); ?>" class="btn-primary-custom">Become a Distributor <i class="fas fa-arrow-right ms-2"></i></a>
+          <a href="<?= site_url('distributor'); ?>" class="btn-primary-custom">Become a Dealer <i class="fas fa-arrow-right ms-2"></i></a>
           <a href="tel:<?= $phone_raw; ?>" class="btn-outline-light-custom"><i class="fas fa-phone-alt me-2"></i>Call Us Now</a>
         </div>
       </div>

@@ -68,6 +68,8 @@ $route['contact'] = 'Contact/index';
 $route['contact/submit'] = 'Contact/submit';
 $route['distributor'] = 'Distributor/index';
 $route['distributor/submit'] = 'Distributor/submit';
+$route['dealer'] = 'Distributor/index';
+$route['dealer/submit'] = 'Distributor/submit';
 
 // Admin Auth & Standalone Pages
 $route['admin/login'] = 'admin/auth/login';
@@ -129,8 +131,10 @@ $route['admin/gallery/toggle-status/(:num)'] = 'admin/gallery/toggle_status/$1';
 $route['admin/enquiries'] = 'admin/enquiry/contact';
 $route['admin/enquiries/contact'] = 'admin/enquiry/contact';
 $route['admin/enquiries/distributor'] = 'admin/enquiry/distributor';
+$route['admin/enquiries/dealer'] = 'admin/enquiry/distributor';
 $route['admin/contact-enquiries'] = 'admin/enquiry/contact';
 $route['admin/distributor-enquiries'] = 'admin/enquiry/distributor';
+$route['admin/dealer-enquiries'] = 'admin/enquiry/distributor';
 $route['admin/enquiries/update-status'] = 'admin/enquiry/update_status';
 $route['admin/enquiries/delete/(:any)/(:num)'] = 'admin/enquiry/delete/$1/$2';
 $route['admin/enquiries/export'] = 'admin/enquiry/export';
@@ -138,6 +142,7 @@ $route['admin/enquiries/export/(:any)'] = 'admin/enquiry/export/$1';
 $route['admin/enquiry'] = 'admin/enquiry/contact';
 $route['admin/enquiry/contact'] = 'admin/enquiry/contact';
 $route['admin/enquiry/distributor'] = 'admin/enquiry/distributor';
+$route['admin/enquiry/dealer'] = 'admin/enquiry/distributor';
 $route['admin/enquiry/update-status'] = 'admin/enquiry/update_status';
 $route['admin/enquiry/delete/(:any)/(:num)'] = 'admin/enquiry/delete/$1/$2';
 $route['admin/enquiry/export'] = 'admin/enquiry/export';
