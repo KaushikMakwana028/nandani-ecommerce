@@ -356,3 +356,228 @@
   .office-card-body{ padding: 18px; }
   .intro-tour-pill{ bottom: 15px; right: 10px; font-size: 12px; padding: 6px 14px; }
 }
+
+
+/* ============================
+   ASSOCIATED FIRMS SECTION
+============================ */
+.associated-firms-section {
+  background: #fbf9f5;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid #ede6dc;
+  border-bottom: 1px solid #ede6dc;
+}
+
+.associated-firms-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-red) 0%, var(--gold) 50%, var(--primary-red) 100%);
+  z-index: 1;
+}
+
+.firm-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #eae3d7;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.firm-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 50px rgba(200, 16, 46, 0.12);
+  border-color: rgba(200, 16, 46, 0.28);
+}
+
+.firm-img-wrap {
+  height: 220px;
+  background: linear-gradient(135deg, #fcfbf9 0%, #f4eee6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 24px;
+  position: relative;
+  border-bottom: 1px solid #eee5da;
+  overflow: hidden;
+}
+
+.firm-img-wrap img {
+  max-height: 175px;
+  max-width: 90%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
+  transition: transform 0.5s ease;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.06));
+}
+
+.firm-card:hover .firm-img-wrap img {
+  transform: scale(1.05);
+}
+
+.firm-badge-top {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(26, 26, 26, 0.82);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 5px 13px;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.3px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  z-index: 2;
+}
+
+.firm-badge-top i {
+  color: var(--gold);
+}
+
+.firm-body {
+  padding: 26px 26px 30px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.firm-title-wrap {
+  margin-bottom: 12px;
+}
+
+.firm-title-wrap h3 {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 4px;
+  font-family: var(--font-primary);
+  line-height: 1.3;
+}
+
+.firm-devanagari {
+  display: inline-block;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--primary-red);
+  letter-spacing: 0.4px;
+}
+
+.firm-tagline {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #835f1e;
+  background: rgba(212, 175, 55, 0.12);
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-bottom: 15px;
+  border-left: 3px solid var(--gold);
+  line-height: 1.4;
+}
+
+.firm-desc {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.72;
+  margin-bottom: 20px;
+}
+
+.firm-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px dashed #e6ded5;
+}
+
+.firm-chip {
+  background: #f8f5ee;
+  color: #403e3c;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 6px;
+  border: 1px solid #eae2d5;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.25s ease;
+}
+
+.firm-chip i {
+  color: var(--primary-red);
+  font-size: 10px;
+}
+
+.firm-card:hover .firm-chip {
+  background: #fff;
+  border-color: rgba(200, 16, 46, 0.25);
+}
+
+.group-synergy-banner {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px 36px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+  border: 1px solid #ebd9c8;
+  position: relative;
+  overflow: hidden;
+}
+
+.group-synergy-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--primary-red), var(--gold));
+}
+
+.synergy-tag {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(200, 16, 46, 0.08);
+  color: var(--primary-red);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 4px 12px;
+  border-radius: 50px;
+  margin-bottom: 8px;
+}
+
+.group-synergy-banner h4 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--dark);
+}
+
+@media (max-width: 991px) {
+  .firm-img-wrap { height: 200px; }
+  .firm-body { padding: 22px 20px 26px; }
+  .firm-title-wrap h3 { font-size: 19px; }
+  .group-synergy-banner { padding: 25px 22px; }
+}
+
+@media (max-width: 767px) {
+  .firm-img-wrap { height: 185px; padding: 16px; }
+  .firm-badge-top { font-size: 11px; padding: 4px 10px; }
+}

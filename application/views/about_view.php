@@ -1,14 +1,14 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 $phone_display = '+91 123 456 7890';
 $phone_raw = '+911234567890';
 if (!empty($settings['phone_numbers'])) {
-    $phones = array_map('trim', explode(',', $settings['phone_numbers']));
-    if (!empty($phones[0])) {
-        $phone_display = $phones[0];
-        $phone_raw = preg_replace('/[^0-9+]/', '', $phones[0]);
-    }
+  $phones = array_map('trim', explode(',', $settings['phone_numbers']));
+  if (!empty($phones[0])) {
+    $phone_display = $phones[0];
+    $phone_raw = preg_replace('/[^0-9+]/', '', $phones[0]);
+  }
 }
 ?>
 
@@ -420,8 +420,8 @@ if (!empty($settings['phone_numbers'])) {
 <!-- ===== FOUNDER MESSAGE SECTION ===== -->
 <?php
 $founder_img = (!empty($settings['founder_image']) && file_exists(FCPATH . 'uploads/founder/' . $settings['founder_image']))
-    ? base_url('uploads/founder/' . $settings['founder_image'])
-    : base_url('assets/images/about/founder2.jpeg');
+  ? base_url('uploads/founder/' . $settings['founder_image'])
+  : base_url('assets/images/about/founder2.jpeg');
 
 $founder_name     = !empty($settings['founder_name']) ? trim($settings['founder_name']) : '';
 $founder_title    = !empty($settings['founder_title']) ? trim($settings['founder_title']) : 'Founder & Managing Director';
@@ -459,6 +459,132 @@ $founder_message  = !empty($settings['founder_message']) ? trim($settings['found
       </div>
 
     </div>
+  </div>
+</section>
+
+<!-- ===== OUR ASSOCIATED FIRMS SECTION ===== -->
+<section class="associated-firms-section py-5" id="associatedFirms">
+  <div class="container py-4">
+
+    <div class="section-title text-center mb-5" data-aos="fade-up">
+      <span class="tag">Group Synergy &amp; Sister Concerns</span>
+      <h2>Our <span>Associated Firms</span></h2>
+      <p class="mx-auto" style="max-width: 760px;">
+        Behind Nandini’s trusted distribution excellence stands an interconnected group ecosystem spanning heavy industrial manufacturing, statewide wholesale stockist operations, and heritage devotional trade across Maharashtra.
+      </p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+
+      <!-- FIRM 1: Ratnadeep Metals -->
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="firm-card">
+          <div class="firm-img-wrap">
+            <span class="firm-badge-top"><i class="fas fa-industry"></i> Manufacturing &bull; Est. 1988</span>
+            <img src="<?= base_url('assets/images/about/ratnadeep.jpeg'); ?>" alt="Ratnadeep Metals - Manufacturers of Aluminium Utensils &amp; Circles">
+          </div>
+          <div class="firm-body">
+            <div class="firm-title-wrap">
+              <span class="firm-devanagari">रत्नादीप मेटल इंडस्ट्रीज</span>
+              <h3>Ratnadeep Metals</h3>
+            </div>
+            <div class="firm-tagline">
+              <i class="fas fa-certificate me-1 text-gold"></i> Manufacturers of Aluminium Utensils &amp; Circles
+            </div>
+            <p class="firm-desc">
+              Established in 1988 in Nashik, Ratnadeep Metals is the foundational manufacturing pillar of our group. Equipped with advanced rolling mills, circle blanking machinery, and hydraulic deep-draw presses, the firm manufactures virgin food-grade aluminium circles, heavy-duty commercial cooking vessels, and kitchenware blanks renowned for uniform thickness, pure metallurgy, and long-lasting durability.
+            </p>
+            <div class="firm-highlights">
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Aluminium Circles &amp; Discs</span>
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Deep-Drawn Utensils</span>
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Virgin Metallurgy</span>
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Registered Trademark &reg;</span>
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Bulk Industrial Supply</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FIRM 2: Royaldeep Sales Syndicate -->
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="firm-card">
+          <div class="firm-img-wrap">
+            <span class="firm-badge-top"><i class="fas fa-truck-fast"></i> Wholesale &bull; Est. 1993</span>
+            <img src="<?= base_url('assets/images/about/royaldeep.jpeg'); ?>" alt="Royaldeep Sales Syndicate - Stockist and Wholesalers of Utensils &amp; Home Appliances">
+          </div>
+          <div class="firm-body">
+            <div class="firm-title-wrap">
+              <span class="firm-devanagari">रॉयलदीप सेल्स सिंडिकेट</span>
+              <h3>Royaldeep Sales Syndicate</h3>
+            </div>
+            <div class="firm-tagline">
+              <i class="fas fa-boxes-stacked me-1 text-gold"></i> Stockist &amp; Wholesalers of Utensils &amp; Home Appliances
+            </div>
+            <p class="firm-desc">
+              Founded in 1993 to spearhead large-scale commercial trading, Royaldeep Sales Syndicate is a premier regional master stockist and wholesale distributor. Serving hundreds of retail counters, supermarkets, and appliance dealers across Maharashtra, Royaldeep provides high-volume inventory availability, competitive wholesale pricing, and swift multi-district fulfillment across modern cookware and home appliances.
+            </p>
+            <div class="firm-highlights">
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Master Regional Stockist</span>
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Cookware &amp; Pressure Cookers</span>
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Home &amp; Kitchen Appliances</span>
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> High-Volume Warehousing</span>
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Pan-Maharashtra Network</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FIRM 3: Nagesh Traders -->
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="firm-card">
+          <div class="firm-img-wrap">
+            <span class="firm-badge-top"><i class="fas fa-om"></i> Devotional Heritage</span>
+            <img src="<?= base_url('assets/images/about/nagesh.jpeg'); ?>" alt="Nagesh Traders - Wholesale Puja Articles">
+          </div>
+          <div class="firm-body">
+            <div class="firm-title-wrap">
+              <span class="firm-devanagari">नागेश ट्रेडर्स</span>
+              <h3>Nagesh Traders</h3>
+            </div>
+            <div class="firm-tagline">
+              <i class="fas fa-bell me-1 text-gold"></i> Wholesale Puja Articles &amp; Traditional Brassware
+            </div>
+            <p class="firm-desc">
+              Steeped in spiritual tradition and artisan metalcraft, Nagesh Traders is the group’s revered specialty wing dedicated to the wholesale supply of authentic puja articles. With a wide array of heavy-gauge brass, pure copper, bronze, and auspicious ritual ware—from temple samais and akhand diyas to embossed kalash and thali sets—Nagesh Traders serves religious merchants and festive retailers across Western India.
+            </p>
+            <div class="firm-highlights">
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Wholesale Puja Articles</span>
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Pure Brass &amp; Copper Samai</span>
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Akhand Diyas &amp; Kalash Sets</span>
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Traditional Temple Ware</span>
+              <span class="firm-chip"><i class="fas fa-circle-dot"></i> Artisanal Hand-Finish</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Group Synergy Banner -->
+    <div class="row mt-5" data-aos="fade-up">
+      <div class="col-lg-11 mx-auto">
+        <div class="group-synergy-banner">
+          <div class="row align-items-center g-4">
+            <div class="col-md-8 text-center text-md-start">
+              <span class="synergy-tag"><i class="fas fa-handshake me-1"></i> Integrated Group Strength</span>
+              <h4 class="mb-2">A Complete Ecosystem From Raw Metal to Retail Counters</h4>
+              <p class="mb-0 text-muted">
+                From virgin aluminium circle rolling and deep-draw pressings at <strong>Ratnadeep Metals</strong>, to master stockist distribution at <strong>Royaldeep Sales Syndicate</strong>, sacred ritual craft at <strong>Nagesh Traders</strong>, and authorized brand leadership at <strong>Nandini</strong> — our group delivers end-to-end reliability for business partners across India.
+              </p>
+            </div>
+            <div class="col-md-4 text-center text-md-end">
+              <a href="<?= site_url('contact?enquiry=' . urlencode('Associated Firms Partnership Enquiry')); ?>" class="btn-primary-custom">Partner With Our Group <i class="fas fa-arrow-right ms-2"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
